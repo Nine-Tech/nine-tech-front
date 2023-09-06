@@ -1,0 +1,20 @@
+.app {
+  height: 100vh;
+  display: grid;
+  background-color: black;
+
+  gap: 1px;
+  grid-auto-rows: min-content 1fr;
+  grid-template-columns: auto 1fr;
+
+  > * {
+    background-color: white;
+  }
+
+  .logo {
+    padding: 20px 40px;
+    img {
+      width: 100px;
+    }
+  }
+}
