@@ -6,7 +6,6 @@ import routes from "./router";
 
 import "@/assets/scss/app.scss";
 import "bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 const router = createBrowserRouter(routes);
 
