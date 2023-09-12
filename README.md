@@ -16,25 +16,16 @@ Para rodar o projeto, é preciso seguir o passo a passo abaixo
 - Tutorial para rodar o projeto
 
 ```bash
-# Baixe este repositório ou clone pelo Git usando o comando:
+# Baixe este repositório ou clone pelo Git usando o comando: 
 $ git clone https://github.com/Nine-Tech/nine-tech-front.git
 
-# Acesse a pasta do projeto
-$ 
-
-# criar um arquivo chamado ".env" e copiar a estrutura do arquivo ".env.example" e colocar seus respectivos dados
+# Acesse a pasta do projeto 
 
 # instale as dependencias
-$ 
-
-# Utilize o docker-compose para criar o banco de dados
-$ 
-
-# Utilize o comando do Prisma para sincronizar a estrutura do banco de dados
-$ 
+$ npm install
 
 # Inicie o Projeto
-$
+$ npm run dev
 ```
 
 
