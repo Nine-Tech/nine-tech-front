@@ -16,7 +16,7 @@ export default [
       },
       {
         path: "projetos",
-        element: <div>Projetos</div>,
+        element: <div></div>,
         handle: { title: "Projetos" },
       },
       {
