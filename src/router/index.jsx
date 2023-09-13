@@ -1,4 +1,5 @@
 import App from "../templates/App";
+import Projetos from "../pages/Projetos/Projetos";
 
 export default [
   {
@@ -16,7 +17,7 @@ export default [
       },
       {
         path: "projetos",
-        element: <div>Projetos</div>,
+        element: <Projetos />,
         handle: { title: "Projetos" },
       },
       {
