@@ -1,5 +1,7 @@
 import App from "../templates/App";
 
+import Home from "../pages/Home";
+
 export default [
   {
     path: "/",
@@ -7,7 +9,7 @@ export default [
     children: [
       {
         path: "",
-        element: <div>Home</div>,
+        element: <Home />,
       },
       {
         path: "pacotes",

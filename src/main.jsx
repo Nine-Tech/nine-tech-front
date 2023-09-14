@@ -8,6 +8,8 @@ import "@/assets/scss/app.scss";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+import "@/utils/api";
+
 const router = createBrowserRouter(routes);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
