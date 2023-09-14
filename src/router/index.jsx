@@ -1,3 +1,4 @@
+import TabelaWbs from "../components/TabelaWbs";
 import App from "../templates/App";
 
 export default [
