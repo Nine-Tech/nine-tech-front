@@ -24,9 +24,6 @@ const App = () => {
           <Outlet />
         </div>
       </div>
-      <div>
-        <BodyHeaderProjeto />
-      </div>
     </>
   );
 };

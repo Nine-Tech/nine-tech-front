@@ -1,50 +1,44 @@
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import "./style.scss";
-import { useState } from "react";
 
 function BodyHeaderProjeto() {
-  const [activeTab, setActiveTab] = useState("Tabela WBE");
-
-  const handleTabClick = (tabName) => {
-    setActiveTab(tabName);
-  };
-
   return (
-    <div className="body-header">
-      <h3>NOME PROJETO</h3>
-      <div className="icons">
-        <div className="pencil">
-          <FontAwesomeIcon icon={faPencil} className="fa-lg" />
+    <div className="card shadow">
+      <div className="card-body d-flex align-items-center">
+      <div className="project-square"></div>
+        <div>
+          <h6 className="card-subtitle mb-2 text-muted">Projeto</h6>
+          <h3 className="card-title fw-bold">Nome do projeto</h3>
         </div>
-        <div className="trash">
-          <FontAwesomeIcon icon={faTrash} className="fa-lg" />
+        <div className="ms-auto">
+          <button type="button" className="btn btn-warning me-2">
+            <FontAwesomeIcon icon={faPencil} />
+          </button>
+          <button type="button" className="btn btn-warning">
+            <FontAwesomeIcon icon={faTrash} />
+          </button>
         </div>
       </div>
       <hr />
-      <div className="opcoes">
-        <a
-          href="#"
-          className={activeTab === "Tabela WBE" ? "active" : ""}
-          onClick={() => handleTabClick("Tabela WBE")}
-        >
-          Tabela WBE
-        </a>
-        <a
-          href="#"
-          className={activeTab === "Gantt" ? "active" : ""}
-          onClick={() => handleTabClick("Gantt")}
-        >
-          Gantt
-        </a>
-        <a
-          href="#"
-          className={activeTab === "Avanço Projeto" ? "active" : ""}
-          onClick={() => handleTabClick("Avanço Projeto")}
-        >
-          Avanço Projeto
-        </a>
-      </div>
+      <ul className="nav nav-tabs">
+        <li className="nav-item">
+          <a className="nav-link active" aria-current="page" href="#">
+            Tabelas WBE
+          </a>
+        </li>
+        <li className="nav-item">
+          <a className="nav-link" href="#">
+            Gantt
+          </a>
+        </li>
+        <li className="nav-item">
+          <a className="nav-link" href="#">
+            Avanço Projeto
+          </a>
+        </li>
+      </ul>
     </div>
   );
 }
