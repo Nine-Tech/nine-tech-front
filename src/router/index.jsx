@@ -1,3 +1,4 @@
+import Pacotes from "../pages/Pacotes/Pacotes";
 import App from "../templates/App";
 
 import Home from "../pages/Home";
@@ -13,7 +14,7 @@ export default [
       },
       {
         path: "pacotes",
-        element: <div>Pacotes</div>,
+        element: <Pacotes />,
         handle: { title: "Pacotes" },
       },
       {
