@@ -1,5 +1,6 @@
 import Pacotes from "../pages/Pacotes/Pacotes";
 import App from "../templates/App";
+import Projetos from "../pages/Projetos/Projetos";
 
 import Home from "../pages/Home";
 
@@ -19,7 +20,7 @@ export default [
       },
       {
         path: "projetos",
-        element: <div>Projetos</div>,
+        element: <Projetos />,
         handle: { title: "Projetos" },
       },
       {
