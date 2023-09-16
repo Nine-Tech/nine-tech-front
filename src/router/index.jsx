@@ -1,5 +1,10 @@
+
 import TabelaWbs from "../components/TabelaWbs";
+import Pacotes from "../pages/Pacotes/Pacotes";
 import App from "../templates/App";
+import Projetos from "../pages/Projetos/Projetos";
+
+import Home from "../pages/Home";
 
 export default [
   {
@@ -8,16 +13,16 @@ export default [
     children: [
       {
         path: "",
-        element: <div>Home</div>,
+        element: <Home />,
       },
       {
         path: "pacotes",
-        element: <div>Pacotes</div>,
+        element: <Pacotes />,
         handle: { title: "Pacotes" },
       },
       {
         path: "projetos",
-        element: <div>Projetos</div>,
+        element: <Projetos />,
         handle: { title: "Projetos" },
       },
       {
