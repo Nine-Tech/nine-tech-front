@@ -17,11 +17,6 @@ Para rodar o projeto, é preciso seguir o passo a passo abaixo
 # Baixe este repositório ou clone pelo Git usando o comando: 
 $ git clone https://github.com/Nine-Tech/nine-tech-front.git
 
-# Acesse a pasta do projeto
-
-# instale as dependencias
-$ npm install
-
 # Inicie o Projeto
 $ npm run dev
 ```

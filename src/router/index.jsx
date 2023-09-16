@@ -1,3 +1,5 @@
+
+import TabelaWbs from "../components/TabelaWbs";
 import Pacotes from "../pages/Pacotes/Pacotes";
 import App from "../templates/App";
 import Projetos from "../pages/Projetos/Projetos";

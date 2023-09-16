@@ -1,0 +1,20 @@
+$primary: #787486;
+
+* {
+  font-size: 1vw;
+}
+.containerTexto {
+  width: 85vw;
+  height: 50vh;
+}
+
+.texto {
+  color: $primary;
+  width: 35vw;
+  height: 50vh;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+}
