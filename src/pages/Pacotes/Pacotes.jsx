@@ -1,12 +1,12 @@
 
-import BodyHeader from "@/components/BodyHeader";
 import "./style.scss";
+import BodyHeaderPacotes from "../../components/BodyHeaderPacotes";
 
 
 const Pacotes = () => {
   return (
   
-  <BodyHeader />  
+  <BodyHeaderPacotes />  
  
   )
 };

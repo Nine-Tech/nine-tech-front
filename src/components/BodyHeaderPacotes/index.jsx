@@ -3,7 +3,7 @@ import "./style.scss";
 import logo from "@/assets/images/9tech-logo.png";
 
 
-const BodyHeader = () => {
+const BodyHeaderPacotes = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -136,4 +136,4 @@ const BodyHeader = () => {
   );
 };
 
-export default BodyHeader;
+export default BodyHeaderPacotes;
