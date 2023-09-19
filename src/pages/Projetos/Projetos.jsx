@@ -1,8 +1,18 @@
+import { useEffect } from "react";
 import BodyHeaderProjeto from "../../components/BodyHeaderProjeto";
-import "./module.scss";
+import "./style.scss";
 
 const Projetos = () => {
-  return <BodyHeaderProjeto />;
+
+  useEffect(() => {
+    window.axios.get("");
+  }, []);
+
+  return (
+
+  <BodyHeaderProjeto />
+
+  )
 };
 
 export default Projetos;
