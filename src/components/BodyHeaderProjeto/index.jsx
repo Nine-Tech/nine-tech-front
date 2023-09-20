@@ -1,38 +1,26 @@
-import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from "react";
 import "./style.scss";
 
-function BodyHeaderProjeto({ projectId, onDeleteProject }) {
-  const [projectName, setProjectName] = useState("Nome do projeto");
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [editedProjectName, setEditedProjectName] = useState("");
+function BodyHeaderProjeto({ projetoId }) {
+  const [nomeProjeto, setNomeProjeto] = useState('');
 
-  const handleEditClick = () => {
-    setEditedProjectName(projectName);
-    setShowEditModal(true);
-  };
+  useEffect(() => {
+    if (projetoId) {
+      axios.get(`http://localhost:5000/projeto/${projetoId}`)
+        .then(response => {
+          setNomeProjeto(response.data.nome);
+        })
+        .catch(error => {
+          console.error("Erro ao obter nome do projeto:", error);
+        });
+    }
+  }, [projetoId]); 
 
-  const handleDeleteClick = () => {
-    setShowDeleteModal(true);
-  };
+  if (!projetoId) {
+    return null;
+  }
 
-  const handleModalClose = () => {
-    setShowDeleteModal(false);
-    setShowEditModal(false);
-  };
-
-  const handleDeleteConfirm = () => {
-    onDeleteProject(projectId);
-    setShowDeleteModal(false);
-  };
-
-  const handleEditSave = () => {
-    setProjectName(editedProjectName);
-    setShowEditModal(false);
-  };
-
+    
   return (
     <div>
       <div className="card shadow">
@@ -41,16 +29,8 @@ function BodyHeaderProjeto({ projectId, onDeleteProject }) {
           <div>
             <h6 className="card-subtitle mb-2 text-muted">Projeto</h6>
             <h3 className="card-title fw-bold">
-              {projectName}
+              {nomeProjeto}
             </h3>
-          </div>
-          <div className="ms-auto">
-            <button type="button" className="edit-button" onClick={handleEditClick}>
-              <FontAwesomeIcon icon={faPencil} />
-            </button>
-            <button type="button" className="delete-button" onClick={handleDeleteClick}>
-              <FontAwesomeIcon icon={faTrash} />
-            </button>
           </div>
         </div>
         <hr />
@@ -72,35 +52,6 @@ function BodyHeaderProjeto({ projectId, onDeleteProject }) {
           </li>
         </ul>
       </div>
-      {showDeleteModal && (
-        <div className="modal-container">
-          <div className="modal-content">
-            <button className="close-button" onClick={handleModalClose}>
-              x
-            </button>
-            <p>Tem certeza que deseja excluir o projeto?</p>
-            <button className="btn btn-danger" onClick={handleDeleteConfirm}>Confirmar Exclusão</button>
-          </div>
-        </div>
-      )}
-
-      {showEditModal && (
-        <div className="modal-container">
-          <div className="modal-content">
-            <button className="close-button" onClick={handleModalClose}>
-              x
-            </button>
-            <h5>Editar nome do projeto</h5>
-            <input
-              type="text"
-              className="edit-input"
-              value={editedProjectName}
-              onChange={(e) => setEditedProjectName(e.target.value)}
-            />
-            <button className="save-button" onClick={handleEditSave}>Salvar</button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
