@@ -17,7 +17,7 @@ const Projeto = () => {
     window.axios.get("upload/listarWBS").then(({ data }) => {
       setPackages(data.slice(0, 14));
     });
-  });
+  }, [id]);
 
   const navigation = [
     { link: "", title: "Divisão" },
