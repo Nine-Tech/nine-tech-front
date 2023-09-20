@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
 import BodyHeader from "@/components/BodyHeader";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Modal from "@/components/Modal";
 
 const Home = () => {
@@ -103,6 +104,7 @@ const Home = () => {
 
   useEffect(() => {
     window.axios.get("projeto/listar").then(({ data }) => {
+      console.log(data);
       setProjects(data);
     });
   }, []);
@@ -113,7 +115,7 @@ const Home = () => {
         <ModalContent />
       </Modal>
 
-      <BodyHeader title={"Pacotes"} className="mb-5">
+      <BodyHeader title={"Projetos"} className="mb-5">
         <div className="d-flex">
           <button
             className="btn btn-primary"
@@ -123,13 +125,25 @@ const Home = () => {
           </button>
         </div>
       </BodyHeader>
+
       {projects.length ? (
+        <div className="row mt-5">
+          {projects.map((p) => (
+            <div className="col-lg-4" key={p.id}>
+              <Link
+                className="d-block p-4 border rounded"
+                to={`projetos/${p.id}`}
+              >
+                {p.nome}
+              </Link>
+            </div>
+          ))}
+        </div>
+      ) : (
         <div className="text-center p-5">
           Por favor, clique no botão acima para importar seu arquivo Excel com
           os pacotes de trabalho. Após a importação, eles serão exibidos aqui.
         </div>
-      ) : (
-        <div>card de projeto</div>
       )}
     </>
   );
