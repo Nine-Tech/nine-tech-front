@@ -4,10 +4,10 @@ import "./style.scss";
 const Sidebar = () => {
   const buttons = () => {
     let options = [
-      { link: "/", name: "Home", icon: "" },
-      { link: "/pacotes", name: "Pacotes", icon: "" },
-      { link: "/projetos", name: "Projetos", icon: "" },
-      { link: "/tarefas", name: "Tarefas", icon: "" },
+      { link: "", name: "Home", icon: "" },
+      // { link: "pacotes", name: "Pacotes", icon: "" },
+      // { link: "projetos", name: "Projetos", icon: "" },
+      // { link: "tarefas", name: "Tarefas", icon: "" },
     ];
 
     return options.map((opt) => (

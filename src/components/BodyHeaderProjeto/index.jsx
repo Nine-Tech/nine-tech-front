@@ -1,4 +1,3 @@
-import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import "./style.scss";
@@ -7,7 +6,7 @@ function BodyHeaderProjeto() {
   return (
     <div className="card shadow">
       <div className="card-body d-flex align-items-center">
-      <div className="project-square"></div>
+        <div className="project-square"></div>
         <div>
           <h6 className="card-subtitle mb-2 text-muted">Projeto</h6>
           <h3 className="card-title fw-bold">Nome do projeto</h3>

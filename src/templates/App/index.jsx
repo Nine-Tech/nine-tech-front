@@ -6,7 +6,6 @@ import { useMatches } from "react-router-dom";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import logo from "@/assets/images/9tech-logo.png";
-import BodyHeaderProjeto from "../../components/BodyHeaderProjeto";
 
 const App = () => {
   const matches = useMatches();

@@ -3,16 +3,11 @@ import BodyHeaderProjeto from "../../components/BodyHeaderProjeto";
 import "./style.scss";
 
 const Projetos = () => {
-
   useEffect(() => {
     window.axios.get("");
   }, []);
 
-  return (
-
-  <BodyHeaderProjeto />
-
-  )
+  return <BodyHeaderProjeto />;
 };
 
 export default Projetos;

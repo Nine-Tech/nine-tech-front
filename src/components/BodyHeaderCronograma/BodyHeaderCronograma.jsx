@@ -1,36 +1,35 @@
-import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./style.scss";
 
-
-
 const BodyHeaderCronograma = () => {
-
-
   return (
     <>
       <div className="card shadow">
         <div className="card-body d-flex align-items-center">
-          <h3 className="card-title fw-bold p-2 flex-grow-1">Pacotes de Trabalho</h3>         
+          <h3 className="card-title fw-bold p-2 flex-grow-1">
+            Pacotes de Trabalho
+          </h3>
         </div>
         <hr />
         <ul className="nav nav-tabs d-flex">
           <li className="nav-item">
-            <a className="nav-link" href="/pacotes">
+            <Link className="nav-link" to={"pacotes"}>
               Divisão
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link active" aria-current="page" href="/cronograma">
+            <Link
+              className="nav-link active"
+              aria-current="page"
+              to={"cronograma"}
+            >
               Cronograma
-            </a>
+            </Link>
           </li>
-          
-          <p className="ms-auto m-2">Responsável: Líder de Projeto 1</p>
-          
-        </ul>
-        
-      </div>
 
+          <p className="ms-auto m-2">Responsável: Líder de Projeto 1</p>
+        </ul>
+      </div>
     </>
   );
 };

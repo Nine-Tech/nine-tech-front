@@ -14,7 +14,7 @@ Para rodar o projeto, é preciso seguir o passo a passo abaixo
 - Tutorial para rodar o projeto
 
 ```bash
-# Baixe este repositório ou clone pelo Git usando o comando: 
+# Baixe este repositório ou clone pelo Git usando o comando:
 $ git clone https://github.com/Nine-Tech/nine-tech-front.git
 
 # Instale as dependências

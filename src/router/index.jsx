@@ -1,5 +1,3 @@
-
-import TabelaWbs from "../components/TabelaWbs";
 import Pacotes from "../pages/Pacotes/Pacotes";
 import App from "../templates/App";
 import Projetos from "../pages/Projetos/Projetos";
@@ -10,7 +8,37 @@ import Tarefas from "../pages/Tarefas/Tarefas";
 
 export default [
   {
-    path: "/",
+    path: "/engenheirochefe",
+    element: <App />,
+    children: [
+      {
+        path: "",
+        element: <Home />,
+      },
+      {
+        path: "pacotes",
+        element: <Pacotes />,
+        handle: { title: "Pacotes" },
+      },
+      {
+        path: "projetos",
+        element: <Projetos />,
+        handle: { title: "Projetos" },
+      },
+      {
+        path: "tarefas",
+        element: <Tarefas />,
+        handle: { title: "Tarefas" },
+      },
+      {
+        path: "cronograma",
+        element: <Cronograma />,
+        handle: { title: "Pacotes" },
+      },
+    ],
+  },
+  {
+    path: "/liderprojeto/:id",
     element: <App />,
     children: [
       {
