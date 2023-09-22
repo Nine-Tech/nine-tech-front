@@ -19,22 +19,62 @@ function CardsProjeto() {
         fetchData();
     }, []);   
 
+    const renderCards = () => {
+        const cardsPorLinha = 3;
+
+        return nomesProjetos.reduce((gruposDeCards, nome, index) => {
+            const grupoAtual = Math.floor(index / cardsPorLinha);
+            if (!gruposDeCards[grupoAtual]) {
+                gruposDeCards[grupoAtual] = [];
+            }
+
+            gruposDeCards[grupoAtual].push(
+                <div className="card" key={index} style={cardStyle}>
+                    <div className="card-body">
+                        <h5 className="card-title" style={{fontWeight: 'bolder'}}>{nome}</h5>
+                        <div className="d-flex justify-content-between align-items-center">
+                            <div className="progress" style={progressStyle}>
+                                <div className="progress-bar" role="progressbar" style={progressBarStyle} aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <span style={spanStyle}>45%</span>
+                        </div>
+                    </div>
+                </div>
+            );
+
+            return gruposDeCards;
+        }, []).map((grupo, index) => (
+            <div key={index} className="d-flex justify-content-between">
+                {grupo}
+            </div>
+        ));
+    };
+
+    const cardStyle = {
+        width: '30%',
+        marginTop: '25px',
+        marginLeft: '5px',
+        marginRight: '10px',
+    };
+
+    const progressStyle = {
+        width: '70%',
+        marginTop: '10px',
+    };
+
+    const progressBarStyle = {
+        width: '45%',
+    };
+
+    const spanStyle = {
+        fontSize: 'small',
+        marginTop: '15px',
+    };
+
     return (
         <div>
             {nomesProjetos.length > 0 ? (
-                <div>
-                    {nomesProjetos.map((nome, index) => (
-                        <div className="card" key={index} style={{ width: '12rem', marginTop: '25px' }}>
-                            <div className='project-square' style={{ width: '165px', margin: '12px 12px 1px 12px' }}></div>
-                            <div className="card-body">
-                                <h5 className="card-title">{nome}</h5>
-                                <div className="progress" style={{ marginTop: '10px' }}>
-                                    <div className="progress-bar" role="progressbar" style={{ width: '30%' }} aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                renderCards()
             ) : (
                 <p style={{ marginTop: '25px', color: 'red', fontWeight: 'bold'}}>Nenhum projeto encontrado.</p>
             )}
