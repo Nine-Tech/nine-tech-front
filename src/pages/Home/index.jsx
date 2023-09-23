@@ -1,7 +1,9 @@
 import BodyHeader from "@/components/BodyHeader";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import Modal from "@/components/Modal";
+import BodyHeaderHome from "@/components/BodyHeaderHome";
+import CardsProjeto from "@/components/CardsProjeto";
 
 const Home = () => {
   const [showModal, setShowModal] = useState(false);
@@ -130,11 +132,8 @@ const Home = () => {
         <div className="row mt-5">
           {projects.map((p) => (
             <div className="col-lg-4" key={p.id}>
-              <Link
-                className="d-block p-4 border rounded"
-                to={`projetos/${p.id}`}
-              >
-                {p.nome}
+              <Link to={`projetos/${p.id}`} className="text-decoration-none text-primary">
+                <CardsProjeto nome={p.nome} />
               </Link>
             </div>
           ))}
