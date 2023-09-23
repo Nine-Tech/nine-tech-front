@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./style.scss";
 import { useParams } from "react-router-dom";
+import Toast from "@/components/Toast";
 
 function TabelaWbs(props) {
   const { id } = useParams();
@@ -15,6 +16,8 @@ function TabelaWbs(props) {
   const [errors, setErrors] = useState([]);
 
   const [loading, setLoading] = useState(false);
+
+  const [toast, setToast] = useState(false);
 
   useEffect(() => {
     window.axios.get(`lider/listar`).then(({ data }) => {
@@ -87,11 +90,18 @@ function TabelaWbs(props) {
       .finally(() => {
         setIsChanged(false);
         setLoading(false);
+        setToast(true);
       });
   };
 
   return (
     <>
+      <Toast show={toast} toggle={setToast}>
+        {errors.length
+          ? "Certifique-se de que não deixou nenhum campo vazio."
+          : "Mudanças salvas."}
+      </Toast>
+
       <table className="tabela-wbs table table-bordered">
         <thead>
           <tr className="table-active">
@@ -101,6 +111,7 @@ function TabelaWbs(props) {
             <th>Atribuição</th>
           </tr>
         </thead>
+
         <tbody>
           {packages.map((item) => (
             <tr
