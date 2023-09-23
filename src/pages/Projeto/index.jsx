@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import BodyHeader from "@/components/BodyHeader";
 import TabelaWbs from "@/components/TabelaWbs";
+import TabelaCronograma from "@/components/TabelaCronograma";
 
 const Projeto = () => {
   const { id } = useParams();
@@ -32,7 +33,7 @@ const Projeto = () => {
           <TabelaWbs data={packages} />
         </div>
         <div className="tab-pane" id="cronograma" role="tabpanel">
-          Sapo
+          <TabelaCronograma data={packages} />
         </div>
       </div>
     </>
