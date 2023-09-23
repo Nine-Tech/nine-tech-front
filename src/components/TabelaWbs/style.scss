@@ -24,6 +24,9 @@ $primary: #787486;
     border: 0;
   }
 
+  tr {
+    outline: 1px solid transparent;
+  }
   .error {
     outline: 1px solid red;
   }

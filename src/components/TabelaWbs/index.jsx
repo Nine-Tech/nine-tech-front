@@ -21,7 +21,11 @@ function TabelaWbs(props) {
       setLeaders(data);
     });
 
-    setPackages(data);
+    setPackages(
+      data.map((i) => {
+        return { ...i, liderDeProjeto: i.liderDeProjeto?.lider_de_projeto_id };
+      }),
+    );
   }, [id, data]);
 
   const reset = () => {
@@ -37,6 +41,8 @@ function TabelaWbs(props) {
     const target = e.target;
 
     const updatedItem = { ...item, [target.name]: target.value };
+    if (target.type === "number" && target.value < 0)
+      updatedItem[target.name] = 0;
 
     const newData = {
       ...updatedData,
@@ -59,10 +65,10 @@ function TabelaWbs(props) {
         let item = updatedData[k];
 
         let data = {
-          novoHH: 11.5,
-          novoValor: 11,
+          novoHH: parseFloat(item.hh) || 0,
+          novoValor: parseFloat(item.valor) || 0,
           novoLiderDeProjetoId: parseInt(item.liderDeProjeto),
-          novoProjetoId: parseInt(item.projeto.id),
+          novoProjetoId: parseInt(item.projeto?.id),
         };
 
         return new Promise((resolve, reject) => {
@@ -75,10 +81,13 @@ function TabelaWbs(props) {
     ])
       .then((results) =>
         setErrors(
-          results.map((r) => r.status === "rejected" && r.reason),
-        ).filter((r) => !!r),
+          results.filter((r) => r.status === "rejected").map((r) => r.reason),
+        ),
       )
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setIsChanged(false);
+        setLoading(false);
+      });
   };
 
   return (
@@ -94,7 +103,10 @@ function TabelaWbs(props) {
         </thead>
         <tbody>
           {packages.map((item) => (
-            <tr key={item.id} className={errors.includes(item.id) && "error"}>
+            <tr
+              key={item.id}
+              className={errors.includes(item.id) ? "error" : ""}
+            >
               <td>{item.wbe}</td>
               <td>
                 R$
