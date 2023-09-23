@@ -18,3 +18,13 @@ $primary: #787486;
   display: flex;
   align-items: center;
 }
+
+.tabela-wbs {
+  input {
+    border: 0;
+  }
+
+  .error {
+    outline: 1px solid red;
+  }
+}

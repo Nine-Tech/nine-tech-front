@@ -1,5 +1,4 @@
 import "./style.scss";
-import { Link } from "react-router-dom";
 
 const BodyHeader = (props) => {
   const { title, children, navigation } = props;
@@ -18,12 +17,19 @@ const BodyHeader = (props) => {
       <div className="d-flex justify-content-between">
         {navigation && (
           <ul className="nav nav-tabs d-flex">
-            {navigation.map((nav) => {
+            {navigation.map((nav, i) => {
               return (
                 <li className="nav-item" key={nav.title}>
-                  <Link className="nav-link" to={nav.link}>
+                  <button
+                    className={`nav-link ${!i && "active"}`}
+                    data-bs-target={nav.link}
+                    data-bs-toggle="tab"
+                    type="button"
+                    role="tab"
+                    id={nav.title}
+                  >
                     {nav.title}
-                  </Link>
+                  </button>
                 </li>
               );
             })}
