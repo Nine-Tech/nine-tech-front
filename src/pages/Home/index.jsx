@@ -1,8 +1,8 @@
 import BodyHeader from "@/components/BodyHeader";
 import { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import Modal from "@/components/Modal";
-import BodyHeaderHome from "@/components/BodyHeaderHome";
+// import BodyHeaderHome from "@/components/BodyHeaderHome";
 import CardsProjeto from "@/components/CardsProjeto";
 
 const Home = () => {
@@ -18,13 +18,16 @@ const Home = () => {
       formData.append("file", selectedFile);
 
       window.axios
-      .post("/upload/criarWBS", formData)
-      .then(() => {
-        setInputResult("success");
-        window.location.reload();
-      })
-      .catch(() => setInputResult("error"));
-  };
+        .post("/upload/criarWBS", formData)
+        .then(({ data }) => {
+          window.axios.post("/cronograma/criar", {
+            projeto: { id: data[0]?.projeto?.id },
+            porcentagens: Array(data.length).fill(Array(12).fill(0)),
+          });
+          setInputResult("success");
+        })
+        .catch(() => setInputResult("error"));
+    };
 
     const addDocument = () => {
       var input = document.createElement("input");
@@ -56,7 +59,10 @@ const Home = () => {
               <span className="mb-2">Importação Concluída com Sucesso :)</span>
               <button
                 className="btn btn-primary mt-5"
-                onClick={() => setShowModal(false)}
+                onClick={() => {
+                  getProjects();
+                  setShowModal(false);
+                }}
               >
                 Continuar
               </button>
@@ -107,12 +113,13 @@ const Home = () => {
     );
   };
 
-  useEffect(() => {
+  const getProjects = () => {
     window.axios.get("projeto/listar").then(({ data }) => {
-      console.log(data);
       setProjects(data);
     });
-  }, []);
+  };
+
+  useEffect(getProjects, []);
 
   return (
     <>
@@ -135,7 +142,10 @@ const Home = () => {
         <div className="row mt-5">
           {projects.map((p) => (
             <div className="col-lg-4" key={p.id}>
-              <Link to={`projetos/${p.id}`} className="text-decoration-none text-primary">
+              <Link
+                to={`projetos/${p.id}`}
+                className="text-decoration-none text-primary"
+              >
                 <CardsProjeto nome={p.nome} />
               </Link>
             </div>
