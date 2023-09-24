@@ -9,6 +9,7 @@ const ProjetoLider = () => {
 
   const [project, setProject] = useState({});
   const [packages, setPackages] = useState([]);
+  const [cronograma, setCronograma] = useState({});
 
   useEffect(() => {
     window.axios.get(`projeto/listar/${id}`).then(({ data }) => {
@@ -17,6 +18,10 @@ const ProjetoLider = () => {
 
     window.axios.get(`upload/listarWBS/${id}`).then(({ data }) => {
       setPackages(data);
+    });
+
+    window.axios.get(`cronograma/cronograma-por-wbe/${id}`).then(({ data }) => {
+      setCronograma(data);
     });
   }, [id]);
 
@@ -32,7 +37,7 @@ const ProjetoLider = () => {
       <BodyHeader title={project.nome || "Projeto"} navigation={navigation} />
       <div className="my-5 tab-content">        
         <div className="tab-pane active" id="cronograma" role="tabpanel">
-          <TabelaCronograma data={packages} />
+          <TabelaCronograma data={packages} dataCronograma={cronograma}/>
         </div>
         <div className="tab-pane" id="tabelawbe" role="tabpanel">
           <LiderTabelaWBE data={packages} />
