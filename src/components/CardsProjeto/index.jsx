@@ -12,6 +12,7 @@ function CardsProjeto({ nome }) {
                     <span className="small mt-2">{/* Variavel aqui */}0%</span>
                 </div>
             </div>
+            
         </div>
     );
 }

@@ -2,6 +2,9 @@ import App from "../templates/App";
 
 import Home from "../pages/Home";
 import Projeto from "@/pages/Projeto";
+import HomeLider from "../pages/HomeLider";
+import TabelaCronograma from "../components/TabelaCronograma";
+import ProjetoLider from "../pages/ProjetoLider";
 
 export default [
   {
@@ -25,11 +28,11 @@ export default [
     children: [
       {
         path: "",
-        element: <Home />,
+        element: <HomeLider />,
       },
       {
         path: "projetos/:id",
-        element: <Projeto />,
+        element: <ProjetoLider />,
         handle: { title: "Projetos" },
       },
     ],
