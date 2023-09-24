@@ -18,10 +18,13 @@ const Home = () => {
       formData.append("file", selectedFile);
 
       window.axios
-        .post("/upload/criarWBS", formData)
-        .then(() => setInputResult("success"))
-        .catch(() => setInputResult("error"));
-    };
+      .post("/upload/criarWBS", formData)
+      .then(() => {
+        setInputResult("success");
+        window.location.reload();
+      })
+      .catch(() => setInputResult("error"));
+  };
 
     const addDocument = () => {
       var input = document.createElement("input");
