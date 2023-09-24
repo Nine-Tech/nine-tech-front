@@ -23,7 +23,6 @@ const Projeto = () => {
     window.axios.get(`cronograma/cronograma-por-wbe/${id}`).then(({ data }) => {
       setCronograma(data);
     });
-
   }, [id]);
 
   const navigation = [
