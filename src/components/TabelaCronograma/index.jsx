@@ -4,18 +4,42 @@ import { useParams } from "react-router-dom";
 import Toast from "@/components/Toast";
 
 function TabelaCronograma(props) {
+  const { id } = useParams();
+
   const { data } = props;
 
-  const [leaders, setLeaders] = useState([]);
+  const { dataCronograma } = props;
+
+  console.log("Aqui:", dataCronograma);
 
   const [packages, setPackages] = useState([]);
   const [updatedData, setUpdatedData] = useState({});
   const [isChanged, setIsChanged] = useState(false);
   const [errors, setErrors] = useState([]);
+  const [cronograma, setCronograma] = useState([]);
 
   const [loading, setLoading] = useState(false);
 
   const [toast, setToast] = useState(false);
+
+  useEffect(() => {
+    setPackages(
+      data.map((i) => {
+        return { ...i };
+      }),
+    );
+    setCronograma(
+      Object.keys(dataCronograma).map((key) => {
+        const item = dataCronograma[key];
+        return {
+          id: key,
+          porcentagens: item.porcentagens,
+          nome: item.nome.trim(),
+        };
+      }));
+  }, [data, dataCronograma]);
+
+  console.log(cronograma);
 
   const reset = () => {
     const resetPackages = [...data];
@@ -54,15 +78,13 @@ function TabelaCronograma(props) {
         let item = updatedData[k];
 
         let data = {
-          novoHH: parseFloat(item.hh) || 0,
-          novoValor: parseFloat(item.valor) || 0,
-          novoLiderDeProjetoId: parseInt(item.liderDeProjeto),
-          novoProjetoId: parseInt(item.projeto?.id),
+          projeto: parseInt(item.projeto?.id),
+          porcentagens: parseFloat(item.porcentagens) || 0
         };
 
         return new Promise((resolve, reject) => {
           window.axios
-            .put(`wbe/atualizar/${k}`, data)
+            .put(`cronograma/criar`, data)
             .then(resolve)
             .catch(() => reject(item.id));
         });
@@ -94,8 +116,6 @@ function TabelaCronograma(props) {
             <th>Atividade(WBE)</th>
             <th colSpan="12">Avanço de Horas Planejado</th>
           </tr>
-        </thead>
-        <tbody>
           <tr>
             <td></td>
             <td>JAN</td>
@@ -111,6 +131,30 @@ function TabelaCronograma(props) {
             <td>NOV</td>
             <td>DEZ</td>
           </tr>
+        </thead>
+        <tbody>
+          {cronograma.map((item) => (
+            <tr key={item.id} className={errors.includes(item.id) ? "error" : ""}>
+
+              <td>{item.nome || ""}</td>
+
+              {item.porcentagens.map((porcentagem, index) => (
+                <td key={index}>
+                  <input
+                    className="form-control form-control-sm"
+                    min={0}
+                    step={0.01}
+                    name={`porcentagem_${item.id}_${index}`}
+                    type="number"
+                    value={porcentagem || 0}
+                    onChange={(e) => update(e, item, index)}
+                  />
+                  %
+                </td>
+              ))}
+
+            </tr>
+          ))}
         </tbody>
       </table>
 

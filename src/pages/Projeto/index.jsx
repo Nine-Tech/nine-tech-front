@@ -9,6 +9,7 @@ const Projeto = () => {
 
   const [project, setProject] = useState({});
   const [packages, setPackages] = useState([]);
+  const [cronograma, setCronograma] = useState({});
 
   useEffect(() => {
     window.axios.get(`projeto/listar/${id}`).then(({ data }) => {
@@ -18,6 +19,11 @@ const Projeto = () => {
     window.axios.get(`upload/listarWBS/${id}`).then(({ data }) => {
       setPackages(data);
     });
+
+    window.axios.get(`cronograma/cronograma-por-wbe/${id}`).then(({ data }) => {
+      setCronograma(data);
+    });
+
   }, [id]);
 
   const navigation = [
@@ -33,7 +39,7 @@ const Projeto = () => {
           <TabelaWbs data={packages} />
         </div>
         <div className="tab-pane" id="cronograma" role="tabpanel">
-          <TabelaCronograma data={packages} />
+          <TabelaCronograma data={packages} dataCronograma={cronograma} />
         </div>
       </div>
     </>
