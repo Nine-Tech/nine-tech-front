@@ -1,113 +1,89 @@
 import { useEffect, useState } from "react";
-import "./style.scss";
-import { useParams } from "react-router-dom";
 import Toast from "@/components/Toast";
+import "./style.scss";
+// import { useParams } from "react-router-dom";
 
 function TabelaCronograma(props) {
-  const { id } = useParams();
+  // const { id } = useParams();
 
   const { data } = props;
 
-  const { dataCronograma } = props;
-
-  console.log("Aqui:", dataCronograma);
-
-  const [packages, setPackages] = useState([]);
-  const [updatedData, setUpdatedData] = useState({});
   const [isChanged, setIsChanged] = useState(false);
-  const [errors, setErrors] = useState([]);
   const [cronograma, setCronograma] = useState([]);
+  const [updatedData, setUpdatedData] = useState([]);
+  const [error, setError] = useState(false);
 
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   const [toast, setToast] = useState(false);
 
   useEffect(() => {
-    setPackages(
-      data.map((i) => {
-        return { ...i };
-      }),
-    );
-    setCronograma(
-      Object.keys(dataCronograma).map((key) => {
-        const item = dataCronograma[key];
-        return {
-          id: key,
-          porcentagens: item.porcentagens,
-          nome: item.nome.trim(),
-        };
-      }));
-  }, [data, dataCronograma]);
+    let cronogramaData = Object.keys(data).map((key) => {
+      const item = data[key];
+      return {
+        id: key,
+        porcentagens: item.porcentagens,
+        nome: item.nome.trim(),
+      };
+    });
 
-  console.log(cronograma);
+    setCronograma(cronogramaData);
+    setUpdatedData(cronogramaData);
+  }, [data]);
 
   const reset = () => {
-    const resetPackages = [...data];
-
-    setPackages(resetPackages);
-    setErrors([]);
-    setIsChanged(false);
+    let updateData = [...cronograma];
+    setUpdatedData(updateData);
+    if (isChanged) setIsChanged(false);
+    if (error) setError(false);
   };
 
-  const update = (e, item) => {
+  const update = (e, item, index) => {
     if (!isChanged) setIsChanged(true);
     const target = e.target;
 
-    const updatedItem = { ...item, [target.name]: target.value };
-    if (target.type === "number" && target.value < 0)
-      updatedItem[target.name] = 0;
+    let updateRow = { ...item };
 
-    const newData = {
-      ...updatedData,
-      [item.id]: updatedItem,
-    };
-    setUpdatedData(newData);
+    let value =
+      target.value < 0 ? 0 : target.value > 100 ? 100 : Number(target.value);
 
-    const updatedPackages = [
-      ...packages.map((p) => (p.id === item.id ? updatedItem : p)),
+    updateRow.porcentagens[index] = value;
+
+    if (updateRow.porcentagens[index + 1] < value)
+      updateRow.porcentagens.fill(value, index);
+
+    let updateData = [
+      ...cronograma.map((i) => (i.id === updateRow.id ? updateRow : i)),
     ];
-    setPackages(updatedPackages);
+
+    setUpdatedData(updateData);
   };
 
   const save = () => {
-    setLoading(true);
-    setErrors([]);
+    // setLoading(true);
 
-    Promise.allSettled([
-      ...Object.keys(updatedData).map((k) => {
-        let item = updatedData[k];
-
-        let data = {
-          projeto: parseInt(item.projeto?.id),
-          porcentagens: parseFloat(item.porcentagens) || 0
-        };
-
-        return new Promise((resolve, reject) => {
-          window.axios
-            .put(`cronograma/criar`, data)
-            .then(resolve)
-            .catch(() => reject(item.id));
-        });
-      }),
-    ])
-      .then((results) =>
-        setErrors(
-          results.filter((r) => r.status === "rejected").map((r) => r.reason),
-        ),
-      )
-      .finally(() => {
-        setIsChanged(false);
-        setLoading(false);
-        setToast(true);
-      });
+    // window.axios
+    //   .put(`cronograma/atualizar`, {
+    //     projeto: { id: id },
+    //     porcentagens: updatedData.map((c) => c.porcentagens),
+    //   })
+    //   .then(() => {
+    setCronograma([...updatedData]);
+    setIsChanged(false);
+    // })
+    // .catch(() => setError(true))
+    // .finally(() => {
+    setToast(true);
+    //   setLoading(false);
+    // });
   };
 
   return (
     <>
       <Toast show={toast} toggle={setToast}>
-        {errors.length
-          ? "Certifique-se de que não deixou nenhum campo vazio."
-          : "Mudanças salvas."}
+        {error
+          ? "Erro ao salvar as alterações"
+          : "Alterações salvas com sucesso."}
       </Toast>
 
       <table className="table table-bordered">
@@ -133,9 +109,8 @@ function TabelaCronograma(props) {
           </tr>
         </thead>
         <tbody>
-          {cronograma.map((item) => (
-            <tr key={item.id} className={errors.includes(item.id) ? "error" : ""}>
-
+          {updatedData.map((item) => (
+            <tr key={item.id}>
               <td>{item.nome || ""}</td>
 
               {item.porcentagens.map((porcentagem, index) => (
@@ -143,16 +118,15 @@ function TabelaCronograma(props) {
                   <input
                     className="form-control form-control-sm"
                     min={0}
-                    step={0.01}
-                    name={`porcentagem_${item.id}_${index}`}
+                    step={1}
+                    max={100}
                     type="number"
+                    name="porcentagem"
                     value={porcentagem || 0}
                     onChange={(e) => update(e, item, index)}
                   />
-                  %
                 </td>
               ))}
-
             </tr>
           ))}
         </tbody>
@@ -171,15 +145,15 @@ function TabelaCronograma(props) {
           disabled={!isChanged}
           onClick={save}
         >
-          {loading ? (
+          {/* {loading ? (
             <div
               role="status"
               className="spinner-border"
               style={{ width: "1rem", height: "1rem" }}
             />
           ) : (
-            "Salvar"
-          )}
+            )} */}
+          Salvar
         </button>
       </div>
     </>

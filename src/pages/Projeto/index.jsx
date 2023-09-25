@@ -38,7 +38,7 @@ const Projeto = () => {
           <TabelaWbs data={packages} />
         </div>
         <div className="tab-pane" id="cronograma" role="tabpanel">
-          <TabelaCronograma data={packages} dataCronograma={cronograma} />
+          <TabelaCronograma data={cronograma} />
         </div>
       </div>
     </>
