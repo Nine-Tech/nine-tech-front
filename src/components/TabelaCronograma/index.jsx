@@ -23,7 +23,7 @@ function TabelaCronograma(props) {
       return {
         id: key,
         porcentagens: item.porcentagens,
-        nome: item.nome.trim(),
+        nome: item.nome,
       };
     });
 
