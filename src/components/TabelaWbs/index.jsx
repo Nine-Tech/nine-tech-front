@@ -108,6 +108,7 @@ function TabelaWbs(props) {
             <th>Atividade(WBE)</th>
             <th>Valor</th>
             <th>HH*</th>
+            <th>Material</th>
             <th>Atribuição</th>
           </tr>
         </thead>
@@ -129,13 +130,24 @@ function TabelaWbs(props) {
                   value={item.valor}
                   onChange={(e) => update(e, item)}
                 />
-              </td>
+              </td>              
               <td>
                 <input
                   min={0}
                   name="hh"
                   type="number"
                   value={item.hh}
+                  onChange={(e) => update(e, item)}
+                />
+              </td>
+              <td>
+                R$
+                <input
+                  min={0}
+                  step={0.01}
+                  name="material"
+                  type="number"
+                  value={item.material}
                   onChange={(e) => update(e, item)}
                 />
               </td>
