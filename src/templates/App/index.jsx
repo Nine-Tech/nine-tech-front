@@ -1,4 +1,4 @@
-import { Outlet, useParams, useLocation } from "react-router";
+import { Outlet, useLocation } from "react-router";
 import "./style.scss";
 
 import { useMatches } from "react-router-dom";
