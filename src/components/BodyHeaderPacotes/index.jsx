@@ -28,7 +28,7 @@ const BodyHeaderPacotes = () => {
     formData.append("file", file);
 
     window.axios
-      .post("/upload/criarWBS", formData)
+      .post("/upload", formData)
       .then((response) => {
         console.log("Arquivo enviado com sucesso!", response);
       })
