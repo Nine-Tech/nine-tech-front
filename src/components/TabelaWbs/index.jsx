@@ -19,6 +19,12 @@ function TabelaWbs(props) {
 
   const [toast, setToast] = useState(false);
 
+  const sortedPackages = packages.sort((a, b) => a.wbe.localeCompare(b.wbe));
+  sortedPackages.forEach(item => {
+    // Verifique se o item é um pai
+    item.isParent = item.wbe.split('.').length === 2;
+  });
+
   useEffect(() => {
     window.axios.get(`lider/listar`).then(({ data }) => {
       setLeaders(data);
@@ -110,77 +116,106 @@ function TabelaWbs(props) {
           : "Mudanças salvas."}
       </Toast>
 
-      <table className="tabela-wbs table table-bordered">
-        <thead>
-          <tr className="table-active">
-            <th>Atividade(WBE)</th>
-            <th>Valor</th>
-            <th>HH*</th>
-            <th>Material</th>
-            <th>Atribuição</th>
-          </tr>
-        </thead>
+      <div class="card text-center">
+        <div class="card-header">
+          <ul class="nav nav-tabs card-header-tabs">
+            {sortedPackages.map((item) => (
+              item.isParent && (
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="true" href="#">{item.wbe}</a>
+                </li>
+              )
+            ))}
 
-        <tbody>
-          {packages.map((item) => (
-            <tr
-              key={item.id}
-              className={errors.includes(item.id) ? "error" : ""}
-            >
-              <td>{item.wbe}</td>
-              <td>
-                R$
-                <input
-                  min={0}
-                  step={0.01}
-                  name="valor"
-                  type="number"
-                  value={formatarMoeda(item.valor)}
-                  onChange={(e) => update(e, item)}
-                />
-              </td>
-              <td>
-                <input
-                  min={0}
-                  name="hh"
-                  type="number"
-                  value={item.hh}
-                  onChange={(e) => update(e, item)}
-                />
-              </td>
-              <td>
-                R$
-                <input
-                  min={0}
-                  step={0.01}
-                  name="material"
-                  type="number"
-                  value={formatarMoeda(item.material)}
-                  onChange={(e) => update(e, item)}
-                />
-              </td>
-              <td>
-                <select
-                  className="form-select form-select-sm"
-                  aria-label="small select example"
-                  value={item.liderDeProjeto || ""}
-                  name="liderDeProjeto"
-                  onChange={(e) => update(e, item)}
-                >
-                  <option disabled value={""}>
-                    Selecione o Grupo Responsável
-                  </option>
-                  {leaders.map((l, i) => (
-                    <option value={l.lider_de_projeto_id} key={i}>
-                      {l.nome}
-                    </option>
-                  ))}
-                </select>
-              </td>
-            </tr>
+          </ul>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">1.1 Air Vehicle</h5>
+          <p class="card-text">Valor: R$1.085.000,00 </p>
+          <p class="card-text">HH: 10.000 </p>
+          <p class="card-text">Material: R$85.000,00 </p>
+          <select name="" id="">Lider de Projeto 1</select>
+          {sortedPackages.map((item) => (
+            !item.isParent && (
+              <a href=""><p class="card-text">{item.wbe} - Valor: R$ {item.valor}</p></a>
+            )
           ))}
-        </tbody>
-      </table>
+
+        </div>
+      </div>
+
+      <div className="table-responsive">
+        <table className="tabela-wbs table table-bordered">
+          <thead>
+            <tr className="table-active">
+              <th>Atividade(WBE)</th>
+              <th>Valor</th>
+              <th>HH*</th>
+              <th>Material</th>
+              <th>Atribuição</th>
+            </tr>
+          </thead>
+          <tbody>
+            {packages.map((item) => (
+              <tr
+                key={item.id}
+                className={errors.includes(item.id) ? "error" : ""}
+              >
+                <td>{item.wbe}</td>
+                <td>
+                  Valor R$
+                  <input
+                    min={0}
+                    step={0.01}
+                    name="valor"
+                    type="number"
+                    value={formatarMoeda(item.valor)}
+                    onChange={(e) => update(e, item)}
+                  />
+                </td>
+                <td>
+                  <input
+                    min={0}
+                    name="hh"
+                    type="number"
+                    value={item.hh}
+                    onChange={(e) => update(e, item)}
+                  />
+                </td>
+                <td>
+                  R$
+                  <input
+                    min={0}
+                    step={0.01}
+                    name="material"
+                    type="number"
+                    value={formatarMoeda(item.material)}
+                    onChange={(e) => update(e, item)}
+                  />
+                </td>
+                <td>
+                  <select
+                    className="form-select form-select-sm"
+                    aria-label="small select example"
+                    value={item.liderDeProjeto || ""}
+                    name="liderDeProjeto"
+                    onChange={(e) => update(e, item)}
+                  >
+                    <option disabled value={""}>
+                      Selecione o Grupo Responsável
+                    </option>
+                    {leaders.map((l, i) => (
+                      <option value={l.lider_de_projeto_id} key={i}>
+                        {l.nome}
+                      </option>
+                    ))}
+                  </select>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <div className="mt-4 d-flex justify-content-end">
         <button

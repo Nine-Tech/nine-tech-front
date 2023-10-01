@@ -86,51 +86,52 @@ function TabelaCronograma(props) {
           : "Alterações salvas com sucesso."}
       </Toast>
 
-      <table className="table table-bordered">
-        <thead>
-          <tr className="table-active">
-            <th>Atividade(WBE)</th>
-            <th colSpan="12">Avanço de Horas Planejado</th>
-          </tr>
-          <tr>
-            <td></td>
-            <td>JAN</td>
-            <td>FEV</td>
-            <td>MAR</td>
-            <td>ABR</td>
-            <td>MAI</td>
-            <td>JUN</td>
-            <td>JUL</td>
-            <td>AGO</td>
-            <td>SET</td>
-            <td>OUT</td>
-            <td>NOV</td>
-            <td>DEZ</td>
-          </tr>
-        </thead>
-        <tbody>
-          {updatedData.map((item) => (
-            <tr key={item.id}>
-              <td>{item.nome || ""}</td>
-
-              {item.porcentagens.map((porcentagem, index) => (
-                <td key={index}>
-                  <input
-                    className="form-control form-control-sm"
-                    min={0}
-                    step={1}
-                    max={100}
-                    type="number"
-                    name="porcentagem"
-                    value={porcentagem || 0}
-                    onChange={(e) => update(e, item, index)}
-                  />
-                </td>
-              ))}
+      <div className="table-responsive">
+        <table className="table table-bordered">
+          <thead>
+            <tr className="table-active">
+              <th>Atividade(WBE)</th>
+              <th colSpan="12">Avanço de Horas Planejado</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+            <tr>
+              <td></td>
+              <td>JAN</td>
+              <td>FEV</td>
+              <td>MAR</td>
+              <td>ABR</td>
+              <td>MAI</td>
+              <td>JUN</td>
+              <td>JUL</td>
+              <td>AGO</td>
+              <td>SET</td>
+              <td>OUT</td>
+              <td>NOV</td>
+              <td>DEZ</td>
+            </tr>
+          </thead>
+          <tbody>
+            {updatedData.map((item) => (
+              <tr key={item.id}>
+                <td>{item.nome || ""}</td>
+                {item.porcentagens.map((porcentagem, index) => (
+                  <td key={index}>
+                    <input
+                      className="form-control form-control-sm"
+                      min={0}
+                      step={1}
+                      max={100}
+                      type="number"
+                      name="porcentagem"
+                      value={porcentagem || 0}
+                      onChange={(e) => update(e, item, index)}
+                    />
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <div className="mt-4 d-flex justify-content-end">
         <button
