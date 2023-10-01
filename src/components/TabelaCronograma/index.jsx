@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import Toast from "@/components/Toast";
 import "./style.scss";
-// import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 function TabelaCronograma(props) {
-  // const { id } = useParams();
+  const { id } = useParams();
 
   const { data } = props;
 
@@ -13,7 +13,7 @@ function TabelaCronograma(props) {
   const [updatedData, setUpdatedData] = useState([]);
   const [error, setError] = useState(false);
 
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [toast, setToast] = useState(false);
 
@@ -60,22 +60,22 @@ function TabelaCronograma(props) {
   };
 
   const save = () => {
-    // setLoading(true);
+    setLoading(true);
 
-    // window.axios
-    //   .put(`cronograma/atualizar`, {
-    //     projeto: { id: id },
-    //     porcentagens: updatedData.map((c) => c.porcentagens),
-    //   })
-    //   .then(() => {
+    window.axios
+      .put(`cronograma/atualizar`, {
+        projeto: { id: id },
+        porcentagens: updatedData.map((c) => c.porcentagens),
+      })
+      .then(() => {
     setCronograma([...updatedData]);
     setIsChanged(false);
-    // })
-    // .catch(() => setError(true))
-    // .finally(() => {
+    })
+    .catch(() => setError(true))
+    .finally(() => {
     setToast(true);
-    //   setLoading(false);
-    // });
+      setLoading(false);
+    });
   };
 
   return (
@@ -145,16 +145,16 @@ function TabelaCronograma(props) {
           disabled={!isChanged}
           onClick={save}
         >
-          {/* {loading ? (
+          {loading ? (
             <div
               role="status"
               className="spinner-border"
               style={{ width: "1rem", height: "1rem" }}
             />
-          ) : (
-            )} */}
+          ) : null} 
           Salvar
         </button>
+
       </div>
     </>
   );
