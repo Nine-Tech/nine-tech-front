@@ -18,7 +18,7 @@ const Home = () => {
       formData.append("file", selectedFile);
 
       window.axios
-        .post("/upload/criarWBS", formData)
+        .post("/upload", formData)
         .then(({ data }) => {
           window.axios.post("/cronograma/criar", {
             projeto: { id: data[0]?.projeto?.id },
