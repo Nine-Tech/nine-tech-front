@@ -20,10 +20,10 @@ const Home = () => {
       window.axios
         .post("/upload", formData)
         .then(({ data }) => {
-          window.axios.post("/cronograma/criar", {
+          /* window.axios.post("/cronograma/criar", {
             projeto: { id: data[0]?.projeto?.id },
             porcentagens: Array(data.length).fill(Array(12).fill(0)),
-          });
+          }); */
           setInputResult("success");
         })
         .catch(() => setInputResult("error"));
