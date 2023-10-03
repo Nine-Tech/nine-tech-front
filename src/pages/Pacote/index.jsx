@@ -35,8 +35,7 @@ const Projeto = () => {
     <>
       <BodyHeader title={project.nome || "Projeto"} navigation={navigation} />
       <div className="my-5 tab-content">
-        <div className="tab-pane active" id="divisao" role="tabpanel">
-          {/* <TabelaTeste data={packages}/> */}
+        <div className="tab-pane active" id="divisao" role="tabpanel">          
           
            <TabelaWbs data={packages} />
         </div>

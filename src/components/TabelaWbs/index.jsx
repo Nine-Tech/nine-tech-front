@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./style.scss";
 import { useParams } from "react-router-dom";
 import Toast from "@/components/Toast";
+import { Link } from "react-router-dom";
 
 function TabelaWbs(props) {
   const { id } = useParams();
@@ -18,13 +19,7 @@ function TabelaWbs(props) {
   const [loading, setLoading] = useState(false);
 
   const [toast, setToast] = useState(false);
-
-  const sortedPackages = packages.sort((a, b) => a.wbe.localeCompare(b.wbe));
-  sortedPackages.forEach(item => {
-    // Verifique se o item é um pai
-    item.isParent = item.wbe.split('.').length === 2;
-  });
-
+  
   useEffect(() => {
     window.axios.get(`lider/listar`).then(({ data }) => {
       setLeaders(data);
@@ -102,11 +97,10 @@ function TabelaWbs(props) {
         setToast(true);
       });
   };
-
+  
   function formatarMoeda(valor) {
-    return parseFloat(valor).toFixed(2);
+    return atual.toLocaleString('pt-br', {minimumFractionDigits: 2});
   }
-
 
   return (
     <>
@@ -119,7 +113,7 @@ function TabelaWbs(props) {
       <div class="card text-center">
         <div class="card-header">
           <ul class="nav nav-tabs card-header-tabs">
-            {sortedPackages.map((item) => (
+            {packages.map((item) => (
               item.isParent && (
                 <li class="nav-item">
                   <a class="nav-link active" aria-current="true" href="#">{item.wbe}</a>
@@ -135,7 +129,7 @@ function TabelaWbs(props) {
           <p class="card-text">HH: 10.000 </p>
           <p class="card-text">Material: R$85.000,00 </p>
           <select name="" id="">Lider de Projeto 1</select>
-          {sortedPackages.map((item) => (
+          {packages.map((item) => (
             !item.isParent && (
               <a href=""><p class="card-text">{item.wbe} - Valor: R$ {item.valor}</p></a>
             )
@@ -161,14 +155,18 @@ function TabelaWbs(props) {
                 key={item.id}
                 className={errors.includes(item.id) ? "error" : ""}
               >
-                <td>{item.wbe}</td>
+                <td>
+                  <Link to={`/engenheirochefe/projetos/${id}/pacotes/${item.id}`}>
+                  {item.wbe}
+                  </Link>
+                  </td>
                 <td>
                   Valor R$
                   <input
                     min={0}
                     step={0.01}
                     name="valor"
-                    type="number"
+                    type="text"
                     value={formatarMoeda(item.valor)}
                     onChange={(e) => update(e, item)}
                   />
@@ -188,7 +186,7 @@ function TabelaWbs(props) {
                     min={0}
                     step={0.01}
                     name="material"
-                    type="number"
+                    type="text"
                     value={formatarMoeda(item.material)}
                     onChange={(e) => update(e, item)}
                   />
