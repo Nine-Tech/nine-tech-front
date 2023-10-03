@@ -20,7 +20,7 @@ const Home = () => {
       window.axios
         .post("/upload", formData)
         .then(({ data }) => {
-          window.axios.post("/cronograma/criar", {
+          window.axios.post("/cronograma", {
             projeto: { id: data[0]?.projeto?.id },
             porcentagens: Array(data.length).fill(Array(12).fill(0)),
           });
@@ -114,7 +114,7 @@ const Home = () => {
   };
 
   const getProjects = () => {
-    window.axios.get("projeto/listar").then(({ data }) => {
+    window.axios.get("/projeto").then(({ data }) => {
       setProjects(data);
     });
   };

@@ -72,7 +72,7 @@ function TabelaCronograma(props) {
         porcentagens: sortedPorcentagens.map((item) => item.porcentagens),
       };
   
-      await axios.put('/cronograma/atualizar', dataToSave);
+      await axios.put(`/cronograma/${projetoId}`, dataToSave);
   
       setCronograma([...updatedData]);
       setIsChanged(false);
