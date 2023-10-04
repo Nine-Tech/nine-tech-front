@@ -1,8 +1,8 @@
 import BodyHeader from "@/components/BodyHeader";
 import { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import Modal from "@/components/Modal";
-import BodyHeaderHome from "@/components/BodyHeaderHome";
+// import BodyHeaderHome from "@/components/BodyHeaderHome";
 import CardsProjeto from "@/components/CardsProjeto";
 
 const Home = () => {
@@ -19,7 +19,17 @@ const Home = () => {
 
       window.axios
         .post("/upload", formData)
+<<<<<<< HEAD
         .then(() => setInputResult("success"))
+=======
+        .then(({ data }) => {
+          window.axios.post("/cronograma", {
+            projeto: { id: data[0]?.projeto?.id },
+            porcentagens: Array(data.length).fill(Array(12).fill(0)),
+          });
+          setInputResult("success");
+        })
+>>>>>>> 40a6a1e52a27e2aea183967008acedbf6a64f0a6
         .catch(() => setInputResult("error"));
     };
 
@@ -53,7 +63,10 @@ const Home = () => {
               <span className="mb-2">Importação Concluída com Sucesso :)</span>
               <button
                 className="btn btn-primary mt-5"
-                onClick={() => setShowModal(false)}
+                onClick={() => {
+                  getProjects();
+                  setShowModal(false);
+                }}
               >
                 Continuar
               </button>
@@ -104,12 +117,13 @@ const Home = () => {
     );
   };
 
-  useEffect(() => {
-    window.axios.get("projeto").then(({ data }) => {
-      console.log(data);
+  const getProjects = () => {
+    window.axios.get("/projeto").then(({ data }) => {
       setProjects(data);
     });
-  }, []);
+  };
+
+  useEffect(getProjects, []);
 
   return (
     <>
@@ -132,7 +146,10 @@ const Home = () => {
         <div className="row mt-5">
           {projects.map((p) => (
             <div className="col-lg-4" key={p.id}>
-              <Link to={`projetos/${p.id}`} className="text-decoration-none text-primary">
+              <Link
+                to={`projetos/${p.id}`}
+                className="text-decoration-none text-primary"
+              >
                 <CardsProjeto nome={p.nome} />
               </Link>
             </div>

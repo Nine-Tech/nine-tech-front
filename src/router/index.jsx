@@ -3,8 +3,11 @@ import App from "../templates/App";
 import Home from "../pages/Home";
 import Projeto from "@/pages/Projeto";
 import HomeLider from "../pages/HomeLider";
-import TabelaCronograma from "../components/TabelaCronograma";
 import ProjetoLider from "../pages/ProjetoLider";
+
+import Login from "../pages/Login";
+
+import { Navigate } from "react-router-dom";
 
 export default [
   {
@@ -36,5 +39,13 @@ export default [
         handle: { title: "Projetos" },
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "*",
+    element: <Navigate to={"/engenheirochefe"} replace={true} />,
   },
 ];

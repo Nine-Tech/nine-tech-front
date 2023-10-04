@@ -43,20 +43,22 @@ function TabelaWbs(props) {
     if (!isChanged) setIsChanged(true);
     const target = e.target;
 
-    const updatedItem = { ...item, [target.name]: target.value };
-    if (target.type === "number" && target.value < 0)
-      updatedItem[target.name] = 0;
+    const updatedValue = target.value.replace(',', '.');
 
-    const newData = {
-      ...updatedData,
-      [item.id]: updatedItem,
-    };
-    setUpdatedData(newData);
+    if (!isNaN(updatedValue)) {
+      const updatedItem = { ...item, [target.name]: updatedValue };
 
-    const updatedPackages = [
-      ...packages.map((p) => (p.id === item.id ? updatedItem : p)),
-    ];
-    setPackages(updatedPackages);
+      const newData = {
+        ...updatedData,
+        [item.id]: updatedItem,
+      };
+      setUpdatedData(newData);
+
+      const updatedPackages = [
+        ...packages.map((p) => (p.id === item.id ? updatedItem : p)),
+      ];
+      setPackages(updatedPackages);
+    }
   };
 
   const save = () => {
@@ -70,6 +72,7 @@ function TabelaWbs(props) {
         let data = {
           novoHH: parseFloat(item.hh) || 0,
           novoValor: parseFloat(item.valor) || 0,
+          novoMaterial: parseFloat(item.material) || 0,
           novoLiderDeProjetoId: parseInt(item.liderDeProjeto),
           novoProjetoId: parseInt(item.projeto?.id),
         };
@@ -94,6 +97,11 @@ function TabelaWbs(props) {
       });
   };
 
+  function formatarMoeda(valor) {
+    return parseFloat(valor).toFixed(2);
+  }
+
+
   return (
     <>
       <Toast show={toast} toggle={setToast}>
@@ -108,6 +116,7 @@ function TabelaWbs(props) {
             <th>Atividade(WBE)</th>
             <th>Valor</th>
             <th>HH*</th>
+            <th>Material</th>
             <th>Atribuição</th>
           </tr>
         </thead>
@@ -126,7 +135,7 @@ function TabelaWbs(props) {
                   step={0.01}
                   name="valor"
                   type="number"
-                  value={item.valor}
+                  value={formatarMoeda(item.valor)}
                   onChange={(e) => update(e, item)}
                 />
               </td>
@@ -136,6 +145,17 @@ function TabelaWbs(props) {
                   name="hh"
                   type="number"
                   value={item.hh}
+                  onChange={(e) => update(e, item)}
+                />
+              </td>
+              <td>
+                R$
+                <input
+                  min={0}
+                  step={0.01}
+                  name="material"
+                  type="number"
+                  value={formatarMoeda(item.material)}
                   onChange={(e) => update(e, item)}
                 />
               </td>

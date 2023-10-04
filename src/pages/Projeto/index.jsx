@@ -23,7 +23,6 @@ const Projeto = () => {
     window.axios.get(`cronograma/${id}`).then(({ data }) => {
       setCronograma(data);
     });
-
   }, [id]);
 
   const navigation = [
@@ -39,7 +38,7 @@ const Projeto = () => {
           <TabelaWbs data={packages} />
         </div>
         <div className="tab-pane" id="cronograma" role="tabpanel">
-          <TabelaCronograma data={packages} dataCronograma={cronograma} />
+          <TabelaCronograma data={cronograma} />
         </div>
       </div>
     </>

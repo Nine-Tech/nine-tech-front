@@ -25,7 +25,7 @@ const ProjetoLider = () => {
     });
   }, [id]);
 
-  const navigation = [    
+  const navigation = [
     { link: "#cronograma", title: "Cronograma" },
     { link: "#tabelawbe", title: "Tabela WBE" },
     { link: "#gantt", title: "Gantt" },
@@ -35,9 +35,9 @@ const ProjetoLider = () => {
   return (
     <>
       <BodyHeader title={project.nome || "Projeto"} navigation={navigation} />
-      <div className="my-5 tab-content">        
+      <div className="my-5 tab-content">
         <div className="tab-pane active" id="cronograma" role="tabpanel">
-          <TabelaCronograma data={packages} dataCronograma={cronograma}/>
+          <TabelaCronograma data={cronograma} />
         </div>
         <div className="tab-pane" id="tabelawbe" role="tabpanel">
           <LiderTabelaWBE data={packages} />
