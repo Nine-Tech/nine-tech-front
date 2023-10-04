@@ -18,7 +18,7 @@ const Home = () => {
       formData.append("file", selectedFile);
 
       window.axios
-        .post("/upload/criarWBS", formData)
+        .post("/upload", formData)
         .then(() => setInputResult("success"))
         .catch(() => setInputResult("error"));
     };
@@ -105,7 +105,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    window.axios.get("projeto/listar").then(({ data }) => {
+    window.axios.get("projeto").then(({ data }) => {
       console.log(data);
       setProjects(data);
     });

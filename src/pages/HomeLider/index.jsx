@@ -7,7 +7,7 @@ const HomeLider = () => {
   const [projects, setProjects] = useState([]);  
 
   useEffect(() => {
-    window.axios.get("projeto/listar").then(({ data }) => {
+    window.axios.get("projeto").then(({ data }) => {
       console.log(data);
       setProjects(data);
     });
