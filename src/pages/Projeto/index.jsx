@@ -13,7 +13,7 @@ const Projeto = () => {
   const [cronograma, setCronograma] = useState({});
 
   useEffect(() => {
-    window.axios.get(`projeto/listar/${id}`).then(({ data }) => {
+    window.axios.get(`projeto/${id}`).then(({ data }) => {
       setProject(data);
     });
 
@@ -21,7 +21,7 @@ const Projeto = () => {
       setPackages(data);
     });
 
-  window.axios.get(`cronograma/cronograma-por-wbe/${id}`).then(({ data }) => {
+  window.axios.get(`cronograma/${id}`).then(({ data }) => {
       setCronograma(data);
     });
   }, [id]);

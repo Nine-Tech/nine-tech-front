@@ -13,8 +13,8 @@ const Navbar = () => {
             // { link: "tarefas", name: "Tarefas", icon: "" },
         ];
         return options.map((opt) => (
-            <Link to={opt.link} className="btn text-start py-3" key={opt.name}>
-                <i className={opt.icon} />
+            <Link to={opt.link} classNameName="btn text-start py-3" key={opt.name}>
+                <i classNameName={opt.icon} />
                 <span>{opt.name}</span>
             </Link>
         ));
@@ -22,16 +22,16 @@ const Navbar = () => {
 
     return (
         <>
-            <nav class="navbar shadow  navbar-expand-lg bg-body-tertiary ">
-                <div class="container-fluid">
-                    <a class="navbar-brand" href="/"><img src={logo} alt="9tech-logo" width="90"></img></a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
+            <nav className="navbar shadow  navbar-expand-lg bg-body-tertiary ">
+                <div className="container-fluid">
+                    <a className="navbar-brand" href="/"><img src={logo} alt="9tech-logo" width="90"></img></a>
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link active fs-5 fw-bold" aria-current="page" href="/">Home</a>
+                    <div className="collapse navbar-collapse" id="navbarNav">
+                        <ul className="navbar-nav">
+                            <li className="nav-item">
+                                <a className="nav-link active fs-5 fw-bold" aria-current="page" href="/">Home</a>
                             </li>
                         </ul>
                     </div>
@@ -47,12 +47,12 @@ const Navbar = () => {
 
 export default Navbar
 
-/*  <nav class="navbar navbar-expand-lg bg-body-tertiary">
-                <div class="container-fluid">
+/*  <nav className="navbar navbar-expand-lg bg-body-tertiary">
+                <div className="container-fluid">
                     <img src={logo} alt="9tech-logo" width="90"></img>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
                     </button>
                 </div>
-                <div className="collapse navbar-collapse">{buttons()}</div>
+                <div classNameName="collapse navbar-collapse">{buttons()}</div>
             </nav> */

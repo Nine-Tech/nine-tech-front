@@ -20,9 +20,9 @@ const ProjetoLider = () => {
       setPackages(data);
     });
 
-   /*  window.axios.get(`cronograma/cronograma-por-wbe/${id}`).then(({ data }) => {
+   window.axios.get(`cronograma/${id}`).then(({ data }) => {
       setCronograma(data);
-    }); */
+    });
   }, [id]);
 
   const navigation = [
