@@ -2,10 +2,8 @@ import { Outlet, useLocation } from "react-router";
 import "./style.scss";
 
 import { useMatches } from "react-router-dom";
-
-import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
-import logo from "@/assets/images/9tech-logo.png";
+import Navbar from "../../components/Navbar/Index";
 
 const App = () => {
   const matches = useMatches();
@@ -26,12 +24,11 @@ const App = () => {
 
   return (
     <>
+      <Navbar />
       <div className="app">
-        <div className="logo d-flex align-items-center">
-          <img src={logo} alt="9tech-logo" />
-        </div>
+
         <Header title={title} userTitle={userTitle} />
-        <Sidebar />
+
         <div className="wrapper">
           <Outlet />
         </div>
