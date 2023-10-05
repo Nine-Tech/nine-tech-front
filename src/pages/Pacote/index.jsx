@@ -21,7 +21,7 @@ const Projeto = () => {
       setPackages(data);
     });
 
-  window.axios.get(`cronograma/cronograma-por-wbe/${id}`).then(({ data }) => {
+  /*   window.axios.get(`cronograma/cronograma-por-wbe/${id}`).then(({ data }) => {
       setCronograma(data);
     });
   }, [id]);
