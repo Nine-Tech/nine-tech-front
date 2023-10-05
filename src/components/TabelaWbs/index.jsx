@@ -20,7 +20,7 @@ function TabelaWbs(props) {
   const [toast, setToast] = useState(false);
 
   useEffect(() => {
-    window.axios.get(`lider/listar`).then(({ data }) => {
+    window.axios.get(`lider`).then(({ data }) => {
       setLeaders(data);
     });
 

@@ -26,6 +26,7 @@ const Home = () => {
           });
           setInputResult("success");
         })
+>>>>>>> 40a6a1e52a27e2aea183967008acedbf6a64f0a6
         .catch(() => setInputResult("error"));
     };
 

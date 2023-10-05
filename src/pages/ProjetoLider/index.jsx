@@ -12,10 +12,11 @@ const ProjetoLider = () => {
   const [cronograma, setCronograma] = useState({});
 
   useEffect(() => {
-    window.axios.get(`projeto/listar/${id}`).then(({ data }) => {
+    window.axios.get(`projeto/${id}`).then(({ data }) => {
       setProject(data);
     });
 
+    window.axios.get(`upload/${id}`).then(({ data }) => {
     window.axios.get(`upload/${id}`).then(({ data }) => {
       setPackages(data);
     });
