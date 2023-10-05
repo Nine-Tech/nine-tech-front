@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import BodyHeader from "@/components/BodyHeader";
 import TabelaWbs from "@/components/TabelaWbs";
 import TabelaCronograma from "@/components/TabelaCronograma";
-import TabelaTeste from "../../components/TabelaTeste";
+
 
 const Projeto = () => {
   const { id, itemId } = useParams();
@@ -21,9 +21,9 @@ const Projeto = () => {
       setPackages(data);
     });
 
-  /*   window.axios.get(`cronograma/cronograma-por-wbe/${id}`).then(({ data }) => {
+  window.axios.get(`cronograma/cronograma-por-wbe/${id}`).then(({ data }) => {
       setCronograma(data);
-    }); */
+    });
   }, [id]);
 
   const navigation = [
@@ -39,9 +39,9 @@ const Projeto = () => {
           
            <TabelaWbs data={packages} />
         </div>
-        {/* <div className="tab-pane" id="cronograma" role="tabpanel">
+         <div className="tab-pane" id="cronograma" role="tabpanel">
           <TabelaCronograma data={cronograma} />
-        </div> */}
+        </div>
       </div>
     </>
   );
