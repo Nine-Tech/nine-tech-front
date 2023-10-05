@@ -43,7 +43,7 @@ function TabelaWbs(props) {
     if (!isChanged) setIsChanged(true);
     const target = e.target;
 
-    const updatedValue = target.value.replace(',', '.');
+    const updatedValue = target.value.replace(",", ".");
 
     if (!isNaN(updatedValue)) {
       const updatedItem = { ...item, [target.name]: updatedValue };
@@ -100,7 +100,6 @@ function TabelaWbs(props) {
   function formatarMoeda(valor) {
     return parseFloat(valor).toFixed(2);
   }
-
 
   return (
     <>
