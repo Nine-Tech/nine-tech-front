@@ -16,11 +16,9 @@ const Projeto = () => {
 
   useEffect(() => {
     window.axios.get(`projeto/${id}`).then(({ data }) => {
-    window.axios.get(`projeto/${id}`).then(({ data }) => {
       setProject(data);
     });
 
-    window.axios.get(`upload/${id}`).then(({ data }) => {
     window.axios.get(`upload/${id}`).then(({ data }) => {
       setPackages(data);
     });
@@ -51,7 +49,9 @@ const Projeto = () => {
         </div>
       </div>
     </>
-  );
-};
+     );
+}
+  
+  
 
 export default Projeto;

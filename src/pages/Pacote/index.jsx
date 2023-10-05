@@ -5,7 +5,7 @@ import TabelaWbs from "@/components/TabelaWbs";
 import TabelaCronograma from "@/components/TabelaCronograma";
 
 
-const Projeto = () => {
+const Pacote = () => {
   const { id, itemId } = useParams();
 
   const [project, setProject] = useState({});
@@ -21,7 +21,7 @@ const Projeto = () => {
       setPackages(data);
     });
 
-  /*   window.axios.get(`cronograma/cronograma-por-wbe/${id}`).then(({ data }) => {
+  window.axios.get(`cronograma/cronograma-por-wbe/${id}`).then(({ data }) => {
       setCronograma(data);
     });
   }, [id]);
@@ -47,4 +47,4 @@ const Projeto = () => {
   );
 };
 
-export default Projeto;
+export default Pacote;

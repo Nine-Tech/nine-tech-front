@@ -17,7 +17,6 @@ const ProjetoLider = () => {
     });
 
     window.axios.get(`upload/${id}`).then(({ data }) => {
-    window.axios.get(`upload/${id}`).then(({ data }) => {
       setPackages(data);
     });
 
