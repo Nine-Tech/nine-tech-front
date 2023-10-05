@@ -5,8 +5,11 @@ import "./style.scss";
 
 const LiderTabelaWBE = (props) => {
   const { id } = useParams();
-
   const { data } = props;
+
+  const pathParts = location.pathname.split("/");
+  const idLiderProjeto = pathParts[2];
+  const idProjeto = pathParts[4];
 
   const [leaders, setLeaders] = useState([]);
 
@@ -19,22 +22,37 @@ const LiderTabelaWBE = (props) => {
 
   const [toast, setToast] = useState(false);
 
+  const [progressoMensal, setProgresso] = useState([]);
+
   useEffect(() => {
     window.axios.get(`lider`).then(({ data }) => {
       setLeaders(data);
     });
-
-    console.log("data:");
-    console.log(data);
-
+    window.axios
+      .get(`progressaomensal/${idLiderProjeto}/${idProjeto}`)
+      .then(({ data: progressoMensal }) => {
+        setProgresso(progressoMensal);
+      });
     setPackages(
       data.map((i) => {
-        console.log("i:");
-        console.log(i);
-        return { ...i, liderDeProjeto: i.liderDeProjeto?.lider_de_projeto_id };
+        const matchingProgressItem = progressoMensal.find(
+          (progressItem) => progressItem[1] === i.id,
+        );
+
+        // Verifique se há um elemento correspondente em progressoMensal
+        if (matchingProgressItem) {
+          console.log("matchingProgressItem:")
+          console.log(matchingProgressItem);
+          // Adicione as propriedades do elemento correspondente a i
+          i.peso = matchingProgressItem[0].peso;
+          i.execucao = matchingProgressItem[0].execucao;
+          i.data = matchingProgressItem[0].data;
+        }
+
+        return i;
       }),
     );
-  }, [id, data]);
+  }, [id, data, idLiderProjeto, idProjeto]);
 
   const reset = () => {
     const resetPackages = [...data];
@@ -47,11 +65,22 @@ const LiderTabelaWBE = (props) => {
   const update = (e, item) => {
     if (!isChanged) setIsChanged(true);
     const target = e.target;
-
-    const updatedItem = { ...item, [target.name]: target.value };
+    console.log("target.name");
+    console.log(target.name);
+    let updatedItem;
+    if (target.name == "execucao") {
+      if (target.value == 0) {
+        updatedItem = { ...item, [target.name]: false };
+      } else {
+        updatedItem = { ...item, [target.name]: true };
+      }
+    } else {
+      updatedItem = { ...item, [target.name]: target.value };
+    }
+    console.log("updatedItem");
+    console.log(updatedItem);
     if (target.type === "number" && target.value < 0)
       updatedItem[target.name] = 0;
-
     const newData = {
       ...updatedData,
       [item.id]: updatedItem,
@@ -142,8 +171,10 @@ const LiderTabelaWBE = (props) => {
                   min={0}
                   step={1}
                   max={1}
+                  value={item?.execucao ? "1" : "0"}
                   type="number"
                   name="execucao"
+                  onChange={(e) => update(e, item)}
                 />
               </td>
               <td>
@@ -152,8 +183,10 @@ const LiderTabelaWBE = (props) => {
                   min={0}
                   step={1}
                   max={100}
+                  value={item?.peso || 0}
                   type="number"
                   name="peso"
+                  onChange={(e) => update(e, item)}
                 />
               </td>
               <td>
@@ -161,6 +194,8 @@ const LiderTabelaWBE = (props) => {
                   className="form-control form-control-sm"
                   type="date"
                   name="data"
+                  value={item?.data || ""}
+                  onChange={(e) => update(e, item)}
                 />
               </td>
             </tr>
