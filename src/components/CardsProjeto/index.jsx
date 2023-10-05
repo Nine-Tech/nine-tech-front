@@ -2,7 +2,7 @@ import React from 'react';
 
 function CardsProjeto({ nome }) {
     return (
-        <div className="col-lg-12 col-md-6 col-sm-12 mb-4">
+        <div className="col-lg-12 mb-4">
             <div className="card">
                 <div className="card-body">
                     <h5 className="card-title font-weight-bold">{nome}</h5>
