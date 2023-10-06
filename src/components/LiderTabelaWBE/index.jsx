@@ -47,6 +47,8 @@ const LiderTabelaWBE = (props) => {
           i.peso = matchingProgressItem[0].peso;
           i.execucao = matchingProgressItem[0].execucao;
           i.data = matchingProgressItem[0].data;
+          i.idProgresso = matchingProgressItem[0].id;
+          i.existe = true
         }
 
         return i;
@@ -100,20 +102,32 @@ const LiderTabelaWBE = (props) => {
     Promise.allSettled([
       ...Object.keys(updatedData).map((k) => {
         let item = updatedData[k];
-
+        console.log("item:")
+        console.log(item.id);
         let data = {
-          novoHH: parseFloat(item.hh) || 0,
-          novoValor: parseFloat(item.valor) || 0,
-          novoLiderDeProjetoId: parseInt(item.liderDeProjeto),
-          novoProjetoId: parseInt(item.projeto?.id),
+          peso: parseFloat(item.peso) || 0,
+          execucao: parseFloat(item.execucao) || 0,
+          data: item.data,
+          id_wbe: parseFloat(item.id) || 0,
         };
+        console.log("data:");
+        console.log(data);
 
-        return new Promise((resolve, reject) => {
-          window.axios
-            .put(`wbe/${k}`, data)
-            .then(resolve)
-            .catch(() => reject(item.id));
-        });
+        if (item.existe){
+          return new Promise((resolve, reject) => {
+            window.axios
+              .put(`progressaomensal/${item.idProgresso}`, data)
+              .then(resolve)
+              .catch();
+          });
+        } else {
+          return new Promise((resolve, reject) => {
+            window.axios
+              .post(`progressaomensal`, data)
+              .then(resolve);
+          });
+        }
+
       }),
     ])
       .then((results) =>
@@ -202,6 +216,30 @@ const LiderTabelaWBE = (props) => {
           ))}
         </tbody>
       </table>
+      <div className="mt-4 d-flex justify-content-end">
+        <button
+          className="btn btn-secondary"
+          disabled={!isChanged}
+          onClick={reset}
+        >
+          Desfazer alterações
+        </button>
+        <button
+          className="btn btn-primary ms-3"
+          disabled={!isChanged}
+          onClick={save}
+        >
+          {loading ? (
+            <div
+              role="status"
+              className="spinner-border"
+              style={{ width: "1rem", height: "1rem" }}
+            />
+          ) : (
+            "Salvar"
+          )}
+        </button>
+      </div>
     </div>
   );
 };
