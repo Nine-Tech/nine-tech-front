@@ -2,12 +2,14 @@ import BodyHeader from "@/components/BodyHeader";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CardsProjeto from "@/components/CardsProjeto";
+import { useParams } from "react-router-dom";
 
 const HomeLider = () => {
   const [projects, setProjects] = useState([]);
+  const { id } = useParams();
 
   useEffect(() => {
-    window.axios.get("projeto").then(({ data }) => {
+    window.axios.get(`/wbe/liderprojeto/${id}`).then(({ data }) => {
       console.log(data);
       setProjects(data);
     });
@@ -25,7 +27,7 @@ const HomeLider = () => {
                 to={`projetos/${p.id}`}
                 className="text-decoration-none text-primary"
               >
-                <CardsProjeto nome={p.nome} />
+                <CardsProjeto nome={p.wbe} />
               </Link>
             </div>
           ))}
