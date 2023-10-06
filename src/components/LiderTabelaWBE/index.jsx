@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Toast from "@/components/Toast";
 import "./style.scss";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
 const LiderTabelaWBE = (props) => {
   const { id } = useParams();
@@ -17,7 +18,7 @@ const LiderTabelaWBE = (props) => {
   const [updatedData, setUpdatedData] = useState({});
   const [isChanged, setIsChanged] = useState(false);
   const [errors, setErrors] = useState([]);
-
+  const [reloader, setReloader] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const [toast, setToast] = useState(false);
@@ -25,36 +26,40 @@ const LiderTabelaWBE = (props) => {
   const [progressoMensal, setProgresso] = useState([]);
 
   useEffect(() => {
-    window.axios.get(`lider`).then(({ data }) => {
-      setLeaders(data);
-    });
-    window.axios
-      .get(`progressaomensal/${idLiderProjeto}/${idProjeto}`)
-      .then(({ data: progressoMensal }) => {
-        setProgresso(progressoMensal);
+    console.log(reloader);
+    if (reloader == false) {
+      window.axios.get(`lider`).then(({ data }) => {
+        setLeaders(data);
       });
-    setPackages(
-      data.map((i) => {
-        const matchingProgressItem = progressoMensal.find(
-          (progressItem) => progressItem[1] === i.id,
-        );
+      window.axios
+        .get(`progressaomensal/${idLiderProjeto}/${idProjeto}`)
+        .then(({ data: progressoMensal }) => {
+          setProgresso(progressoMensal);
+        });
+      setPackages(
+        data.map((i) => {
+          const matchingProgressItem = progressoMensal.find(
+            (progressItem) => progressItem[1] === i.id,
+          );
 
-        // Verifique se há um elemento correspondente em progressoMensal
-        if (matchingProgressItem) {
-          console.log("matchingProgressItem:")
-          console.log(matchingProgressItem);
-          // Adicione as propriedades do elemento correspondente a i
-          i.peso = matchingProgressItem[0].peso;
-          i.execucao = matchingProgressItem[0].execucao;
-          i.data = matchingProgressItem[0].data;
-          i.idProgresso = matchingProgressItem[0].id;
-          i.existe = true
-        }
+          // Verifique se há um elemento correspondente em progressoMensal
+          if (matchingProgressItem) {
+            console.log("matchingProgressItem:");
+            console.log(matchingProgressItem);
+            // Adicione as propriedades do elemento correspondente a i
+            i.peso = matchingProgressItem[0].peso;
+            i.execucao = matchingProgressItem[0].execucao;
+            i.data = matchingProgressItem[0].data;
+            i.idProgresso = matchingProgressItem[0].id;
+            i.existe = true;
+          }
 
-        return i;
-      }),
-    );
-  }, [id, data, idLiderProjeto, idProjeto]);
+          return i;
+        }),
+      );
+      //setReloader(true);
+    }
+  }, [id, data, idLiderProjeto, idProjeto, reloader]);
 
   const reset = () => {
     const resetPackages = [...data];
@@ -69,6 +74,7 @@ const LiderTabelaWBE = (props) => {
     const target = e.target;
     console.log("target.name");
     console.log(target.name);
+    console.log(target.value);
     let updatedItem;
     if (target.name == "execucao") {
       if (target.value == 0) {
@@ -102,18 +108,18 @@ const LiderTabelaWBE = (props) => {
     Promise.allSettled([
       ...Object.keys(updatedData).map((k) => {
         let item = updatedData[k];
-        console.log("item:")
+        console.log("item:");
         console.log(item.id);
         let data = {
           peso: parseFloat(item.peso) || 0,
-          execucao: parseFloat(item.execucao) || 0,
+          execucao: item.execucao,
           data: item.data,
           id_wbe: parseFloat(item.id) || 0,
         };
-        console.log("data:");
+        console.log("id_wbe:");
         console.log(data);
 
-        if (item.existe){
+        if (item.existe) {
           return new Promise((resolve, reject) => {
             window.axios
               .put(`progressaomensal/${item.idProgresso}`, data)
@@ -123,11 +129,10 @@ const LiderTabelaWBE = (props) => {
         } else {
           return new Promise((resolve, reject) => {
             window.axios
-              .post(`progressaomensal`, data)
+              .post(`progressaomensal/${item.id}`, data)
               .then(resolve);
           });
         }
-
       }),
     ])
       .then((results) =>
@@ -139,6 +144,7 @@ const LiderTabelaWBE = (props) => {
         setIsChanged(false);
         setLoading(false);
         setToast(true);
+        setReloader(false);
       });
   };
 
