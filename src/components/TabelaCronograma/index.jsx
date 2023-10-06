@@ -41,50 +41,51 @@ function TabelaCronograma(props) {
   const update = (e, item, index) => {
     if (!isChanged) setIsChanged(true);
     const target = e.target;
-  
+
     let updateRow = { ...item };
-    let value = target.value < 0 ? 0 : target.value > 100 ? 100 : Number(target.value);
-  
+    let value =
+      target.value < 0 ? 0 : target.value > 100 ? 100 : Number(target.value);
+
     updateRow.porcentagens = [
       ...item.porcentagens.slice(0, index),
       value,
       ...item.porcentagens.slice(index + 1),
     ];
-  
+
     let updateData = [
       ...cronograma.map((i) => (i.id === updateRow.id ? updateRow : i)),
     ];
-  
+
     setUpdatedData(updateData);
   };
-  
+
   const save = async () => {
     setLoading(true);
-  
+
     try {
-      const sortedPorcentagens = updatedData.map(item => ({
+      const sortedPorcentagens = updatedData.map((item) => ({
         ...item,
-        porcentagens: item.porcentagens.slice().sort((a, b) => a - b) // ordena crescentemente
+        porcentagens: item.porcentagens.slice().sort((a, b) => a - b), // ordena crescentemente
       }));
-      
+
       const dataToSave = {
         projeto: { id: projetoId },
         porcentagens: sortedPorcentagens.map((item) => item.porcentagens),
       };
-  
+
       await axios.put(`/cronograma/${projetoId}`, dataToSave);
-  
+
       setCronograma([...updatedData]);
       setIsChanged(false);
       setToast(true);
     } catch (error) {
       setError(true);
-      console.error('Erro ao salvar:', error);
+      console.error("Erro ao salvar:", error);
     } finally {
       setLoading(false);
     }
   };
-  
+
   return (
     <>
       <Toast show={toast} toggle={setToast}>
@@ -159,7 +160,7 @@ function TabelaCronograma(props) {
               className="spinner-border"
               style={{ width: "1rem", height: "1rem" }}
             />
-          ) : (null)} 
+          ) : null}
           Salvar
         </button>
       </div>

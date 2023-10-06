@@ -4,7 +4,6 @@ import BodyHeader from "@/components/BodyHeader";
 import TabelaWbs from "@/components/TabelaWbs";
 import TabelaCronograma from "@/components/TabelaCronograma";
 
-
 const Pacote = () => {
   const { id, itemId } = useParams();
 
@@ -21,7 +20,7 @@ const Pacote = () => {
       setPackages(data);
     });
 
-  window.axios.get(`cronograma/cronograma-por-wbe/${id}`).then(({ data }) => {
+    window.axios.get(`cronograma/cronograma-por-wbe/${id}`).then(({ data }) => {
       setCronograma(data);
     });
   }, [id]);
@@ -35,11 +34,10 @@ const Pacote = () => {
     <>
       <BodyHeader title={project.nome || "Projeto"} navigation={navigation} />
       <div className="my-5 tab-content">
-        <div className="tab-pane active" id="divisao" role="tabpanel">          
-          
-           <TabelaWbs data={packages} />
+        <div className="tab-pane active" id="divisao" role="tabpanel">
+          <TabelaWbs data={packages} />
         </div>
-         <div className="tab-pane" id="cronograma" role="tabpanel">
+        <div className="tab-pane" id="cronograma" role="tabpanel">
           <TabelaCronograma data={cronograma} />
         </div>
       </div>

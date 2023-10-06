@@ -20,9 +20,9 @@ function TabelaWbs(props) {
   const [toast, setToast] = useState(false);
 
   const sortedPackages = packages.sort((a, b) => a.wbe.localeCompare(b.wbe));
-  sortedPackages.forEach(item => {
+  sortedPackages.forEach((item) => {
     // Verifique se o item é um pai
-    item.isParent = item.wbe.split('.').length === 2;
+    item.isParent = item.wbe.split(".").length === 2;
   });
 
   useEffect(() => {
@@ -49,7 +49,7 @@ function TabelaWbs(props) {
     if (!isChanged) setIsChanged(true);
     const target = e.target;
 
-    const updatedValue = target.value.replace(',', '.');
+    const updatedValue = target.value.replace(",", ".");
 
     if (!isNaN(updatedValue)) {
       const updatedItem = { ...item, [target.name]: updatedValue };
@@ -107,8 +107,8 @@ function TabelaWbs(props) {
     return parseFloat(valor).toFixed(2);
   }
 
-  const $ = require('jquery');
-  $.DataTable = require('datatables.net');
+  const $ = require("jquery");
+  $.DataTable = require("datatables.net");
 
   return (
     <>
@@ -121,14 +121,16 @@ function TabelaWbs(props) {
       <div class="card text-center">
         <div class="card-header">
           <ul class="nav nav-tabs card-header-tabs">
-            {sortedPackages.map((item) => (
-              item.isParent && (
-                <li class="nav-item">
-                  <a class="nav-link active" aria-current="true" href="#">{item.wbe}</a>
-                </li>
-              )
-            ))}
-
+            {sortedPackages.map(
+              (item) =>
+                item.isParent && (
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="true" href="#">
+                      {item.wbe}
+                    </a>
+                  </li>
+                ),
+            )}
           </ul>
         </div>
         <div class="card-body">
@@ -136,13 +138,19 @@ function TabelaWbs(props) {
           <p class="card-text">Valor: R$1.085.000,00 </p>
           <p class="card-text">HH: 10.000 </p>
           <p class="card-text">Material: R$85.000,00 </p>
-          <select name="" id="">Lider de Projeto 1</select>
-          {sortedPackages.map((item) => (
-            !item.isParent && (
-              <a href=""><p class="card-text">{item.wbe} - Valor: R$ {item.valor}</p></a>
-            )
-          ))}
-
+          <select name="" id="">
+            Lider de Projeto 1
+          </select>
+          {sortedPackages.map(
+            (item) =>
+              !item.isParent && (
+                <a href="">
+                  <p class="card-text">
+                    {item.wbe} - Valor: R$ {item.valor}
+                  </p>
+                </a>
+              ),
+          )}
         </div>
       </div>
 

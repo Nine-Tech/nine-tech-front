@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import "./style.scss";
-import { FaBars } from 'react-icons/fa';
-
+import { FaBars } from "react-icons/fa";
 
 const Sidebar = () => {
   const buttons = () => {

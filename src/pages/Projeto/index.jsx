@@ -6,7 +6,6 @@ import TabelaCronograma from "@/components/TabelaCronograma";
 import Dashboard from "../../components/Dashboard/Dashboard";
 import LiderSelect from "../../components/LiderSelect/LiderSelect";
 
-
 const Projeto = () => {
   const { id, itemId } = useParams();
 
@@ -23,14 +22,14 @@ const Projeto = () => {
       setPackages(data);
     });
 
-  window.axios.get(`cronograma/${id}`).then(({ data }) => {
+    window.axios.get(`cronograma/${id}`).then(({ data }) => {
       setCronograma(data);
     });
   }, [id]);
 
   const navigation = [
     { link: "#atribuicao", title: "Atribuição" },
-    { link: "#dashboard", title: "Dashboard" },    
+    { link: "#dashboard", title: "Dashboard" },
     { link: "#cronograma", title: "Cronograma" },
   ];
 
@@ -38,20 +37,18 @@ const Projeto = () => {
     <>
       <BodyHeader title={project.nome || "Projeto"} navigation={navigation} />
       <div className="my-5 tab-content">
-        <div className="tab-pane active" id="atribuicao" role="tabpanel">   
-           <LiderSelect data={packages} />
+        <div className="tab-pane active" id="atribuicao" role="tabpanel">
+          <LiderSelect data={packages} />
         </div>
-        <div className="tab-pane" id="dashboard" role="tabpanel">   
-           <Dashboard data={packages} />
+        <div className="tab-pane" id="dashboard" role="tabpanel">
+          <Dashboard data={packages} />
         </div>
         <div className="tab-pane" id="cronograma" role="tabpanel">
           <TabelaCronograma data={cronograma} />
         </div>
       </div>
     </>
-     );
-}
-  
-  
+  );
+};
 
 export default Projeto;

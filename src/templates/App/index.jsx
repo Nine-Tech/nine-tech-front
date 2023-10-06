@@ -26,7 +26,6 @@ const App = () => {
     <>
       <Navbar />
       <div className="app">
-
         <Header title={title} userTitle={userTitle} />
 
         <div className="wrapper">

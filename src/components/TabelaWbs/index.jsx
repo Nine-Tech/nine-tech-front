@@ -42,31 +42,33 @@ function TabelaWbs(props) {
   const update = (e, item) => {
     if (!isChanged) setIsChanged(true);
     const target = e.target;
-  
+
     const updatedItem = { ...item, liderDeProjeto: target.value };
-  
+
     const newData = {
       ...updatedData,
       [item.id]: updatedItem,
     };
     setUpdatedData(newData);
-  
-    const updatedPackages = packages.map((p) => (p.id === item.id ? updatedItem : p));
+
+    const updatedPackages = packages.map((p) =>
+      p.id === item.id ? updatedItem : p,
+    );
     setPackages(updatedPackages);
   };
-  
+
   const save = () => {
     setLoading(true);
     setErrors([]);
-  
+
     Promise.allSettled(
       Object.keys(updatedData).map((k) => {
         let item = updatedData[k];
-  
+
         let data = {
           novoLiderDeProjetoId: parseInt(item.liderDeProjeto),
         };
-  
+
         return new Promise((resolve, reject) => {
           window.axios
             .put(`wbe/${k}`, data)
@@ -86,11 +88,10 @@ function TabelaWbs(props) {
         setToast(true);
       });
   };
-  
 
   return (
     <>
-       <Toast show={toast} toggle={setToast}>
+      <Toast show={toast} toggle={setToast}>
         {errors.length
           ? "Certifique-se de que não deixou nenhum campo vazio."
           : "Mudanças salvas."}
@@ -99,13 +100,13 @@ function TabelaWbs(props) {
       <div className="table-responsive">
         <table className="tabela-wbs table table-bordered">
           <thead>
-          <tr className="table-active">
-                <th>Atividade(WBE)</th>
-                <th>Valor</th>
-                <th>HH*</th>
-                <th>Material</th>
-                <th>Atribuição</th>
-              </tr>
+            <tr className="table-active">
+              <th>Atividade(WBE)</th>
+              <th>Valor</th>
+              <th>HH*</th>
+              <th>Material</th>
+              <th>Atribuição</th>
+            </tr>
           </thead>
           <tbody>
             {packages.map((item) => (
@@ -135,16 +136,16 @@ function TabelaWbs(props) {
                   />
                 </td>
                 <td>
-                    R$
-                    <input
-                      min={0}
-                      step={0.01}
-                      name="material"
-                      type="number"
-                      value={(item.material)}
-                      onChange={(e) => update(e, item)}
-                    />
-                  </td>
+                  R$
+                  <input
+                    min={0}
+                    step={0.01}
+                    name="material"
+                    type="number"
+                    value={item.material}
+                    onChange={(e) => update(e, item)}
+                  />
+                </td>
                 <td>
                   <select
                     className="form-select form-select-sm"
