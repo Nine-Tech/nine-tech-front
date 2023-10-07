@@ -1,6 +1,7 @@
-import React from 'react';
+import React from "react";
 
 function CardsProjeto({ nome }) {
+
     return (
         <div className="col-lg-12 mb-4">
             <div className="card">
@@ -14,6 +15,7 @@ function CardsProjeto({ nome }) {
             </div>
             
         </div>
-    );
+      
+  );
 }
 export default CardsProjeto;

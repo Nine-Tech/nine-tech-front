@@ -42,6 +42,7 @@ function TabelaWbs(props) {
   const update = (e, item) => {
     if (!isChanged) setIsChanged(true);
     const target = e.target;
+
   
     const updatedItem = { ...item, liderDeProjeto: target.value };
   
@@ -86,7 +87,7 @@ function TabelaWbs(props) {
         setToast(true);
       });
   };
-  
+
 
   return (
     <>
