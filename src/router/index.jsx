@@ -23,6 +23,11 @@ export default [
         element: <Projeto />,
         handle: { title: "Projetos" },
       },
+      {
+        path: "projetos/:id/pacotes/:pacoteId",
+        element: <Projeto />,
+        handle: { title: "Pacotes" },
+      },
     ],
   },
   {

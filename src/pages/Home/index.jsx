@@ -114,7 +114,7 @@ const Home = () => {
   };
 
   const getProjects = () => {
-    window.axios.get("/projeto").then(({ data }) => {
+    window.axios.get("projeto").then(({ data }) => {
       setProjects(data);
     });
   };
