@@ -9,9 +9,10 @@ const Dashboard = () => {
     window.axios.get(`upload/${id}`).then(({ data }) => {
       setPackages(data);
     });
+
   }, [id]);
 
-  const formatarMoeda = (value) => {
+  /* const formatarMoeda = (value) => {
     return value.toLocaleString("pt-BR", {
       style: "currency",
       currency: "BRL",
@@ -22,7 +23,7 @@ const Dashboard = () => {
     return value
       .toLocaleString("pt-BR", { maximumFractionDigits: 0 })
       .replace(",", ".");
-  };
+  }; */
 
   return (
     <>
@@ -40,9 +41,9 @@ const Dashboard = () => {
             {packages.map((item) => (
               <tr key={item.id}>
                 <td>{item.wbe}</td>
-                <td>{formatarMoeda(item.valor)}</td>
+                {/* <td>{formatarMoeda(item.valor)}</td>
                 <td>{formatarMilhar(item.hh)}</td>
-                <td>{formatarMoeda(item.material)}</td>
+                <td>{formatarMoeda(item.material)}</td> */}
               </tr>
             ))}
           </tbody>

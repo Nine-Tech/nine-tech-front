@@ -7,119 +7,90 @@ const LiderSelect = (props) => {
     const { data } = props;
     const [packages, setPackages] = useState([]);
     const [leaders, setLeaders] = useState([]);
-    const [updatedData, setUpdatedData] = useState({});
+    const [selectedLeader, setSelectedLeader] = useState(""); // Adicione o estado para o líder selecionado
     const [isChanged, setIsChanged] = useState(false);
     const [errors, setErrors] = useState([]);
-
     const [loading, setLoading] = useState(false);
-
     const [toast, setToast] = useState(false);
 
-    // deixar tudo no mesmo useEffect
-    // pegar as infos do get e jogar em PACKAGES
-    // criar um useState para ter os lideres - utilizar o PACKAGES é uma opção (vai ter que usar mais lógica)
-    // pegar a informacao de quem é o lider de projeto 
-
-
     useEffect(() => {
+        // Obtenha os líderes de projeto
         window.axios.get(`lider/listar`).then(({ data }) => {
             setLeaders(data);
-            console.log(data)
         });
 
+        // Obtenha os pacotes
         window.axios.get(`upload/${id}`).then(({ data }) => {
             setPackages(data);
-            console.log("setPackages Data")
-
-            console.log(data)
-        })
-
-        window.axios.get(`upload/${id}`).then(({ data }) => {
-            // Mapeie os dados recebidos e extraia apenas o ID do líder de projeto
-            const modifiedData = data.map(item => {
-                return {
-                    ...item,
-                    liderDeProjeto: item.liderDeProjeto // Extraia o ID aqui
-                };
-            });
-            setPackages(modifiedData);
-            console.log("Data com item.liderDeProjeto")
-            console.log(data)
         });
     }, [id]);
 
     const reset = () => {
-        const resetPackages = [...data];
-
-        setPackages(resetPackages);
+        // Reset do estado de pacotes
+        setPackages(data);
         setErrors([]);
         setIsChanged(false);
     };
-    //problema não é o UPDATE
+
     const update = (e, item) => {
         if (!isChanged) setIsChanged(true);
         const target = e.target;
-        console.log("target.name");
-        console.log(target.name);
-        console.log(target.value);
+        const selectedLeaderId = parseInt(target.value, 10);
 
-        const updatedItem = { ...item, [target.name]: target.value };
-        if (target.type === "number" && target.value < 0)
-            updatedItem[target.name] = 0;
+        // Encontre o objeto líder de projeto correspondente ao ID selecionado
+        const selectedLeaderObj = leaders.find((l) => l.id === selectedLeaderId);
 
-        const newData = {
-            ...updatedData,
-            [item.id]: updatedItem,
+        const updatedItem = {
+            ...item,
+            liderDeProjeto: selectedLeaderObj || selectedLeaderId, // Use o objeto ou o ID
         };
-        console.log("newData")
-        console.log(newData)
-        setUpdatedData(newData);
 
-        const updatedPackages = [
-            ...packages.map((p) => (p.id === item.id ? updatedItem : p)),
-        ];
-        console.log("updatedPackages")
-        console.log(updatedPackages)
+        // Atualize o estado de pacotes com o novo valor de liderDeProjeto
+        const updatedPackages = packages.map((p) =>
+            p.id === item.id ? updatedItem : p
+        );
         setPackages(updatedPackages);
-        console.log("ITEM")
-        console.log(item)
+
+        console.log(updatedPackages);
+
+        // Atualize o líder de projeto selecionado
+        setSelectedLeader(selectedLeaderId);
     };
 
     const save = () => {
         setLoading(true);
         setErrors([]);
-
-        Promise.allSettled([
-            ...Object.keys(updatedData).map((k) => {
-                let item = updatedData[k];
-
-
-                let data = {
-                    liderDeProjeto: parseInt(item.liderDeProjeto),
+    
+        const promises = packages
+            .filter((item) => {
+                // Verifique se o pacote foi alterado e se o líder de projeto não é nulo
+                return (
+                    (item.liderDeProjeto !== null)
+                );
+            })
+            .map((item) => {
+                console.log("itens filtrado", item)
+                const data = {
+                    liderDeProjeto: parseInt(selectedLeader),
                 };
-                console.log("SAVE data")
-                console.log(data)
-                console.log("SAVE updatedData")
-                console.log(updatedData)
-                console.log("SAVE updatedData K")
-                console.log(updatedData[k])
 
-                let teste = item.liderDeProjeto.id
-                console.log("teste item Lider")
-                console.log(teste)
-
+                console.log(item.liderDeProjeto.id, item.id);
+    
                 return new Promise((resolve, reject) => {
                     window.axios
-                        .put(`upload/${item.liderDeProjeto}`, data)
+                        .put(`upload/${item.liderDeProjeto.id}/${item.id}`)
                         .then(resolve)
                         .catch(() => reject(item.id));
                 });
-            }),
-        ])
+            });
+    
+        Promise.allSettled(promises)
             .then((results) =>
                 setErrors(
-                    results.filter((r) => r.status === "rejected").map((r) => r.reason),
-                ),
+                    results
+                        .filter((r) => r.status === "rejected")
+                        .map((r) => r.reason)
+                )
             )
             .finally(() => {
                 setIsChanged(false);
@@ -152,7 +123,7 @@ const LiderSelect = (props) => {
                                     <select
                                         className="form-select form-select-sm"
                                         aria-label="small select example"
-                                        value={item.liderDeProjeto || ""}
+                                        value={item.liderDeProjeto ? item.liderDeProjeto.id : ""}
                                         name="liderDeProjeto"
                                         onChange={(e) => update(e, item)}
                                     >
