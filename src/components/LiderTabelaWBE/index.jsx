@@ -20,7 +20,7 @@ const LiderTabelaWBE = (props) => {
   const [errors, setErrors] = useState([]);
   const [reloader, setReloader] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [barraProgresso, setBarraProgresso] = useState({});
   const [toast, setToast] = useState(false);
 
   const [progressoMensal, setProgresso] = useState([]);
@@ -31,6 +31,13 @@ const LiderTabelaWBE = (props) => {
       window.axios.get(`lider`).then(({ data }) => {
         setLeaders(data);
       });
+
+      window.axios
+        .get(`progressaomensal/calculo/${idProjeto}`)
+        .then(({ data }) => {
+          setBarraProgresso(data);
+        });
+
       window.axios
         .get(`progressaomensal/${idLiderProjeto}/${idProjeto}`)
         .then(({ data: progressoMensal }) => {
@@ -157,11 +164,12 @@ const LiderTabelaWBE = (props) => {
       </Toast>
 
       <div className="d-flex justify-content-end align-items-center mb-3">
-        <span className="small">{/* Variavel aqui */}0%</span>
+        <span className="small">{barraProgresso}%</span>
         <div className="progress w-25">
           <div
             className="progress-bar"
             role="progressbar"
+            value={barraProgresso}
             aria-valuenow="0"
             aria-valuemin="0"
             aria-valuemax="100"
