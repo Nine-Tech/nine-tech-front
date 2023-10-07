@@ -20,7 +20,7 @@ const LiderTabelaWBE = (props) => {
   const [errors, setErrors] = useState([]);
   const [reloader, setReloader] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [barraProgresso, setBarraProgresso] = useState({});
+  const [barraProgresso, setBarraProgresso] = useState(0);
   const [toast, setToast] = useState(false);
 
   const [progressoMensal, setProgresso] = useState([]);

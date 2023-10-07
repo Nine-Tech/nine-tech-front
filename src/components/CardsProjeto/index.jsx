@@ -15,8 +15,7 @@ function CardsProjeto({ nome }) {
             </div>
             
         </div>
-      </div>
-    </div>
+      
   );
 }
 export default CardsProjeto;
