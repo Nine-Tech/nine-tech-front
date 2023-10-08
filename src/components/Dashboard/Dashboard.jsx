@@ -5,19 +5,19 @@ const Dashboard = () => {
     const { id } = useParams();
     const [packages, setPackages] = useState([]);
 
-    useEffect(() => {       
+    useEffect(() => {
         window.axios.get(`upload/${id}`).then(({ data }) => {
             setPackages(data);
         });
     }, [id]);
 
-    const formatarMoeda = (value) => {
-        return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    };
+    // const formatarMoeda = (value) => {
+    //     return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    // };
 
-    const formatarMilhar = (value) => {
-        return value.toLocaleString('pt-BR', { maximumFractionDigits: 0 }).replace(',', '.');
-    };
+    // const formatarMilhar = (value) => {
+    //     return value.toLocaleString('pt-BR', { maximumFractionDigits: 0 }).replace(',', '.');
+    // };
 
     return (
         <>
@@ -34,19 +34,19 @@ const Dashboard = () => {
                     <tbody>
                         {packages.map((item) => (
                             <tr
-                                key={item.id}                                
+                                key={item.id}
                             >
                                 <td>{item.wbe}</td>
-                                <td>{formatarMoeda(item.valor)}</td>
+                                {/* <td>{formatarMoeda(item.valor)}</td>
                                 <td>{formatarMilhar(item.hh)}</td>
-                                <td>{formatarMoeda(item.material)}</td>
-                               
+                                <td>{formatarMoeda(item.material)}</td> */}
+
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
-            
+
         </>
     );
 }
