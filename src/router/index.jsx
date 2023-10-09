@@ -39,9 +39,9 @@ export default [
         element: <HomeLider />,
       },
       {
-        path: "projetos/:id",
+        path: "subpacotes/:id",
         element: <ProjetoLider />,
-        handle: { title: "Projetos" },
+        handle: { title: "Subpacotes" },
       },
     ],
   },

@@ -56,6 +56,8 @@ function TabelaCronograma(props) {
       ...cronograma.map((i) => (i.id === updateRow.id ? updateRow : i)),
     ];
 
+    console.log(updateData);
+
     setUpdatedData(updateData);
   };
 
