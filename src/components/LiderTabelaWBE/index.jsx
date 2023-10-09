@@ -2,11 +2,16 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Toast from "@/components/Toast";
 import "./style.scss";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
 const LiderTabelaWBE = (props) => {
   const { id } = useParams();
 
   const { data } = props;
+
+  const pathParts = location.pathname.split("/");
+  const idLiderProjeto = pathParts[2];
+  const idProjeto = pathParts[4];
 
   const [leaders, setLeaders] = useState([]);
 
@@ -108,6 +113,7 @@ const LiderTabelaWBE = (props) => {
           <div
             className="progress-bar"
             role="progressbar"
+            value={barraProgresso}
             aria-valuenow="0"
             aria-valuemin="0"
             aria-valuemax="100"

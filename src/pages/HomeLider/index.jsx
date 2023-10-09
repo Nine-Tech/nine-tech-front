@@ -2,13 +2,16 @@ import BodyHeader from "@/components/BodyHeader";
 import { useEffect, useState, } from "react";
 import { Link, useParams } from "react-router-dom";
 import CardsProjeto from "@/components/CardsProjeto";
+import { useParams } from "react-router-dom";
 
 const HomeLider = () => {
   const { id } = useParams();
   const [projects, setProjects] = useState([]);
+  const { id } = useParams();
 
   useEffect(() => {
     window.axios.get(`/subpacotes/${id}`).then(({ data }) => {
+
       console.log(data);
       setProjects(data);
     });
@@ -26,7 +29,7 @@ const HomeLider = () => {
                 to={`subpacotes/${p.id}`}
                 className="text-decoration-none text-primary"
               >
-                <CardsProjeto nome={p.nome} />
+                <CardsProjeto nome={p.wbe} />
               </Link>
             </div>
           ))}
