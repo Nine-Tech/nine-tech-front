@@ -15,13 +15,14 @@ const LiderSelect = (props) => {
 
     useEffect(() => {
         // Obtenha os líderes de projeto
-        window.axios.get(`lider/listar`).then(({ data }) => {
+        window.axios.get(`lider`).then(({ data }) => {
             setLeaders(data);
         });
 
         // Obtenha os pacotes
-        window.axios.get(`upload/${id}`).then(({ data }) => {
+        window.axios.get(`upload/todosfilhos/${id}`).then(({ data }) => {
             setPackages(data);
+            console.log(data);
         });
     }, [id]);
 
@@ -65,7 +66,7 @@ const LiderSelect = (props) => {
             .filter((item) => {
                 // Verifique se o pacote foi alterado e se o líder de projeto não é nulo
                 return (
-                    (item.liderDeProjeto !== null)
+                    (item.liderDeProjeto !== undefined && item.liderDeProjeto !== null)
                 );
             })
             .map((item) => {
@@ -73,12 +74,10 @@ const LiderSelect = (props) => {
                 const data = {
                     liderDeProjeto: parseInt(selectedLeader),
                 };
-
-                console.log(item.liderDeProjeto.id, item.id);
     
                 return new Promise((resolve, reject) => {
                     window.axios
-                        .put(`upload/${item.liderDeProjeto.id}/${item.id}`)
+                        .put(`subpacotes/${item.liderDeProjeto.id}/${item.id}`)
                         .then(resolve)
                         .catch(() => reject(item.id));
                 });
@@ -117,25 +116,29 @@ const LiderSelect = (props) => {
                     </thead>
                     <tbody>
                         {packages.map((item) => (
-                            <tr key={item.id}>
-                                <td>{item.wbe}</td>
+                            <tr key={item.nome}>
+                                <td>{item.nome}</td>
                                 <td>
-                                    <select
-                                        className="form-select form-select-sm"
-                                        aria-label="small select example"
-                                        value={item.liderDeProjeto ? item.liderDeProjeto.id : ""}
-                                        name="liderDeProjeto"
-                                        onChange={(e) => update(e, item)}
-                                    >
-                                        <option disabled value={""}>
-                                            Selecione o Grupo Responsável
-                                        </option>
-                                        {leaders.map((l, i) => (
-                                            <option value={l.id} key={i}>
-                                                {l.nome}
+                                    {item.liderDeProjeto !== undefined ? (
+                                        <select
+                                            className="form-select form-select-sm"
+                                            aria-label="small select example"
+                                            value={item.liderDeProjeto ? item.liderDeProjeto.id : ""}
+                                            name="liderDeProjeto"
+                                            onChange={(e) => update(e, item)}
+                                        >
+                                            <option disabled value={""}>
+                                                Selecione o Grupo Responsável
                                             </option>
-                                        ))}
-                                    </select>
+                                            {leaders.map((l, i) => (
+                                                <option value={l.id} key={i}>
+                                                    {l.nome}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    ) : (
+                                        " - "
+                                    )}
                                 </td>
                             </tr>
                         ))}

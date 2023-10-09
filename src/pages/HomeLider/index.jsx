@@ -1,17 +1,18 @@
 import BodyHeader from "@/components/BodyHeader";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState, } from "react";
+import { Link, useParams } from "react-router-dom";
 import CardsProjeto from "@/components/CardsProjeto";
 
 const HomeLider = () => {
+  const { id } = useParams();
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    window.axios.get("projeto").then(({ data }) => {
+    window.axios.get(`/subpacotes/${id}`).then(({ data }) => {
       console.log(data);
       setProjects(data);
     });
-  }, []);
+  }, [id]);
 
   return (
     <>
@@ -22,7 +23,7 @@ const HomeLider = () => {
           {projects.map((p) => (
             <div className="col-lg-4" key={p.id}>
               <Link
-                to={`projetos/${p.id}`}
+                to={`subpacotes/${p.id}`}
                 className="text-decoration-none text-primary"
               >
                 <CardsProjeto nome={p.nome} />
