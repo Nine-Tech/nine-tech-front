@@ -3,17 +3,22 @@ import { useParams } from "react-router-dom";
 import BodyHeader from "@/components/BodyHeader";
 import TabelaCronograma from "@/components/TabelaCronograma";
 import LiderTabelaWBE from "../../components/LiderTabelaWBE";
+import Tarefas from "../../components/Tarefas/Tarefas";
 
 const ProjetoLider = () => {
-  const { id } = useParams();
-
-  const [project, setProject] = useState({});
+  const { id, idDoLider } = useParams();
+  const [task, setTask] = useState({});
   const [packages, setPackages] = useState([]);
+  const [subPackages, setSubPackages] = useState([]);
   const [cronograma, setCronograma] = useState({});
 
   useEffect(() => {
-    window.axios.get(`projeto/${id}`).then(({ data }) => {
-      setProject(data);
+    window.axios.get(`tarefas/subpacote/${id}`).then(({ data }) => {
+      setTask(data);
+    });
+
+    window.axios.get(`subpacotes/${idDoLider}`).then(({ data }) => {
+      setSubPackages(data);
     });
 
     window.axios.get(`upload/${id}`).then(({ data }) => {
@@ -23,20 +28,27 @@ const ProjetoLider = () => {
     window.axios.get(`cronograma/${id}`).then(({ data }) => {
       setCronograma(data);
     });
-  }, [id]);
+  }, [id], [idDoLider]);
 
   const navigation = [
+    { link: "#tarefas", title: "Tarefas" },
     { link: "#cronograma", title: "Cronograma" },
     { link: "#tabelawbe", title: "Tabela WBE" },
     { link: "#gantt", title: "Gantt" },
     { link: "#avancoprojeto", title: "Avanço Projeto" },
   ];
 
+  const subPackage = subPackages.find(subPackage => subPackage.id === parseInt(id));
+  const subPackageTitle = subPackage ? subPackage.nome : "Subpacote";
+
   return (
     <>
-      <BodyHeader title={project.nome || "Projeto"} navigation={navigation} />
+      <BodyHeader title={subPackageTitle} navigation={navigation} />
       <div className="my-5 tab-content">
-        <div className="tab-pane active" id="cronograma" role="tabpanel">
+        <div className="tab-pane active" id="tarfas" role="tabpanel">
+          <Tarefas data={task} />
+        </div>
+        <div className="tab-pane" id="cronograma" role="tabpanel">
           <TabelaCronograma data={cronograma} />
         </div>
         <div className="tab-pane" id="tabelawbe" role="tabpanel">

@@ -2,11 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Toast from "@/components/Toast";
 import "./style.scss";
-import { faL } from "@fortawesome/free-solid-svg-icons";
 
 const LiderTabelaWBE = (props) => {
   const { id } = useParams();
-
   const { data } = props;
 
   const pathParts = location.pathname.split("/");
@@ -19,22 +17,55 @@ const LiderTabelaWBE = (props) => {
   const [updatedData, setUpdatedData] = useState({});
   const [isChanged, setIsChanged] = useState(false);
   const [errors, setErrors] = useState([]);
-
+  const [reloader, setReloader] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [barraProgresso, setBarraProgresso] = useState(0);
   const [toast, setToast] = useState(false);
 
-  useEffect(() => {
-    window.axios.get(`lider`).then(({ data }) => {
-      setLeaders(data);
-    });
+  const [progressoMensal, setProgresso] = useState([]);
 
-    setPackages(
-      data.map((i) => {
-        return { ...i, liderDeProjeto: i.liderDeProjeto?.lider_de_projeto_id };
-      }),
-    );
-  }, [id, data]);
+  useEffect(() => {
+    console.log(reloader);
+    if (reloader == false) {
+      window.axios.get(`lider`).then(({ data }) => {
+        setLeaders(data);
+      });
+
+      window.axios
+        .get(`progressaomensal/calculo/${idProjeto}`)
+        .then(({ data }) => {
+          setBarraProgresso(data);
+        });
+
+      window.axios
+        .get(`progressaomensal/${idLiderProjeto}/${idProjeto}`)
+        .then(({ data: progressoMensal }) => {
+          setProgresso(progressoMensal);
+        });
+      setPackages(
+        data.map((i) => {
+          const matchingProgressItem = progressoMensal.find(
+            (progressItem) => progressItem[1] === i.id,
+          );
+
+          // Verifique se há um elemento correspondente em progressoMensal
+          if (matchingProgressItem) {
+            console.log("matchingProgressItem:");
+            console.log(matchingProgressItem);
+            // Adicione as propriedades do elemento correspondente a i
+            i.peso = matchingProgressItem[0].peso;
+            i.execucao = matchingProgressItem[0].execucao;
+            i.data = matchingProgressItem[0].data;
+            i.idProgresso = matchingProgressItem[0].id;
+            i.existe = true;
+          }
+
+          return i;
+        }),
+      );
+      //setReloader(true);
+    }
+  }, [id, data, idLiderProjeto, idProjeto, reloader]);
 
   const reset = () => {
     const resetPackages = [...data];
@@ -47,11 +78,23 @@ const LiderTabelaWBE = (props) => {
   const update = (e, item) => {
     if (!isChanged) setIsChanged(true);
     const target = e.target;
-
-    const updatedItem = { ...item, [target.name]: target.value };
+    console.log("target.name");
+    console.log(target.name);
+    console.log(target.value);
+    let updatedItem;
+    if (target.name == "execucao") {
+      if (target.value == 0) {
+        updatedItem = { ...item, [target.name]: false };
+      } else {
+        updatedItem = { ...item, [target.name]: true };
+      }
+    } else {
+      updatedItem = { ...item, [target.name]: target.value };
+    }
+    console.log("updatedItem");
+    console.log(updatedItem);
     if (target.type === "number" && target.value < 0)
       updatedItem[target.name] = 0;
-
     const newData = {
       ...updatedData,
       [item.id]: updatedItem,
@@ -71,20 +114,31 @@ const LiderTabelaWBE = (props) => {
     Promise.allSettled([
       ...Object.keys(updatedData).map((k) => {
         let item = updatedData[k];
-
+        console.log("item:");
+        console.log(item.id);
         let data = {
-          novoHH: parseFloat(item.hh) || 0,
-          novoValor: parseFloat(item.valor) || 0,
-          novoLiderDeProjetoId: parseInt(item.liderDeProjeto),
-          novoProjetoId: parseInt(item.projeto?.id),
+          peso: parseFloat(item.peso) || 0,
+          execucao: item.execucao,
+          data: item.data,
+          id_wbe: parseFloat(item.id) || 0,
         };
+        console.log("id_wbe:");
+        console.log(data);
 
-        return new Promise((resolve, reject) => {
-          window.axios
-            .put(`wbe/${k}`, data)
-            .then(resolve)
-            .catch(() => reject(item.id));
-        });
+        if (item.existe) {
+          return new Promise((resolve, reject) => {
+            window.axios
+              .put(`progressaomensal/${item.idProgresso}`, data)
+              .then(resolve)
+              .catch();
+          });
+        } else {
+          return new Promise((resolve, reject) => {
+            window.axios
+              .post(`progressaomensal/${item.id}`, data)
+              .then(resolve);
+          });
+        }
       }),
     ])
       .then((results) =>
@@ -96,6 +150,7 @@ const LiderTabelaWBE = (props) => {
         setIsChanged(false);
         setLoading(false);
         setToast(true);
+        setReloader(false);
       });
   };
 
@@ -108,7 +163,7 @@ const LiderTabelaWBE = (props) => {
       </Toast>
 
       <div className="d-flex justify-content-end align-items-center mb-3">
-        <span className="small">{/* Variavel aqui */}0%</span>
+        <span className="small">{barraProgresso}%</span>
         <div className="progress w-25">
           <div
             className="progress-bar"
@@ -137,13 +192,67 @@ const LiderTabelaWBE = (props) => {
               className={errors.includes(item.id) ? "error" : ""}
             >
               <td>{item.wbe}</td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>
+                <input
+                  className="form-control form-control-sm"
+                  min={0}
+                  step={1}
+                  max={1}
+                  value={item?.execucao ? "1" : "0"}
+                  type="number"
+                  name="execucao"
+                  onChange={(e) => update(e, item)}
+                />
+              </td>
+              <td>
+                <input
+                  className="form-control form-control-sm"
+                  min={0}
+                  step={1}
+                  max={100}
+                  value={item?.peso || 0}
+                  type="number"
+                  name="peso"
+                  onChange={(e) => update(e, item)}
+                />
+              </td>
+              <td>
+                <input
+                  className="form-control form-control-sm"
+                  type="date"
+                  name="data"
+                  value={item?.data || ""}
+                  onChange={(e) => update(e, item)}
+                />
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+      <div className="mt-4 d-flex justify-content-end">
+        <button
+          className="btn btn-secondary"
+          disabled={!isChanged}
+          onClick={reset}
+        >
+          Desfazer alterações
+        </button>
+        <button
+          className="btn btn-primary ms-3"
+          disabled={!isChanged}
+          onClick={save}
+        >
+          {loading ? (
+            <div
+              role="status"
+              className="spinner-border"
+              style={{ width: "1rem", height: "1rem" }}
+            />
+          ) : (
+            "Salvar"
+          )}
+        </button>
+      </div>
     </div>
   );
 };
