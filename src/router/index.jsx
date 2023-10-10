@@ -1,9 +1,10 @@
 import App from "../templates/App";
 
-import Home from "../pages/Home";
-import Projeto from "@/pages/Projeto";
-import HomeLider from "../pages/HomeLider";
-import ProjetoLider from "../pages/ProjetoLider";
+import Home from "../pages/Engenheiro/Home";
+import Projeto from "../pages/Engenheiro/Projeto";
+import Pacote from "../pages/Engenheiro/Pacote";
+import HomeLider from "../pages/Lider/HomeLider";
+import PacoteLider from "../pages/Lider/PacoteLider";
 
 import Login from "../pages/Login";
 
@@ -25,7 +26,7 @@ export default [
       },
       {
         path: "projetos/:id/pacotes/:pacoteId",
-        element: <Projeto />,
+        element: <Pacote />,
         handle: { title: "Pacotes" },
       },
     ],
@@ -40,7 +41,7 @@ export default [
       },
       {
         path: "subpacotes/:id",
-        element: <ProjetoLider />,
+        element: <PacoteLider />,
         handle: { title: "Subpacotes" },
       },
     ],
