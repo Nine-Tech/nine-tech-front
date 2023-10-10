@@ -16,8 +16,7 @@ const HomeLider = () => {
     });   
 
   }, [id]);
-//fazer um map dentro do UEFe
-//algumas vezes a chave valor nao ta batendo com o que eu estou mapeando
+
   return (
     <>
       <BodyHeader title={"Subpacotes"} className="mb-5" />
