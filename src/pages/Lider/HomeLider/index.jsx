@@ -2,7 +2,6 @@ import BodyHeader from "@/components/BodyHeader";
 import { useEffect, useState, } from "react";
 import { Link, useParams } from "react-router-dom";
 import CardsProjeto from "@/components/CardsProjeto";
-import { useParams } from "react-router-dom";
 
 const HomeLider = () => {
   
@@ -28,13 +27,13 @@ const HomeLider = () => {
                 to={`subpacotes/${p.id}`}
                 className="text-decoration-none text-primary"
               >
-                <CardsProjeto nome={p.wbe} />
+                <CardsProjeto nome={p.nome} />
               </Link>
             </div>
           ))}
         </div>
       ) : (
-        <div className="text-center p-5">Não há projetos atribuídos!</div>
+        <div className="text-center p-5">Não há subpacotes atribuídos!</div>
       )}
     </>
   );
