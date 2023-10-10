@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import BodyHeader from "@/components/BodyHeader";
 import TarefaLider from "../../../components/TarefaLider/TarefaLider";
+import CronogramaLider from "../../../components/CronogramaLider/CronogramaLider";
+import TabelaValorLider from "../../../components/TabelaValorLIder/TabelaValorLider";
 
 const PacoteLider = () => {
   const { id } = useParams();
@@ -29,7 +31,8 @@ const PacoteLider = () => {
   }, [id]);
 
   const navigation = [
-    { link: "#tarefas", title: "Tarefas" },
+    { link: "#atividades", title: "Atividades" },
+    { link: "#planejamento", title: "Planejamento" },
     
   ];
 
@@ -37,8 +40,12 @@ const PacoteLider = () => {
     <>
       <BodyHeader title={subpackages.nome} navigation={navigation} />
       <div className="my-5 tab-content">
-        <div className="tab-pane active" id="tarfas" role="tabpanel">
+        <div className="tab-pane active" id="atividades" role="tabpanel">
           <TarefaLider data={tasks} />
+        </div>
+        <div className="tab-pane" id="planejamento" role="tabpanel">
+          <CronogramaLider />
+          <TabelaValorLider/>
         </div>
         
       </div>

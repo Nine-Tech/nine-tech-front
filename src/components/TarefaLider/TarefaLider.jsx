@@ -60,7 +60,7 @@ const TarefaLider = (props) => {
                                     <input
                                         className="form-control"
                                         type="text"
-                                        value={t.execucao} />
+                                        value={t.execucao ? 1 : 0} />
                                 </td>
                                 <td>
                                     <input
