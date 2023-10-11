@@ -43,26 +43,7 @@ const Pacote = () => {
       <BodyHeader title={pacote.nome || "Pacote"} navigation={navigation} />
       <div className="my-5 tab-content">
         <div className="tab-pane active" id="divisao" role="tabpanel">
-          {subpacotes.length ? (
-            <div className="row mt-5">
-              {subpacotes.map((p) => (
-                <div className="col-lg-4" key={p.id}>
-                  <Link
-                    to={`subpacotes/${p.id}`}
-                    className="text-decoration-none text-primary"
-                  >
-                    <CardsProjeto nome={p.nome} />
-                  </Link>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center p-5">
-              Por favor, clique no botão acima para importar seu arquivo Excel
-              com os pacotes de trabalho. Após a importação, eles serão exibidos
-              aqui.
-            </div>
-          )}
+          <TabelaWbs></TabelaWbs>
         </div>
       </div>
     </>
