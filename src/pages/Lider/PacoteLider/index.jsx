@@ -4,6 +4,7 @@ import BodyHeader from "@/components/BodyHeader";
 import TarefaLider from "../../../components/TarefaLider/TarefaLider";
 import CronogramaLider from "../../../components/CronogramaLider/CronogramaLider";
 import TabelaValorLider from "../../../components/TabelaValorLIder/TabelaValorLider";
+import TarefasView from "@/components/TarefasView/TarefasView"
 
 const PacoteLider = () => {
   const { id } = useParams();
@@ -44,6 +45,7 @@ const PacoteLider = () => {
           <TarefaLider data={tasks} />
         </div>
         <div className="tab-pane" id="planejamento" role="tabpanel">
+          <TarefasView />
           <CronogramaLider />
           <TabelaValorLider/>
         </div>
