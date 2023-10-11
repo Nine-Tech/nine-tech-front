@@ -5,9 +5,9 @@ const BodyHeader = (props) => {
   console.log(progress);
   const progressBar =
     progress !== undefined ? (
-      <div>
-        <span className="small">{progress}</span>
-        <div className="progress" style={{ marginTop: "10px" }}>
+      <div className="d-flex align-items-center">
+        {progress}
+        <div className="progress ms-2" style={{ width: "200px" }}>
           <div
             className="progress-bar"
             role="progressbar"
@@ -30,6 +30,7 @@ const BodyHeader = (props) => {
           {progressBar}
         </div>
         <div className="my-3 divider" />
+        
       </div>
 
       <div className="d-flex justify-content-between">
