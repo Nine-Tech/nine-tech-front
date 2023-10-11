@@ -9,14 +9,14 @@ import "./style.scss";
 const Login = () => {
   const navigate = useNavigate();
 
-  const [nome, setNome] = useState("");
+  const [login, setLogin] = useState("");
   const [senha, setSenha] = useState("");
 
   const [toast, setToast] = useState(false);
 
-  async function login() {
+  async function fazerLogin() {
     window.axios
-      .post(`auth/login`, { nome, senha })
+      .post(`auth/login`, { login, senha })
       .then(({ data: { token } }) => {
         setToken(token);
         window.axios
@@ -48,10 +48,10 @@ const Login = () => {
         <h4>Log In</h4>
         <div className="mt-5 w-100">
           <input
-            value={nome}
-            placeholder="Nome"
+            value={login}
+            placeholder="Login"
             className="form-control"
-            onChange={(e) => setNome(e.target.value)}
+            onChange={(e) => setLogin(e.target.value)}
           />
           <input
             type="password"
@@ -62,7 +62,7 @@ const Login = () => {
           />
           <button
             className="btn w-100 py-2 btn-primary mt-5 mb-3"
-            onClick={login}
+            onClick={fazerLogin}
           >
             Entrar
           </button>

@@ -26,6 +26,17 @@ const App = () => {
       window.axios
         .get(`auth/informacaoUsuario`)
         .then(({ data }) => {
+          if (
+            !data.roles.includes("ROLE_ENGENHEIRO_CHEFE") &&
+            document.location.href.indexOf("engenheirochefe") > 0
+          ) {
+            navigate(`/liderprojeto/${data.id}`);
+          } else if (
+            data.roles.includes("ROLE_ENGENHEIRO_CHEFE") &&
+            document.location.href.indexOf("liderprojeto") > 0
+          ) {
+            navigate("/engenheirochefe");
+          }
           setUser(data);
         })
         .catch(() => {
