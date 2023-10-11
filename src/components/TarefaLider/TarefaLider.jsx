@@ -23,7 +23,7 @@ const TarefaLider = (props) => {
             .catch((error) => {
                 console.error("Erro ao buscar tarefas:", error);
             });
-    }, [id, data]);
+    }, [id, data, tasks, newTasks]);
 
     const buscarTarefas = () => {
         axios.get(`tarefas/subpacote/${id}`)
@@ -105,7 +105,9 @@ const TarefaLider = (props) => {
                 })
                 .catch((error) => {
                     console.error(`Erro ao atualizar a tarefa ${tarefa.id}.`, error);
+                    console.log("Final do Salvar Tarefas");
                 });
+            console.log("Final do Salvar Tarefas");
             buscarTarefas();
         });
     };
@@ -202,6 +204,7 @@ const TarefaLider = (props) => {
                                             value={t.peso}
                                             onChange={(e) => handleChange(index, "peso", e.target.value)}
                                         >
+                                            <option disabled value={""}>-</option>
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
@@ -289,7 +292,7 @@ const TarefaLider = (props) => {
                                             value={t.peso}
                                             onChange={(e) => handleNewTaskChange(index, "peso", e.target.value)}
                                         >
-                                            
+                                            <option disabled value={""}>-</option>
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
