@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const CronogramaLider = () => {
-  return (
-    <div>CronogramaLider</div>
-  )
-}
+  return <div>CronogramaLider</div>;
+};
 
-export default CronogramaLider
+export default CronogramaLider;

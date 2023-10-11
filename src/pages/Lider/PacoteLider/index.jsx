@@ -9,9 +9,8 @@ const PacoteLider = () => {
   const { id } = useParams();
   const [tasks, setTasks] = useState([]);
   const [packages, setPackages] = useState([]);
-  const [subpackages, setSubpackages] = useState([]);  
+  const [subpackages, setSubpackages] = useState([]);
   const [cronograma, setCronograma] = useState({});
-
   useEffect(() => {
     window.axios.get(`tarefas/subpacote/${id}`).then(({ data }) => {
       setTasks(data);
@@ -33,21 +32,23 @@ const PacoteLider = () => {
   const navigation = [
     { link: "#atividades", title: "Atividades" },
     { link: "#planejamento", title: "Planejamento" },
-    
   ];
 
   return (
     <>
-      <BodyHeader title={subpackages.nome} navigation={navigation} />
+      <BodyHeader
+        title={subpackages.nome}
+        navigation={navigation}
+        progress={subpackages.porcentagem}
+      />
       <div className="my-5 tab-content">
         <div className="tab-pane active" id="atividades" role="tabpanel">
           <TarefaLider data={tasks} />
         </div>
         <div className="tab-pane" id="planejamento" role="tabpanel">
           <CronogramaLider />
-          <TabelaValorLider/>
+          <TabelaValorLider />
         </div>
-        
       </div>
     </>
   );

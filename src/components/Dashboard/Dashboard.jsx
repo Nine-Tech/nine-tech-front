@@ -9,7 +9,6 @@ const Dashboard = () => {
     window.axios.get(`upload/${id}`).then(({ data }) => {
       setPackages(data);
     });
-
   }, [id]);
 
   /* const formatarMoeda = (value) => {

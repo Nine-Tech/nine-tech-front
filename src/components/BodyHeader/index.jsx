@@ -1,15 +1,33 @@
 import "./style.scss";
 
 const BodyHeader = (props) => {
-  const { title, children, navigation } = props;
+  const { title, children, navigation, progress } = props;
+  console.log(progress);
+  const progressBar =
+    progress !== undefined ? (
+      <div>
+        <span className="small">{progress}</span>
+        <div className="progress" style={{ marginTop: "10px" }}>
+          <div
+            className="progress-bar"
+            role="progressbar"
+            style={{ width: `${progress}%` }}
+            aria-valuenow={progress}
+            aria-valuemin="0"
+            aria-valuemax="100"
+          ></div>
+        </div>
+      </div>
+    ) : (
+      <div> {children}</div>
+    );
 
   return (
     <div className="body-header">
       <div className={`p-4 ${navigation && "pb-0"}`}>
         <div className="d-flex justify-content-between">
           <h3>{title || "BodyHeader"}</h3>
-
-          <div>{children}</div>
+          {progressBar}
         </div>
         <div className="my-3 divider" />
       </div>
