@@ -7,6 +7,8 @@ const TarefaLider = (props) => {
     const { data } = props;
     const [tasks, setTasks] = useState([]);
     const [newTasks, setNewTasks] = useState([]);
+    const [isChanged, setIsChanged] = useState(false);
+
     const [errors, setErrors] = useState([]);
 
     useEffect(() => {
@@ -111,6 +113,14 @@ const TarefaLider = (props) => {
         });
     };
 
+    const reset = () => {
+        setTasks(data);
+        setNewTasks([]);
+        setErrors([]);
+        setIsChanged(false);
+        buscarTarefas();
+    };
+
     const apagarTarefa = (tarefa) => {
         if (tarefa.id) {
             // Se a tarefa existe ele apaga a tarefa
@@ -131,6 +141,8 @@ const TarefaLider = (props) => {
 
     // Função para alterar os campos das tarefas existentes
     const handleChange = (index, field, value) => {
+        setIsChanged(true);
+
         const updatedTasks = [...tasks];
         if (field === "data") {
             updatedTasks[index].dataFormatada = value;
@@ -150,6 +162,12 @@ const TarefaLider = (props) => {
 
     return (
         <>
+            <div className="d-flex justify-content-end">
+                <button
+                    className="btn btn-primary mb-2"
+                    onClick={adicionarTarefa}>Adicionar Tarefa</button>
+            </div>
+
             <div className="table-responsive">
                 <table className="table table-bordered">
                     <thead>
@@ -163,6 +181,7 @@ const TarefaLider = (props) => {
                             <th>Valor</th>
                             <th>HH*</th>
                             <th>Material</th>
+                            <th>Ação</th>
                         </tr>
                     </thead>
 
@@ -197,12 +216,25 @@ const TarefaLider = (props) => {
                                     </select>
                                 </td>
                                 <td>
-                                    <input
-                                        className="form-control"
-                                        type="text"
-                                        value={t.peso}
-                                        onChange={(e) => handleChange(index, "peso", e.target.value)}
-                                    />
+                                <select
+                                            className="form-control"
+                                            type="text"
+                                            value={t.peso}
+                                            onChange={(e) => handleChange(index, "peso", e.target.value)}
+                                        >
+                                            <option disabled value={""}>-</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="5">5</option>
+                                            <option value="8">8</option>
+                                            <option value="13">13</option>
+                                            <option value="21">21</option>
+                                            <option value="34">34</option>
+                                            <option value="55">55</option>
+                                            <option value="89">89</option>
+                                            <option value="100">100</option>
+                                        </select>
                                 </td>
                                 <td>
                                     <input
@@ -238,7 +270,9 @@ const TarefaLider = (props) => {
                                     />
                                 </td>
                                 <td>
-                                    <button onClick={() => apagarTarefa(t)}>Apagar</button>
+                                    <button
+                                        className="btn btn-danger"
+                                        onClick={() => apagarTarefa(t)}>Excluir</button>
                                 </td>
                             </tr>
                         ))}
@@ -273,12 +307,25 @@ const TarefaLider = (props) => {
                                     </select>
                                 </td>
                                 <td>
-                                    <input
-                                        className="form-control"
-                                        type="text"
-                                        value={t.peso}
-                                        onChange={(e) => handleNewTaskChange(index, "peso", e.target.value)}
-                                    />
+                                <select
+                                            className="form-control"
+                                            type="text"
+                                            value={t.peso}
+                                            onChange={(e) => handleNewTaskChange(index, "peso", e.target.value)}
+                                        >
+                                            <option disabled value={""}>-</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="5">5</option>
+                                            <option value="8">8</option>
+                                            <option value="13">13</option>
+                                            <option value="21">21</option>
+                                            <option value="34">34</option>
+                                            <option value="55">55</option>
+                                            <option value="89">89</option>
+                                            <option value="100">100</option>
+                                        </select>                                
                                 </td>
                                 <td>
                                     <input
@@ -314,7 +361,12 @@ const TarefaLider = (props) => {
                                     />
                                 </td>
                                 <td>
-                                    <button onClick={() => apagarTarefa(t)}>Apagar</button>
+                                    <button
+                                        className="btn btn-success"
+                                        onClick={salvarTarefas}>Salvar</button>
+                                    {/* <button
+                                    className="btn btn-danger"
+                                    onClick={() => apagarTarefa(t)}>Excluir</button> */}
                                 </td>
                             </tr>
                         ))}
@@ -322,8 +374,23 @@ const TarefaLider = (props) => {
                 </table>
             </div>
 
-            <button onClick={adicionarTarefa}>Adicionar Tarefa</button>
-            <button onClick={salvarTarefas}>Salvar Tarefas</button>
+
+            <div className="mt-4 d-flex justify-content-end">
+                <button
+                    className="btn btn-secondary"
+                    disabled={!isChanged}
+                    onClick={reset}
+                >
+                    Desfazer alterações
+                </button>
+
+                <button
+                    className="btn btn-primary ms-3"
+                    disabled={!isChanged}
+                    onClick={salvarTarefas}>Salvar Alterações</button>
+            </div>
+
+            
         </>
     );
 };
