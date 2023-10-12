@@ -6,7 +6,7 @@ import TabelaCronograma from "@/components/TabelaCronograma";
 import CardsProjeto from "@/components/CardsProjeto";
 
 const Pacote = () => {
-  const { id } = useParams();
+  const { pacoteId } = useParams();
 
   const [project, setProject] = useState({});
   const [packages, setPackages] = useState([]);
@@ -15,26 +15,26 @@ const Pacote = () => {
   const [subpacotes, setSubpacotes] = useState({});
 
   useEffect(() => {
-    window.axios.get(`projeto/listar/${id}`).then(({ data }) => {
+    window.axios.get(`projeto/listar/${pacoteId}`).then(({ data }) => {
       setProject(data);
     });
 
-    window.axios.get(`upload/${id}`).then(({ data }) => {
+    window.axios.get(`upload/${pacoteId}`).then(({ data }) => {
       setPackages(data);
     });
 
-    window.axios.get(`pacotes/${id}`).then(({ data }) => {
+    window.axios.get(`pacotes/${pacoteId}`).then(({ data }) => {
       setPacote(data);
     });
 
-    window.axios.get(`subpacotes/porIdProjeto/${id}`).then(({ data }) => {
+    window.axios.get(`subpacotes/porIdProjeto/${pacoteId}`).then(({ data }) => {
       setSubpacotes(data);
     });
 
-    window.axios.get(`cronograma/cronograma-por-wbe/${id}`).then(({ data }) => {
+    window.axios.get(`cronograma/cronograma-por-wbe/${pacoteId}`).then(({ data }) => {
       setCronograma(data);
     });
-  }, [id]);
+  }, [pacoteId]);
 
   const navigation = [{ link: "#divisao", title: "Divisão" }];
 
@@ -58,9 +58,7 @@ const Pacote = () => {
             </div>
           ) : (
             <div className="text-center p-5">
-              Por favor, clique no botão acima para importar seu arquivo Excel
-              com os pacotes de trabalho. Após a importação, eles serão exibidos
-              aqui.
+              No momento não existem tarefas criadas para esse Pacote, por favor volte mais tarde!
             </div>
           )}
         </div>

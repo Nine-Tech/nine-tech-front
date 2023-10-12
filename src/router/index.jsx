@@ -33,7 +33,7 @@ export default [
       {
         path: "projetos/:id/pacotes/:pacoteId/subpacotes/:subpacoteId",
         element: <Subpacote />,
-        handle: { title: "Pacotes" },
+        handle: { title: "Subpacotes" },
       },
     ],
   },

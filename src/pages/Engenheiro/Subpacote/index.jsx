@@ -4,50 +4,39 @@ import BodyHeader from "@/components/BodyHeader";
 import TabelaWbs from "@/components/TabelaWbs";
 import TabelaCronograma from "@/components/TabelaCronograma";
 import CardsProjeto from "@/components/CardsProjeto";
+import TarefasLiderView from "../../../components/TarefasView/TarefasView";
 
-const Pacote = () => {
-  const { id } = useParams();
+const Subpacote = () => {
+  const { subpacoteId } = useParams();
 
-  const [project, setProject] = useState({});
-  const [packages, setPackages] = useState([]);
-  const [cronograma, setCronograma] = useState({});
-  const [pacote, setPacote] = useState({});
-  const [subpacotes, setSubpacotes] = useState({});
+  const [subpacoteNome, setSubpacoteNome] = useState({});
+  const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    window.axios.get(`projeto/listar/${id}`).then(({ data }) => {
-      setProject(data);
+
+    window.axios.get(`subpacotes/listarUmSubpacote/${subpacoteId}`).then(({ data }) => {
+      setSubpacoteNome(data);
     });
 
-    window.axios.get(`upload/${id}`).then(({ data }) => {
-      setPackages(data);
+    window.axios.get(`tarefas/subpacote/${subpacoteId}`).then(({ data }) => {
+      setTasks(data);
     });
+  }, [subpacoteId]);
 
-    window.axios.get(`pacotes/${id}`).then(({ data }) => {
-      setPacote(data);
-    });
-
-    window.axios.get(`subpacotes/porIdProjeto/${id}`).then(({ data }) => {
-      setSubpacotes(data);
-    });
-
-    window.axios.get(`cronograma/cronograma-por-wbe/${id}`).then(({ data }) => {
-      setCronograma(data);
-    });
-  }, [id]);
+  console.log(subpacoteNome)
 
   const navigation = [{ link: "#divisao", title: "Divisão" }];
 
   return (
     <>
-      <BodyHeader title={pacote.nome || "Pacote"} navigation={navigation} />
+      <BodyHeader title={subpacoteNome.nome || "Subpacote"} navigation={navigation} />
       <div className="my-5 tab-content">
         <div className="tab-pane active" id="divisao" role="tabpanel">
-          <TabelaWbs></TabelaWbs>
+          <TarefasLiderView data={tasks} />
         </div>
       </div>
     </>
   );
 };
 
-export default Pacote;
+export default Subpacote;
