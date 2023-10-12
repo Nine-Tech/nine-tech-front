@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Toast from "@/components/Toast";
 
 import { setToken } from "@/utils/api";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./style.scss";
 
 const Login = () => {
@@ -14,26 +14,41 @@ const Login = () => {
 
   const [toast, setToast] = useState(false);
 
+  const [listaEngenheiros, setListaEngenheiros] = useState({});
+  const [listaLideres, setListaLideres] = useState({});
+  const [selectedLogin, setSelectedLogin] = useState("");
+
+  useEffect(() => {
+    window.axios.get(`lider`).then(({ data }) => {
+      setListaLideres(data);
+    });
+
+    window.axios.get(`engenheiro`).then(({ data }) => {
+      setListaEngenheiros(data);
+    });
+  }, [listaEngenheiros, listaLideres]);
+
   async function fazerLogin() {
-    window.axios
-      .post(`auth/login`, { login, senha })
-      .then(({ data: { token } }) => {
-        setToken(token);
-        window.axios
-          .get(`auth/informacaoUsuario`)
-          .then(({ data }) => {
-            let route = data.roles.includes("ROLE_ENGENHEIRO_CHEFE")
-              ? "/engenheirochefe"
-              : `/liderprojeto/${data.id}`;
-            navigate(route);
-          })
-          .catch(() => {
-            setToast(true);
-          });
-      })
-      .catch(() => {
-        setToast(true);
-      });
+    const loginData = {
+      login: selectedLogin,
+      senha,
+    };
+
+    try {
+      const response = await window.axios.post("auth/login", loginData);
+      const { token } = response.data;
+      setToken(token);
+
+      const userInfoResponse = await window.axios.get("auth/informacaoUsuario");
+      const data = userInfoResponse.data;
+
+      let route = data.roles.includes("ROLE_ENGENHEIRO_CHEFE")
+        ? "/engenheirochefe"
+        : `/liderprojeto/${data.id}`;
+      navigate(route);
+    } catch (error) {
+      setToast(true);
+    }
   }
 
   return (
@@ -47,12 +62,26 @@ const Login = () => {
       <div className="login-card">
         <h4>Log In</h4>
         <div className="mt-5 w-100">
-          <input
-            value={login}
-            placeholder="Login"
+          <select
+            value={selectedLogin}
             className="form-control"
-            onChange={(e) => setLogin(e.target.value)}
-          />
+            onChange={(e) => setSelectedLogin(e.target.value)}
+          >
+            <option value="">Escolha um login</option>
+            {Object.keys(listaLideres).map((liderId) => (
+              <option key={liderId} value={listaLideres[liderId].login}>
+                {listaLideres[liderId].nome}
+              </option>
+            ))}
+            {Object.keys(listaEngenheiros).map((engenheiroId) => (
+              <option
+                key={engenheiroId}
+                value={listaEngenheiros[engenheiroId].login}
+              >
+                {listaEngenheiros[engenheiroId].nome}
+              </option>
+            ))}
+          </select>
           <input
             type="password"
             value={senha}
