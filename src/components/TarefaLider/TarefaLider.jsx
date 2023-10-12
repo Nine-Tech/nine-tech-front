@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Toast from "@/components/Toast";
+
 import axios from "axios";
 
 const TarefaLider = (props) => {
@@ -8,7 +10,9 @@ const TarefaLider = (props) => {
     const [tasks, setTasks] = useState([]);
     const [newTasks, setNewTasks] = useState([]);
     const [isChanged, setIsChanged] = useState(false);
-
+    const [toast, setToast] = useState(false);
+    const [deleteToast, setDeleteToast] = useState(false);
+    const [salvarToast, setSalvarToast] = useState(false);
     const [errors, setErrors] = useState([]);
 
     useEffect(() => {
@@ -83,6 +87,8 @@ const TarefaLider = (props) => {
             axios.post("tarefas", novaTarefaParaSalvar)
                 .then((response) => {
                     console.log("Nova tarefa foi salva com sucesso.", response.data);
+                    buscarTarefas();
+                    setSalvarToast(true);
                 })
                 .catch((error) => {
                     console.error("Erro ao salvar a nova tarefa.", error);
@@ -106,6 +112,7 @@ const TarefaLider = (props) => {
                 .then((response) => {
                     console.log(`Tarefa ${tarefa.id} foi atualizada com sucesso.`, response.data);
                     buscarTarefas();
+                    setToast(true);
                 })
                 .catch((error) => {
                     console.error(`Erro ao atualizar a tarefa ${tarefa.id}.`, error);
@@ -123,11 +130,12 @@ const TarefaLider = (props) => {
 
     const apagarTarefa = (tarefa) => {
         if (tarefa.id) {
-            // Se a tarefa existe ele apaga a tarefa
+            // Se a tarefa tem um ID, ela já existe no banco de dados e pode ser excluída
             axios.delete(`tarefas/${tarefa.id}`)
                 .then((response) => {
                     console.log(`Tarefa ${tarefa.id} foi apagada com sucesso.`, response.data);
                     buscarTarefas();
+                    setDeleteToast(true);                   
                 })
                 .catch((error) => {
                     console.error(`Erro ao apagar a tarefa ${tarefa.id}.`, error);
@@ -138,6 +146,7 @@ const TarefaLider = (props) => {
             setNewTasks(updatedNewTasks);
         }
     }
+    
 
     // Função para alterar os campos das tarefas existentes
     const handleChange = (index, field, value) => {
@@ -162,6 +171,25 @@ const TarefaLider = (props) => {
 
     return (
         <>
+            <Toast show={toast} toggle={setToast}>
+                {errors.length
+                    ? "Erro ao atualizar Atividade(s)"
+                    : "Alterações salvas com sucesso!"}
+            </Toast>
+
+            <Toast show={deleteToast} toggle={() => setDeleteToast(false)}>
+            {errors.length
+                    ? "Erro ao excluir Atividade!"
+                    : "Atividade Excluída com Sucesso!"}                
+            </Toast>
+
+            <Toast show={salvarToast} toggle={() => setSalvarToast(false)}>
+            {errors.length
+                    ? "Erro ao salvar Atividade!"
+                    : "Atividade Inserida com Sucesso!"}                
+            </Toast>
+
+
             <div className="d-flex justify-content-end">
                 <button
                     className="btn btn-primary mb-2"
@@ -216,25 +244,25 @@ const TarefaLider = (props) => {
                                     </select>
                                 </td>
                                 <td>
-                                <select
-                                            className="form-control"
-                                            type="text"
-                                            value={t.peso}
-                                            onChange={(e) => handleChange(index, "peso", e.target.value)}
-                                        >
-                                            <option disabled value={""}>-</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="5">5</option>
-                                            <option value="8">8</option>
-                                            <option value="13">13</option>
-                                            <option value="21">21</option>
-                                            <option value="34">34</option>
-                                            <option value="55">55</option>
-                                            <option value="89">89</option>
-                                            <option value="100">100</option>
-                                        </select>
+                                    <select
+                                        className="form-control"
+                                        type="text"
+                                        value={t.peso}
+                                        onChange={(e) => handleChange(index, "peso", e.target.value)}
+                                    >
+                                        <option disabled value={""}>-</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="5">5</option>
+                                        <option value="8">8</option>
+                                        <option value="13">13</option>
+                                        <option value="21">21</option>
+                                        <option value="34">34</option>
+                                        <option value="55">55</option>
+                                        <option value="89">89</option>
+                                        <option value="100">100</option>
+                                    </select>
                                 </td>
                                 <td>
                                     <input
@@ -256,7 +284,7 @@ const TarefaLider = (props) => {
                                 <td>
                                     <input
                                         className="form-control"
-                                        type="text"
+                                        type="number"
                                         value={t.hh}
                                         onChange={(e) => handleChange(index, "hh", e.target.value)}
                                     />
@@ -264,7 +292,7 @@ const TarefaLider = (props) => {
                                 <td>
                                     <input
                                         className="form-control"
-                                        type="text"
+                                        type="number"
                                         value={t.material}
                                         onChange={(e) => handleChange(index, "material", e.target.value)}
                                     />
@@ -307,25 +335,25 @@ const TarefaLider = (props) => {
                                     </select>
                                 </td>
                                 <td>
-                                <select
-                                            className="form-control"
-                                            type="text"
-                                            value={t.peso}
-                                            onChange={(e) => handleNewTaskChange(index, "peso", e.target.value)}
-                                        >
-                                            <option disabled value={""}>-</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="5">5</option>
-                                            <option value="8">8</option>
-                                            <option value="13">13</option>
-                                            <option value="21">21</option>
-                                            <option value="34">34</option>
-                                            <option value="55">55</option>
-                                            <option value="89">89</option>
-                                            <option value="100">100</option>
-                                        </select>                                
+                                    <select
+                                        className="form-control"
+                                        type="text"
+                                        value={t.peso}
+                                        onChange={(e) => handleNewTaskChange(index, "peso", e.target.value)}
+                                    >
+                                        <option disabled value={""}>-</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="5">5</option>
+                                        <option value="8">8</option>
+                                        <option value="13">13</option>
+                                        <option value="21">21</option>
+                                        <option value="34">34</option>
+                                        <option value="55">55</option>
+                                        <option value="89">89</option>
+                                        <option value="100">100</option>
+                                    </select>
                                 </td>
                                 <td>
                                     <input
@@ -347,7 +375,7 @@ const TarefaLider = (props) => {
                                 <td>
                                     <input
                                         className="form-control"
-                                        type="text"
+                                        type="number"
                                         value={t.hh}
                                         onChange={(e) => handleNewTaskChange(index, "hh", e.target.value)}
                                     />
@@ -355,7 +383,7 @@ const TarefaLider = (props) => {
                                 <td>
                                     <input
                                         className="form-control"
-                                        type="text"
+                                        type="number"
                                         value={t.material}
                                         onChange={(e) => handleNewTaskChange(index, "material", e.target.value)}
                                     />
@@ -390,7 +418,7 @@ const TarefaLider = (props) => {
                     onClick={salvarTarefas}>Salvar Alterações</button>
             </div>
 
-            
+
         </>
     );
 };
