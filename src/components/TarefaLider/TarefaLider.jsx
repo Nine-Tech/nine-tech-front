@@ -14,6 +14,7 @@ const TarefaLider = (props) => {
     const [deleteToast, setDeleteToast] = useState(false);
     const [salvarToast, setSalvarToast] = useState(false);
     const [errors, setErrors] = useState([]);
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         axios.get(`tarefas/subpacote/${id}`)
@@ -67,15 +68,25 @@ const TarefaLider = (props) => {
         return [ano, mes, dia];
     }
 
+    function formatarMoeda(valor) {
+        const formatador = new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+            minimumFractionDigits: 2, 
+        });
+
+        return formatador.format(valor);
+    }
 
     const salvarTarefas = () => {
         newTasks.forEach((tarefa) => {
             const dataFormatada = formatarDataParaArray(tarefa.data);
+            const materialComoNumero = tarefa.material !== "" ? parseFloat(tarefa.material) : null;
             const novaTarefaParaSalvar = {
                 descricao: tarefa.descricao,
                 data: dataFormatada,
                 hh: tarefa.hh,
-                material: tarefa.material,
+                material: materialComoNumero,
                 nome: tarefa.nome,
                 peso: tarefa.peso,
                 execucao: tarefa.execucao,
@@ -99,11 +110,12 @@ const TarefaLider = (props) => {
 
         tasks.forEach((tarefa) => {
             const dataConvertida = tarefa.dataFormatada.split('/').reverse().join('-');
+            const materialComoNumero = tarefa.material !== "" ? parseFloat(tarefa.material) : null;
             axios.put(`tarefas/${tarefa.id}`, {
                 descricao: tarefa.descricao,
                 data: dataConvertida,
                 hh: tarefa.hh,
-                material: tarefa.material,
+                material: materialComoNumero,
                 valor: tarefa.valor,
                 nome: tarefa.nome,
                 peso: tarefa.peso,
@@ -276,7 +288,7 @@ const TarefaLider = (props) => {
                                     <input
                                         className="form-control"
                                         type="text"
-                                        value={t.valor}
+                                        value={formatarMoeda(t.valor)}
                                         readOnly={true}
                                         onChange={(e) => handleChange(index, "valor", e.target.value)}
                                     />
@@ -292,9 +304,11 @@ const TarefaLider = (props) => {
                                 <td>
                                     <input
                                         className="form-control"
-                                        type="number"
-                                        value={t.material}
+                                        type="text"
+                                        value={isEditing ? t.material : formatarMoeda(t.material)}
                                         onChange={(e) => handleChange(index, "material", e.target.value)}
+                                        onFocus={() => setIsEditing(true)}
+                                        onBlur={() => setIsEditing(false)}
                                     />
                                 </td>
                                 <td>
@@ -367,7 +381,7 @@ const TarefaLider = (props) => {
                                     <input
                                         className="form-control"
                                         type="text"
-                                        value={t.valor}
+                                        value={formatarMoeda(t.valor)}
                                         readOnly={true}
                                         onChange={(e) => handleNewTaskChange(index, "valor", e.target.value)}
                                     />
@@ -383,9 +397,11 @@ const TarefaLider = (props) => {
                                 <td>
                                     <input
                                         className="form-control"
-                                        type="number"
-                                        value={t.material}
+                                        type="text"
+                                        value={isEditing ? t.material : formatarMoeda(t.material)}
                                         onChange={(e) => handleNewTaskChange(index, "material", e.target.value)}
+                                        onFocus={() => setIsEditing(true)}
+                                        onBlur={() => setIsEditing(false)}
                                     />
                                 </td>
                                 <td>
