@@ -1,36 +1,16 @@
 import "./style.scss";
+import ProgressBar from "@/components/BarraProgresso";
 
 const BodyHeader = (props) => {
   const { title, children, navigation, progress } = props;
-  console.log(progress);
-  
-  const formatoNumero = new Intl.NumberFormat('pt-BR').format(progress);
-
-  const progressBar =
-    progress !== undefined ? (
-      <div className="d-flex align-items-center">
-        {formatoNumero}%
-        <div className="progress ms-2" style={{ width: "200px" }}>
-          <div
-            className="progress-bar"
-            role="progressbar"
-            style={{ width: `${progress}%` }}
-            aria-valuenow={progress}
-            aria-valuemin="0"
-            aria-valuemax="100"
-          ></div>
-        </div>
-      </div>
-    ) : (
-      <div> {children}</div>
-    );
 
   return (
     <div className="body-header">
       <div className={`p-4 ${navigation && "pb-0"}`}>
         <div className="d-flex justify-content-between">
           <h3>{title || "BodyHeader"}</h3>
-          {progressBar}
+          {progress !== undefined && <ProgressBar progress={progress} />}{" "}
+          <div> {children} </div>
         </div>
         <div className="my-3 divider" />
       </div>
