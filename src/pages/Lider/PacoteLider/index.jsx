@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import BodyHeader from "@/components/BodyHeader";
 import TarefaLider from "../../../components/TarefaLider/TarefaLider";
 import CronogramaLider from "../../../components/CronogramaLider/CronogramaLider";
+import TabelaValorLider from "../../../components/TabelaValorLIder/TabelaValorLider";
+import TarefasView from "@/components/TarefasView/TarefasView";
 
 const PacoteLider = () => {
   const { id } = useParams();
@@ -41,7 +43,11 @@ const PacoteLider = () => {
 
   return (
     <>
-      <BodyHeader title={subpackages.nome} navigation={navigation} />
+      <BodyHeader
+        title={subpackages.nome}
+        navigation={navigation}
+        progress={subpackages.porcentagem}
+      />
       <div className="my-5 tab-content">
         <div className="tab-pane active" id="atividades" role="tabpanel">
           <TarefaLider data={tasks} />
