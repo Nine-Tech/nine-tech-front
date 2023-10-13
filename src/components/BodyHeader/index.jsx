@@ -33,7 +33,6 @@ const BodyHeader = (props) => {
           {progressBar}
         </div>
         <div className="my-3 divider" />
-        
       </div>
 
       <div className="d-flex justify-content-between">
