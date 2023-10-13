@@ -4,13 +4,19 @@ import ProgressBar from "@/components/BarraProgresso";
 const BodyHeader = (props) => {
   const { title, children, navigation, progress } = props;
 
+  const progressBar =
+    progress !== undefined ? (
+      <ProgressBar progress={progress} />
+    ) : (
+      <div> {children}</div>
+    );
+
   return (
     <div className="body-header">
       <div className={`p-4 ${navigation && "pb-0"}`}>
         <div className="d-flex justify-content-between">
           <h3>{title || "BodyHeader"}</h3>
-          {progress !== undefined && <ProgressBar progress={progress} />}{" "}
-          <div> {children} </div>
+          {progressBar}
         </div>
         <div className="my-3 divider" />
       </div>
