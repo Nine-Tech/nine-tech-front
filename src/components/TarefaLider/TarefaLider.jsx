@@ -18,65 +18,65 @@ const TarefaLider = (props) => {
     const [isEditing, setIsEditing] = useState(false);
 
 
-  useEffect(() => {
-    axios
-      .get(`tarefas/subpacote/${id}`)
-      .then(({ data }) => {
-        if (Array.isArray(data)) {
-          data = data.map((tarefa) => ({
-            ...tarefa,
-            dataFormatada: new Date(tarefa.data).toLocaleDateString("pt-BR"),
-          }));
-          setTasks(data);
-        }
-      })
-      .catch((error) => {
-        console.error("Erro ao buscar tarefas:", error);
-      });
-  }, [id, data]);
+    useEffect(() => {
+        axios
+            .get(`tarefas/subpacote/${id}`)
+            .then(({ data }) => {
+                if (Array.isArray(data)) {
+                    data = data.map((tarefa) => ({
+                        ...tarefa,
+                        dataFormatada: new Date(tarefa.data).toLocaleDateString("pt-BR"),
+                    }));
+                    setTasks(data);
+                }
+            })
+            .catch((error) => {
+                console.error("Erro ao buscar tarefas:", error);
+            });
+    }, [id, data]);
 
-  const buscarTarefas = () => {
-    axios
-      .get(`tarefas/subpacote/${id}`)
-      .then(({ data }) => {
-        if (Array.isArray(data)) {
-          data = data.map((tarefa) => ({
-            ...tarefa,
-            dataFormatada: new Date(tarefa.data).toLocaleDateString("pt-BR"),
-          }));
-          setTasks(data);
-        }
-      })
-      .catch((error) => {
-        console.error("Erro ao buscar tarefas:", error);
-      });
-  };
-
-  const adicionarTarefa = () => {
-    const novaTarefa = {
-      nome: "",
-      descricao: "",
-      execucao: 0,
-      valor: "",
-      peso: "",
-      data: "",
-      hh: "",
-      material: "",
+    const buscarTarefas = () => {
+        axios
+            .get(`tarefas/subpacote/${id}`)
+            .then(({ data }) => {
+                if (Array.isArray(data)) {
+                    data = data.map((tarefa) => ({
+                        ...tarefa,
+                        dataFormatada: new Date(tarefa.data).toLocaleDateString("pt-BR"),
+                    }));
+                    setTasks(data);
+                }
+            })
+            .catch((error) => {
+                console.error("Erro ao buscar tarefas:", error);
+            });
     };
-    setNewTasks([...newTasks, novaTarefa]);
-  };
 
-  function formatarDataParaArray(dataString) {
-    const [dia, mes, ano] = dataString.split("/").map(Number);
-    return [ano, mes, dia];
-  }
+    const adicionarTarefa = () => {
+        const novaTarefa = {
+            nome: "",
+            descricao: "",
+            execucao: 0,
+            valor: "",
+            peso: "",
+            data: "",
+            hh: "",
+            material: "",
+        };
+        setNewTasks([...newTasks, novaTarefa]);
+    };
+
+    function formatarDataParaArray(dataString) {
+        const [dia, mes, ano] = dataString.split("/").map(Number);
+        return [ano, mes, dia];
+    }
 
 
     function formatarMoeda(valor) {
         const formatador = new Intl.NumberFormat('pt-BR', {
             style: 'currency',
             currency: 'BRL',
-            minimumFractionDigits: 2, 
+            minimumFractionDigits: 2,
         });
 
         return formatador.format(valor);
@@ -109,9 +109,9 @@ const TarefaLider = (props) => {
                     console.error("Erro ao salvar a nova tarefa.", error);
                 });
         });
-    });
 
-    setNewTasks([]);
+
+        setNewTasks([]);
 
 
         tasks.forEach((tarefa) => {
@@ -136,16 +136,16 @@ const TarefaLider = (props) => {
                     console.error(`Erro ao atualizar a tarefa ${tarefa.id}.`, error);
                 });
         });
-    });
-  };
 
-  const reset = () => {
-    setTasks(data);
-    setNewTasks([]);
-    setErrors([]);
-    setIsChanged(false);
-    buscarTarefas();
-  };
+    };
+
+    const reset = () => {
+        setTasks(data);
+        setNewTasks([]);
+        setErrors([]);
+        setIsChanged(false);
+        buscarTarefas();
+    };
 
 
     const apagarTarefa = (tarefa) => {
@@ -155,7 +155,7 @@ const TarefaLider = (props) => {
                 .then((response) => {
                     console.log(`Tarefa ${tarefa.id} foi apagada com sucesso.`, response.data);
                     buscarTarefas();
-                    setDeleteToast(true);                   
+                    setDeleteToast(true);
                 })
                 .catch((error) => {
                     console.error(`Erro ao apagar a tarefa ${tarefa.id}.`, error);
@@ -166,27 +166,27 @@ const TarefaLider = (props) => {
             setNewTasks(updatedNewTasks);
         }
     }
-    
 
-  // Função para alterar os campos das tarefas existentes
-  const handleChange = (index, field, value) => {
-    setIsChanged(true);
 
-    const updatedTasks = [...tasks];
-    if (field === "data") {
-      updatedTasks[index].dataFormatada = value;
-    } else {
-      updatedTasks[index][field] = value;
-    }
-    setTasks(updatedTasks);
-  };
+    // Função para alterar os campos das tarefas existentes
+    const handleChange = (index, field, value) => {
+        setIsChanged(true);
 
-  // Função para alterar os campos das novas tarefas
-  const handleNewTaskChange = (index, field, value) => {
-    const updatedNewTasks = [...newTasks];
-    updatedNewTasks[index][field] = value;
-    setNewTasks(updatedNewTasks);
-  };
+        const updatedTasks = [...tasks];
+        if (field === "data") {
+            updatedTasks[index].dataFormatada = value;
+        } else {
+            updatedTasks[index][field] = value;
+        }
+        setTasks(updatedTasks);
+    };
+
+    // Função para alterar os campos das novas tarefas
+    const handleNewTaskChange = (index, field, value) => {
+        const updatedNewTasks = [...newTasks];
+        updatedNewTasks[index][field] = value;
+        setNewTasks(updatedNewTasks);
+    };
 
 
     return (
@@ -198,15 +198,15 @@ const TarefaLider = (props) => {
             </Toast>
 
             <Toast show={deleteToast} toggle={() => setDeleteToast(false)}>
-            {errors.length
+                {errors.length
                     ? "Erro ao excluir Atividade!"
-                    : "Atividade Excluída com Sucesso!"}                
+                    : "Atividade Excluída com Sucesso!"}
             </Toast>
 
             <Toast show={salvarToast} toggle={() => setSalvarToast(false)}>
-            {errors.length
+                {errors.length
                     ? "Erro ao salvar Atividade!"
-                    : "Atividade Inserida com Sucesso!"}                
+                    : "Atividade Inserida com Sucesso!"}
             </Toast>
 
 
@@ -216,22 +216,22 @@ const TarefaLider = (props) => {
                     onClick={adicionarTarefa}>Adicionar Tarefa</button>
             </div>
 
-      <div className="table-responsive">
-        <table className="table table-bordered">
-          <thead>
-            <tr className="table-active">
-              <th>ID</th>
-              <th>Nome</th>
-              <th>Descrição</th>
-              <th>Execução</th>
-              <th>Peso</th>
-              <th>Data Prevista</th>
-              <th>Valor</th>
-              <th>HH*</th>
-              <th>Material</th>
-              <th>Ação</th>
-            </tr>
-          </thead>
+            <div className="table-responsive">
+                <table className="table table-bordered">
+                    <thead>
+                        <tr className="table-active">
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Descrição</th>
+                            <th>Execução</th>
+                            <th>Peso</th>
+                            <th>Data Prevista</th>
+                            <th>Valor</th>
+                            <th>HH*</th>
+                            <th>Material</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
 
                     <tbody>
                         {tasks.map((t, index) => (
@@ -419,21 +419,21 @@ const TarefaLider = (props) => {
                                     {/* <button
                                     className="btn btn-danger"
                                     onClick={() => apagarTarefa(t)}>Excluir</button> */}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
 
-      <div className="mt-4 d-flex justify-content-end">
-        <button
-          className="btn btn-secondary"
-          disabled={!isChanged}
-          onClick={reset}
-        >
-          Desfazer alterações
-        </button>
+            <div className="mt-4 d-flex justify-content-end">
+                <button
+                    className="btn btn-secondary"
+                    disabled={!isChanged}
+                    onClick={reset}
+                >
+                    Desfazer alterações
+                </button>
 
                 <button
                     className="btn btn-primary ms-3"

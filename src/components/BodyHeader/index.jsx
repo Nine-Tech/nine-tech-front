@@ -3,10 +3,13 @@ import "./style.scss";
 const BodyHeader = (props) => {
   const { title, children, navigation, progress } = props;
   console.log(progress);
+  
+  const formatoNumero = new Intl.NumberFormat('pt-BR').format(progress);
+
   const progressBar =
     progress !== undefined ? (
       <div className="d-flex align-items-center">
-        {progress}
+        {formatoNumero}%
         <div className="progress ms-2" style={{ width: "200px" }}>
           <div
             className="progress-bar"
