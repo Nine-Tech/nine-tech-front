@@ -1,16 +1,14 @@
 import BodyHeader from "@/components/BodyHeader";
-import { useEffect, useState, } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import CardsProjeto from "@/components/CardsProjeto";
 
 const HomeLider = () => {
-  
   const [projects, setProjects] = useState([]);
   const { id } = useParams();
 
   useEffect(() => {
     window.axios.get(`subpacotes/${id}`).then(({ data }) => {
-     
       setProjects(data);
     });
   }, [id]);

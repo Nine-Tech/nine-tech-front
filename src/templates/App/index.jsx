@@ -23,7 +23,7 @@ const App = () => {
       try {
         const response = await window.axios.get("auth/informacaoUsuario");
         const data = response.data;
-  
+
         if (!data) {
           removeToken();
           navigate("/login");
@@ -35,17 +35,19 @@ const App = () => {
         } else if (data.roles.includes("ROLE_LIDER_DE_PROJETO_1")) {
           // O usuário é um Líder de Projeto
           const segments = location.pathname.split("/");
-  
+
           if (segments[1] === "liderprojeto" && segments[2] === data.id) {
             // O Líder de Projeto tem permissão para acessar a página principal do Líder de Projeto
             setUser(data);
           } else if (segments[1] === "subpacote" && segments.length === 4) {
             const subpacoteId = segments[3];
-  
+
             // Faça uma solicitação para verificar se o subpacote pertence ao Líder de Projeto
-            const subpacotesResponse = await window.axios.get(`/subpacotes/${subpacoteId}`);
+            const subpacotesResponse = await window.axios.get(
+              `/subpacotes/${subpacoteId}`,
+            );
             const subpacoteData = subpacotesResponse.data;
-  
+
             if (subpacoteData.liderDeProjeto.id === data.id) {
               // O Líder de Projeto tem permissão para acessar o subpacote
               setUser(data);
@@ -64,7 +66,7 @@ const App = () => {
         alert("Erro ao acessar informações do usuário. Faça login novamente.");
       }
     };
-  
+
     checkAccess();
   }, [token, navigate, userIdFromURL]);
 

@@ -31,9 +31,11 @@ const Pacote = () => {
       setSubpacotes(data);
     });
 
-    window.axios.get(`cronograma/cronograma-por-wbe/${pacoteId}`).then(({ data }) => {
-      setCronograma(data);
-    });
+    window.axios
+      .get(`cronograma/cronograma-por-wbe/${pacoteId}`)
+      .then(({ data }) => {
+        setCronograma(data);
+      });
   }, [pacoteId]);
 
   const navigation = [{ link: "#divisao", title: "Divisão" }];
@@ -58,7 +60,8 @@ const Pacote = () => {
             </div>
           ) : (
             <div className="text-center p-5">
-              No momento não existem tarefas criadas para esse Pacote, por favor volte mais tarde!
+              No momento não existem tarefas criadas para esse Pacote, por favor
+              volte mais tarde!
             </div>
           )}
         </div>

@@ -15,7 +15,6 @@ const Dashboard = () => {
     window.axios.get(`pacotes/porIdProjeto/${id}`).then(({ data }) => {
       setPacotesProCard(data);
     });
-
   }, [id]);
 
   /* const formatarMoeda = (value) => {
