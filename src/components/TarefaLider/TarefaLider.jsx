@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Toast from "@/components/Toast";
+
 import axios from "axios";
 
 const TarefaLider = (props) => {
@@ -8,8 +10,11 @@ const TarefaLider = (props) => {
   const [tasks, setTasks] = useState([]);
   const [newTasks, setNewTasks] = useState([]);
   const [isChanged, setIsChanged] = useState(false);
-
+  const [toast, setToast] = useState(false);
+  const [deleteToast, setDeleteToast] = useState(false);
+  const [salvarToast, setSalvarToast] = useState(false);
   const [errors, setErrors] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     axios
@@ -64,14 +69,26 @@ const TarefaLider = (props) => {
     return [ano, mes, dia];
   }
 
+  function formatarMoeda(valor) {
+    const formatador = new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+      minimumFractionDigits: 2,
+    });
+
+    return formatador.format(valor);
+  }
+
   const salvarTarefas = () => {
     newTasks.forEach((tarefa) => {
       const dataFormatada = formatarDataParaArray(tarefa.data);
+      const materialComoNumero =
+        tarefa.material !== "" ? parseFloat(tarefa.material) : null;
       const novaTarefaParaSalvar = {
         descricao: tarefa.descricao,
         data: dataFormatada,
         hh: tarefa.hh,
-        material: tarefa.material,
+        material: materialComoNumero,
         nome: tarefa.nome,
         peso: tarefa.peso,
         execucao: tarefa.execucao,
@@ -84,6 +101,8 @@ const TarefaLider = (props) => {
         .post("tarefas", novaTarefaParaSalvar)
         .then((response) => {
           console.log("Nova tarefa foi salva com sucesso.", response.data);
+          buscarTarefas();
+          setSalvarToast(true);
         })
         .catch((error) => {
           console.error("Erro ao salvar a nova tarefa.", error);
@@ -97,12 +116,14 @@ const TarefaLider = (props) => {
         .split("/")
         .reverse()
         .join("-");
+      const materialComoNumero =
+        tarefa.material !== "" ? parseFloat(tarefa.material) : null;
       axios
         .put(`tarefas/${tarefa.id}`, {
           descricao: tarefa.descricao,
           data: dataConvertida,
           hh: tarefa.hh,
-          material: tarefa.material,
+          material: materialComoNumero,
           valor: tarefa.valor,
           nome: tarefa.nome,
           peso: tarefa.peso,
@@ -114,6 +135,7 @@ const TarefaLider = (props) => {
             response.data,
           );
           buscarTarefas();
+          setToast(true);
         })
         .catch((error) => {
           console.error(`Erro ao atualizar a tarefa ${tarefa.id}.`, error);
@@ -131,7 +153,7 @@ const TarefaLider = (props) => {
 
   const apagarTarefa = (tarefa) => {
     if (tarefa.id) {
-      // Se a tarefa existe ele apaga a tarefa
+      // Se a tarefa tem um ID, ela já existe no banco de dados e pode ser excluída
       axios
         .delete(`tarefas/${tarefa.id}`)
         .then((response) => {
@@ -140,6 +162,7 @@ const TarefaLider = (props) => {
             response.data,
           );
           buscarTarefas();
+          setDeleteToast(true);
         })
         .catch((error) => {
           console.error(`Erro ao apagar a tarefa ${tarefa.id}.`, error);
@@ -173,6 +196,24 @@ const TarefaLider = (props) => {
 
   return (
     <>
+      <Toast show={toast} toggle={setToast}>
+        {errors.length
+          ? "Erro ao atualizar Atividade(s)"
+          : "Alterações salvas com sucesso!"}
+      </Toast>
+
+      <Toast show={deleteToast} toggle={() => setDeleteToast(false)}>
+        {errors.length
+          ? "Erro ao excluir Atividade!"
+          : "Atividade Excluída com Sucesso!"}
+      </Toast>
+
+      <Toast show={salvarToast} toggle={() => setSalvarToast(false)}>
+        {errors.length
+          ? "Erro ao salvar Atividade!"
+          : "Atividade Inserida com Sucesso!"}
+      </Toast>
+
       <div className="d-flex justify-content-end">
         <button className="btn btn-primary mb-2" onClick={adicionarTarefa}>
           Adicionar Tarefa
@@ -271,7 +312,7 @@ const TarefaLider = (props) => {
                   <input
                     className="form-control"
                     type="text"
-                    value={t.valor}
+                    value={formatarMoeda(t.valor)}
                     readOnly={true}
                     onChange={(e) =>
                       handleChange(index, "valor", e.target.value)
@@ -281,7 +322,7 @@ const TarefaLider = (props) => {
                 <td>
                   <input
                     className="form-control"
-                    type="text"
+                    type="number"
                     value={t.hh}
                     onChange={(e) => handleChange(index, "hh", e.target.value)}
                   />
@@ -290,10 +331,12 @@ const TarefaLider = (props) => {
                   <input
                     className="form-control"
                     type="text"
-                    value={t.material}
+                    value={isEditing ? t.material : formatarMoeda(t.material)}
                     onChange={(e) =>
                       handleChange(index, "material", e.target.value)
                     }
+                    onFocus={() => setIsEditing(true)}
+                    onBlur={() => setIsEditing(false)}
                   />
                 </td>
                 <td>
@@ -385,7 +428,7 @@ const TarefaLider = (props) => {
                   <input
                     className="form-control"
                     type="text"
-                    value={t.valor}
+                    value={formatarMoeda(t.valor)}
                     readOnly={true}
                     onChange={(e) =>
                       handleNewTaskChange(index, "valor", e.target.value)
@@ -395,7 +438,7 @@ const TarefaLider = (props) => {
                 <td>
                   <input
                     className="form-control"
-                    type="text"
+                    type="number"
                     value={t.hh}
                     onChange={(e) =>
                       handleNewTaskChange(index, "hh", e.target.value)
@@ -406,10 +449,12 @@ const TarefaLider = (props) => {
                   <input
                     className="form-control"
                     type="text"
-                    value={t.material}
+                    value={isEditing ? t.material : formatarMoeda(t.material)}
                     onChange={(e) =>
                       handleNewTaskChange(index, "material", e.target.value)
                     }
+                    onFocus={() => setIsEditing(true)}
+                    onBlur={() => setIsEditing(false)}
                   />
                 </td>
                 <td>
