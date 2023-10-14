@@ -96,50 +96,58 @@ function TabelaCronograma(props) {
           : "Alterações salvas com sucesso."}
       </Toast>
 
-      <div className="table-responsive">
-        <table className="table table-bordered">
-          <thead>
-            <tr className="table-active">
-              <th>Atividade(WBE)</th>
-              <th colSpan="12">Avanço de Horas Planejado</th>
-            </tr>
-            <tr>
-              <td></td>
-              <td>JAN</td>
-              <td>FEV</td>
-              <td>MAR</td>
-              <td>ABR</td>
-              <td>MAI</td>
-              <td>JUN</td>
-              <td>JUL</td>
-              <td>AGO</td>
-              <td>SET</td>
-              <td>OUT</td>
-              <td>NOV</td>
-              <td>DEZ</td>
-            </tr>
-          </thead>
-          <tbody>
-            {updatedData.map((item) => (
-              <tr key={item.id}>
-                <td>{item.subpacote.nome || ""}</td>
-                <td>{item.mes1}</td>
-                <td>{item.mes2}</td>
-                <td>{item.mes3}</td>
-                <td>{item.mes4}</td>
-                <td>{item.mes5}</td>
-                <td>{item.mes6}</td>
-                <td>{item.mes7}</td>
-                <td>{item.mes8}</td>
-                <td>{item.mes9}</td>
-                <td>{item.mes10}</td>
-                <td>{item.mes11}</td>
-                <td>{item.mes12}</td>
+      {updatedData.length ? (   
+        <div className="table-responsive">
+          <table className="table table-bordered">
+            <thead>
+              <tr className="table-active">
+                <th>Atividade(WBE)</th>
+                <th colSpan="12">Avanço de Horas Planejado</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+              <tr>
+                <td></td>
+                <td>JAN</td>
+                <td>FEV</td>
+                <td>MAR</td>
+                <td>ABR</td>
+                <td>MAI</td>
+                <td>JUN</td>
+                <td>JUL</td>
+                <td>AGO</td>
+                <td>SET</td>
+                <td>OUT</td>
+                <td>NOV</td>
+                <td>DEZ</td>
+              </tr>
+            </thead>
+            <tbody>
+              {updatedData.map((item) => (
+                <tr key={item.id}>
+                  <td>{item.subpacote.nome || ""}</td>
+                  <td>{item.mes1}</td>
+                  <td>{item.mes2}</td>
+                  <td>{item.mes3}</td>
+                  <td>{item.mes4}</td>
+                  <td>{item.mes5}</td>
+                  <td>{item.mes6}</td>
+                  <td>{item.mes7}</td>
+                  <td>{item.mes8}</td>
+                  <td>{item.mes9}</td>
+                  <td>{item.mes10}</td>
+                  <td>{item.mes11}</td>
+                  <td>{item.mes12}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="text-center p-5">
+              No momento não existem cronogramas atribuidos neste Projeto, por favor
+              volte mais tarde!
+            </div>
+      )
+      }
 
       <div className="mt-4 d-flex justify-content-end">
         <button
