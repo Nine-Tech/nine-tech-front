@@ -52,7 +52,11 @@ const CronogramaLider = (props) => {
   const update = (e, item) => {
     if (!isChanged) setIsChanged(true);
     const target = e.target;
+    console.log("updatedData");
+    console.log(updatedData);
     const updatedDataCopy = { ...updatedData };
+    console.log("updatedDataCopy");
+    console.log(updatedDataCopy);
     updatedDataCopy[item] =
       target.value < 0 ? 0 : target.value > 100 ? 100 : Number(target.value);
     setUpdatedData(updatedDataCopy);
