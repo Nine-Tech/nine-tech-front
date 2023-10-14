@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import Navbar from "../../components/Navbar/Index";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getToken, removeToken } from "@/utils/api";
+import { removeToken } from "@/utils/api";
 
 const App = () => {
   const matches = useMatches();
@@ -13,7 +13,6 @@ const App = () => {
   const location = useLocation();
   const userIdFromURL = location.pathname.split("/").pop(); // Obtenha o último segmento da URL
 
-  const token = getToken();
   const navigate = useNavigate();
 
   const [user, setUser] = useState({});
@@ -32,7 +31,9 @@ const App = () => {
         } else if (data.roles.includes("ROLE_ENGENHEIRO_CHEFE")) {
           // O usuário é um Engenheiro Chefe, então permita o acesso a tudo
           setUser(data);
-        } else if (data.roles.includes("ROLE_LIDER_DE_PROJETO_1")) {
+        } else if (
+          data.roles.includes("ROLE_LIDER_DE_PROJETO_1", "LIDER_DE_PROJETO_2")
+        ) {
           // O usuário é um Líder de Projeto
           const segments = location.pathname.split("/");
 
@@ -68,11 +69,11 @@ const App = () => {
     };
 
     checkAccess();
-  }, [token, navigate, userIdFromURL]);
+  }, [location.pathname, navigate, userIdFromURL]);
 
   return (
     <>
-      <Navbar />
+      <Navbar user={user} />
       <div className="app">
         <Header title={title} userTitle={user.nome} />
 

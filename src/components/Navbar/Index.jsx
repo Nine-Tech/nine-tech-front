@@ -1,28 +1,19 @@
-import React from "react";
 import logo from "@/assets/images/9tech-logo.png";
 import { Link } from "react-router-dom";
 
-const Navbar = () => {
-  const buttons = () => {
-    let options = [
-      { link: "", name: "Home", icon: "" },
-      // { link: "pacotes", name: "Pacotes", icon: "" },
-      // { link: "projetos", name: "Projetos", icon: "" },
-      // { link: "tarefas", name: "Tarefas", icon: "" },
-    ];
-    return options.map((opt) => (
-      <Link to={opt.link} classNameName="btn text-start py-3" key={opt.name}>
-        <i classNameName={opt.icon} />
-        <span>{opt.name}</span>
-      </Link>
-    ));
-  };
+const Navbar = (props) => {
+  const { user } = props;
+
+  const { id, roles } = user;
+  const route = (roles || []).includes("ROLE_ENGENHEIRO_CHEFE")
+    ? "/engenheirochefe"
+    : `/liderprojeto/${id}`;
 
   return (
     <>
       <nav className="navbar shadow  navbar-expand-lg bg-body-tertiary ">
         <div className="container-fluid">
-          <a className="navbar-brand" href="/">
+          <a className="navbar-brand" href={route}>
             <img src={logo} alt="9tech-logo" width="90"></img>
           </a>
           <button
@@ -39,13 +30,13 @@ const Navbar = () => {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item">
-                <a
+                <Link
                   className="nav-link active fs-5 fw-bold"
                   aria-current="page"
-                  href="/"
+                  to={route}
                 >
                   Home
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

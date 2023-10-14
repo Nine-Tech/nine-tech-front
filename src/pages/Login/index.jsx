@@ -9,14 +9,13 @@ import "./style.scss";
 const Login = () => {
   const navigate = useNavigate();
 
-  const [login, setLogin] = useState("");
   const [senha, setSenha] = useState("");
+  const [selectedLogin, setSelectedLogin] = useState("");
 
   const [toast, setToast] = useState(false);
 
   const [listaEngenheiros, setListaEngenheiros] = useState({});
   const [listaLideres, setListaLideres] = useState({});
-  const [selectedLogin, setSelectedLogin] = useState("");
 
   useEffect(() => {
     window.axios.get(`lider`).then(({ data }) => {
@@ -26,7 +25,7 @@ const Login = () => {
     window.axios.get(`engenheiro`).then(({ data }) => {
       setListaEngenheiros(data);
     });
-  }, [listaEngenheiros, listaLideres]);
+  }, []);
 
   async function fazerLogin() {
     const loginData = {
