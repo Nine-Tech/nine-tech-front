@@ -12,23 +12,32 @@ const PacoteLider = () => {
   const [packages, setPackages] = useState([]);
   const [subpackages, setSubpackages] = useState([]);
   const [cronograma, setCronograma] = useState({});
+  const [idProjeto, setIdProjeto] = useState(0);
+
   useEffect(() => {
     window.axios.get(`tarefas/subpacote/${id}`).then(({ data }) => {
       setTasks(data);
     });
-
     window.axios.get(`subpacotes/listaIdSubpacote/${id}`).then(({ data }) => {
       setSubpackages(data);
+      setIdProjeto(data.pacotes.projeto.id);
     });
-
     window.axios.get(`upload/${id}`).then(({ data }) => {
       setPackages(data);
     });
 
-    window.axios.get(`cronograma/${id}`).then(({ data }) => {
-      setCronograma(data);
-    });
+    window.axios
+      .get(`cronograma/${id}`)
+      .then(({ data }) => {
+        setCronograma(data);
+      })
+      .catch((error) => {
+        console.error("Erro na requisição:", error);
+      });
+
   }, [id]);
+
+  console.log("data do Pacote", cronograma)
 
   const navigation = [
     { link: "#atividades", title: "Atividades" },
@@ -49,8 +58,7 @@ const PacoteLider = () => {
         <div className="tab-pane" id="planejamento" role="tabpanel">
           {/*           <TarefasView />
            */}{" "}
-          <CronogramaLider />
-          <TabelaValorLider />
+          <CronogramaLider data={cronograma} idProjeto={idProjeto} />
         </div>
       </div>
     </>
