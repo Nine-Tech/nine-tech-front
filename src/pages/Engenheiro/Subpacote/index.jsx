@@ -13,23 +13,27 @@ const Subpacote = () => {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-
-    window.axios.get(`subpacotes/listarUmSubpacote/${subpacoteId}`).then(({ data }) => {
-      setSubpacoteNome(data);
-    });
+    window.axios
+      .get(`subpacotes/listarUmSubpacote/${subpacoteId}`)
+      .then(({ data }) => {
+        setSubpacoteNome(data);
+      });
 
     window.axios.get(`tarefas/subpacote/${subpacoteId}`).then(({ data }) => {
       setTasks(data);
     });
   }, [subpacoteId]);
 
-  console.log(subpacoteNome)
+  console.log(subpacoteNome);
 
   const navigation = [{ link: "#divisao", title: "Divisão" }];
 
   return (
     <>
-      <BodyHeader title={subpacoteNome.nome || "Subpacote"} navigation={navigation} />
+      <BodyHeader
+        title={subpacoteNome.nome || "Subpacote"}
+        navigation={navigation}
+      />
       <div className="my-5 tab-content">
         <div className="tab-pane active" id="divisao" role="tabpanel">
           <TarefasLiderView data={tasks} />

@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const TabelaValorLider = () => {
-  return (
-    <div>TabelaValorLider</div>
-  )
-}
+  return <div>TabelaValorLider</div>;
+};
 
-export default TabelaValorLider
+export default TabelaValorLider;

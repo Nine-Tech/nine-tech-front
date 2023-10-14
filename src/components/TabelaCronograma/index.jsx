@@ -17,19 +17,21 @@ function TabelaCronograma(props) {
 
   const [toast, setToast] = useState(false);
 
-  useEffect(() => {
-    let cronogramaData = Object.keys(data).map((key) => {
-      const item = data[key];
-      return {
-        id: key,
-        porcentagens: item.porcentagens,
-        nome: item.nome,
-      };
-    });
+  async function fetchData() {
+    try {
+      const response = await window.axios.get(`cronograma/pacote/${projetoId}`);
+      const data = response.data;
+      setCronograma(data);
+      setUpdatedData(data);
+      console.log(data);
+    } catch (error) {
+      console.error("Erro na requisição:", error);
+    }
+  }
 
-    setCronograma(cronogramaData);
-    setUpdatedData(cronogramaData);
-  }, [data]);
+  useEffect(() => {
+    fetchData();
+  }, [projetoId]);
 
   const reset = () => {
     let updateData = [...cronograma];
@@ -56,8 +58,6 @@ function TabelaCronograma(props) {
       ...cronograma.map((i) => (i.id === updateRow.id ? updateRow : i)),
     ];
 
-    console.log(updateData);
-
     setUpdatedData(updateData);
   };
 
@@ -75,7 +75,7 @@ function TabelaCronograma(props) {
         porcentagens: sortedPorcentagens.map((item) => item.porcentagens),
       };
 
-      await axios.put(`/cronograma/${projetoId}`, dataToSave);
+      await window.axios.put(`/cronograma/${projetoId}`, dataToSave);
 
       setCronograma([...updatedData]);
       setIsChanged(false);
@@ -122,21 +122,19 @@ function TabelaCronograma(props) {
           <tbody>
             {updatedData.map((item) => (
               <tr key={item.id}>
-                <td>{item.nome || ""}</td>
-                {item.porcentagens.map((porcentagem, index) => (
-                  <td key={index}>
-                    <input
-                      className="form-control form-control-sm"
-                      min={0}
-                      step={1}
-                      max={100}
-                      type="number"
-                      name="porcentagem"
-                      value={porcentagem || 0}
-                      onChange={(e) => update(e, item, index)}
-                    />
-                  </td>
-                ))}
+                <td>{item.subpacote.nome || ""}</td>
+                <td>{item.mes1}</td>
+                <td>{item.mes2}</td>
+                <td>{item.mes3}</td>
+                <td>{item.mes4}</td>
+                <td>{item.mes5}</td>
+                <td>{item.mes6}</td>
+                <td>{item.mes7}</td>
+                <td>{item.mes8}</td>
+                <td>{item.mes9}</td>
+                <td>{item.mes10}</td>
+                <td>{item.mes11}</td>
+                <td>{item.mes12}</td>
               </tr>
             ))}
           </tbody>
