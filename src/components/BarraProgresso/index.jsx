@@ -1,8 +1,10 @@
 import React from "react";
 
 const ProgressBar = ({ progress }) => {
-  const formatoNumero = new Intl.NumberFormat("pt-BR").format(progress);
-
+  const formatoNumero =
+    progress !== null && progress !== undefined
+      ? new Intl.NumberFormat("pt-BR").format(progress)
+      : 0;
   return (
     <div className="d-flex align-items-center">
       {formatoNumero}%
