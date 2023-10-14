@@ -7,6 +7,9 @@ const CronogramaLider = (props) => {
 
   const { data, idProjeto } = props;
 
+  console.log("id", idProjeto);
+  console.log("data", data);
+
   const [isChanged, setIsChanged] = useState(false);
   const [cronograma, setCronograma] = useState([]);
   const [updatedData, setUpdatedData] = useState([]);
@@ -17,7 +20,8 @@ const CronogramaLider = (props) => {
   const [toast, setToast] = useState(false);
 
   useEffect(() => {
-    if (data == undefined) {
+    console.log(data)
+    if (!data) {
       let cronogramaVazio = {
         id: 0,
         mes1: 0,
@@ -34,6 +38,7 @@ const CronogramaLider = (props) => {
         mes12: 0,
         id_projeto: idProjeto,
       };
+      console.log("aqui: ", cronogramaVazio);
       setCronograma(cronogramaVazio);
       setUpdatedData(cronogramaVazio);
     } else {
@@ -67,7 +72,7 @@ const CronogramaLider = (props) => {
     try {
       if (updatedData.id == 0) {
         const cronogramaCriar = {
-          id_projeto: updatedData.id_projeto,
+          id_projeto: idProjeto,
           mes1: updatedData.mes1,
           mes2: updatedData.mes2,
           mes3: updatedData.mes3,
@@ -88,7 +93,7 @@ const CronogramaLider = (props) => {
       } else {
         const cronogramaAlterar = {
           id: updatedData.id,
-          id_projeto: updatedData.projeto.id,
+          id_projeto: idProjeto,
           mes1: updatedData.mes1,
           mes2: updatedData.mes2,
           mes3: updatedData.mes3,
@@ -113,6 +118,7 @@ const CronogramaLider = (props) => {
         .then(({ data }) => {
           setCronograma(data);
           setUpdatedData(data);
+          console.log("volta do get", data);
         })
         .catch((error) => {
           console.error("Erro na requisição:", error);
