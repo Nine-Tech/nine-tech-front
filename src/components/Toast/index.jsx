@@ -1,12 +1,29 @@
+import { useEffect, useState } from "react";
+
 const Toast = (props) => {
   const { show, toggle, children } = props;
+  const [visible, setVisible] = useState(show);
+
+  useEffect(() => {
+    setVisible(show);
+
+    if (show) {
+      const timer = setTimeout(() => {
+        toggle(false);
+        setVisible(false);
+        window.location.reload();
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [show, toggle]);
 
   return (
     <>
       <div className="position-fixed top-0 end-0 p-3" style={{ zIndex: 11 }}>
         <div
           id="liveToast"
-          className={`toast ${show && "show"}`}
+          className={`shadow toast ${show && "show"}`}
           role="alert"
           aria-live="assertive"
           aria-atomic="true"
@@ -20,7 +37,7 @@ const Toast = (props) => {
               onClick={() => toggle(false)}
             />
           </div>
-          <div className="toast-body">{children}</div>
+          <div className="toast-body fw-bold">{children}</div>
         </div>
       </div>
     </>

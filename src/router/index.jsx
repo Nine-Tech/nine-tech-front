@@ -1,10 +1,13 @@
 import App from "../templates/App";
 
-import Home from "../pages/Home";
-import Projeto from "@/pages/Projeto";
-import HomeLider from "../pages/HomeLider";
-// import TabelaCronograma from "../components/TabelaCronograma";
-import ProjetoLider from "../pages/ProjetoLider";
+import Home from "../pages/Engenheiro/Home";
+import Projeto from "../pages/Engenheiro/Projeto";
+import Pacote from "../pages/Engenheiro/Pacote";
+import Subpacote from "../pages/Engenheiro/Subpacote";
+import HomeLider from "../pages/Lider/HomeLider";
+import PacoteLider from "../pages/Lider/PacoteLider";
+
+import Login from "../pages/Login";
 
 import { Navigate } from "react-router-dom";
 
@@ -22,6 +25,16 @@ export default [
         element: <Projeto />,
         handle: { title: "Projetos" },
       },
+      {
+        path: "projetos/:id/pacotes/:pacoteId",
+        element: <Pacote />,
+        handle: { title: "Pacotes" },
+      },
+      {
+        path: "projetos/:id/pacotes/:pacoteId/subpacotes/:subpacoteId",
+        element: <Subpacote />,
+        handle: { title: "Subpacotes" },
+      },
     ],
   },
   {
@@ -33,11 +46,15 @@ export default [
         element: <HomeLider />,
       },
       {
-        path: "projetos/:id",
-        element: <ProjetoLider />,
-        handle: { title: "Projetos" },
+        path: "subpacotes/:id",
+        element: <PacoteLider />,
+        handle: { title: "Subpacotes" },
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
   {
     path: "*",

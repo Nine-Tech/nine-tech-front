@@ -4,142 +4,257 @@ import Toast from "@/components/Toast";
 import "./style.scss";
 
 const LiderTabelaWBE = (props) => {
-    const { id } = useParams();
+  const { id } = useParams();
+  const { data } = props;
 
-    const { data } = props;
+  const pathParts = location.pathname.split("/");
+  const idLiderProjeto = pathParts[2];
+  const idProjeto = pathParts[4];
 
-    const [leaders, setLeaders] = useState([]);
+  const [leaders, setLeaders] = useState([]);
 
-    const [packages, setPackages] = useState([]);
-    const [updatedData, setUpdatedData] = useState({});
-    const [isChanged, setIsChanged] = useState(false);
-    const [errors, setErrors] = useState([]);
+  const [packages, setPackages] = useState([]);
+  const [updatedData, setUpdatedData] = useState({});
+  const [isChanged, setIsChanged] = useState(false);
+  const [errors, setErrors] = useState([]);
+  const [reloader, setReloader] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [barraProgresso, setBarraProgresso] = useState(0);
+  const [toast, setToast] = useState(false);
 
-    const [loading, setLoading] = useState(false);
+  const [progressoMensal, setProgresso] = useState([]);
 
-    const [toast, setToast] = useState(false);
+  useEffect(() => {
+    console.log(reloader);
+    if (reloader == false) {
+      window.axios.get(`lider`).then(({ data }) => {
+        setLeaders(data);
+      });
 
-    useEffect(() => {
-        window.axios.get(`lider/listar`).then(({ data }) => {
-            setLeaders(data);
+      window.axios
+        .get(`progressaomensal/calculo/${idProjeto}`)
+        .then(({ data }) => {
+          setBarraProgresso(data);
         });
 
-        setPackages(
-            data.map((i) => {
-                return { ...i, liderDeProjeto: i.liderDeProjeto?.lider_de_projeto_id };
-            }),
-        );
-    }, [id, data]);
+      window.axios
+        .get(`progressaomensal/${idLiderProjeto}/${idProjeto}`)
+        .then(({ data: progressoMensal }) => {
+          setProgresso(progressoMensal);
+        });
+      setPackages(
+        data.map((i) => {
+          const matchingProgressItem = progressoMensal.find(
+            (progressItem) => progressItem[1] === i.id,
+          );
 
-    const reset = () => {
-        const resetPackages = [...data];
+          // Verifique se há um elemento correspondente em progressoMensal
+          if (matchingProgressItem) {
+            console.log("matchingProgressItem:");
+            console.log(matchingProgressItem);
+            // Adicione as propriedades do elemento correspondente a i
+            i.peso = matchingProgressItem[0].peso;
+            i.execucao = matchingProgressItem[0].execucao;
+            i.data = matchingProgressItem[0].data;
+            i.idProgresso = matchingProgressItem[0].id;
+            i.existe = true;
+          }
 
-        setPackages(resetPackages);
-        setErrors([]);
-        setIsChanged(false);
+          return i;
+        }),
+      );
+      //setReloader(true);
+    }
+  }, [id, data, idLiderProjeto, idProjeto, reloader]);
+
+  const reset = () => {
+    const resetPackages = [...data];
+
+    setPackages(resetPackages);
+    setErrors([]);
+    setIsChanged(false);
+  };
+
+  const update = (e, item) => {
+    if (!isChanged) setIsChanged(true);
+    const target = e.target;
+    console.log("target.name");
+    console.log(target.name);
+    console.log(target.value);
+    let updatedItem;
+    if (target.name == "execucao") {
+      if (target.value == 0) {
+        updatedItem = { ...item, [target.name]: false };
+      } else {
+        updatedItem = { ...item, [target.name]: true };
+      }
+    } else {
+      updatedItem = { ...item, [target.name]: target.value };
+    }
+    console.log("updatedItem");
+    console.log(updatedItem);
+    if (target.type === "number" && target.value < 0)
+      updatedItem[target.name] = 0;
+    const newData = {
+      ...updatedData,
+      [item.id]: updatedItem,
     };
+    setUpdatedData(newData);
 
-    const update = (e, item) => {
-        if (!isChanged) setIsChanged(true);
-        const target = e.target;
+    const updatedPackages = [
+      ...packages.map((p) => (p.id === item.id ? updatedItem : p)),
+    ];
+    setPackages(updatedPackages);
+  };
 
-        const updatedItem = { ...item, [target.name]: target.value };
-        if (target.type === "number" && target.value < 0)
-            updatedItem[target.name] = 0;
+  const save = () => {
+    setLoading(true);
+    setErrors([]);
 
-        const newData = {
-            ...updatedData,
-            [item.id]: updatedItem,
+    Promise.allSettled([
+      ...Object.keys(updatedData).map((k) => {
+        let item = updatedData[k];
+        console.log("item:");
+        console.log(item.id);
+        let data = {
+          peso: parseFloat(item.peso) || 0,
+          execucao: item.execucao,
+          data: item.data,
+          id_wbe: parseFloat(item.id) || 0,
         };
-        setUpdatedData(newData);
+        console.log("id_wbe:");
+        console.log(data);
 
-        const updatedPackages = [
-            ...packages.map((p) => (p.id === item.id ? updatedItem : p)),
-        ];
-        setPackages(updatedPackages);
-    };
+        if (item.existe) {
+          return new Promise((resolve, reject) => {
+            window.axios
+              .put(`progressaomensal/${item.idProgresso}`, data)
+              .then(resolve)
+              .catch();
+          });
+        } else {
+          return new Promise((resolve, reject) => {
+            window.axios
+              .post(`progressaomensal/${item.id}`, data)
+              .then(resolve);
+          });
+        }
+      }),
+    ])
+      .then((results) =>
+        setErrors(
+          results.filter((r) => r.status === "rejected").map((r) => r.reason),
+        ),
+      )
+      .finally(() => {
+        setIsChanged(false);
+        setLoading(false);
+        setToast(true);
+        setReloader(false);
+      });
+  };
 
-    const save = () => {
-        setLoading(true);
-        setErrors([]);
+  return (
+    <div>
+      <Toast show={toast} toggle={setToast}>
+        {errors.length
+          ? "Certifique-se de que não deixou nenhum campo vazio."
+          : "Mudanças salvas."}
+      </Toast>
 
-        Promise.allSettled([
-            ...Object.keys(updatedData).map((k) => {
-                let item = updatedData[k];
-
-                let data = {
-                    novoHH: parseFloat(item.hh) || 0,
-                    novoValor: parseFloat(item.valor) || 0,
-                    novoLiderDeProjetoId: parseInt(item.liderDeProjeto),
-                    novoProjetoId: parseInt(item.projeto?.id),
-                };
-
-                return new Promise((resolve, reject) => {
-                    window.axios
-                        .put(`wbe/atualizar/${k}`, data)
-                        .then(resolve)
-                        .catch(() => reject(item.id));
-                });
-            }),
-        ])
-            .then((results) =>
-                setErrors(
-                    results.filter((r) => r.status === "rejected").map((r) => r.reason),
-                ),
-            )
-            .finally(() => {
-                setIsChanged(false);
-                setLoading(false);
-                setToast(true);
-            });
-    };
-
-
-    return (
-        <div>
-            <Toast show={toast} toggle={setToast}>
-                {errors.length
-                    ? "Certifique-se de que não deixou nenhum campo vazio."
-                    : "Mudanças salvas."}
-            </Toast>
-
-            <div className='d-flex justify-content-end align-items-center mb-3'>
-                <span className="small">{/* Variavel aqui */}0%</span>
-                <div className="progress w-25">
-                    <div className="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                    </div>
-                </div>
-            </div>
-
-            <table className="table table-bordered">
-                <thead>
-                    <tr className="table-active">
-                        <th>Nome</th>
-                        <th>Execução</th>
-                        <th>Peso</th>
-                        <th>Data Prevista</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {packages.map((item) => (
-                        <tr
-                            key={item.id}
-                            className={errors.includes(item.id) ? "error" : ""}
-                        >
-
-                            <td>{item.wbe}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-
-                        </tr>
-                        ))}
-                </tbody>
-            </table>
-
+      <div className="d-flex justify-content-end align-items-center mb-3">
+        <span className="small">{barraProgresso}%</span>
+        <div className="progress w-25">
+          <div
+            className="progress-bar"
+            role="progressbar"
+            value={barraProgresso}
+            aria-valuenow="0"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          ></div>
         </div>
+      </div>
 
-    )
-}
+      <table className="table table-bordered">
+        <thead>
+          <tr className="table-active">
+            <th>Nome</th>
+            <th>Execução</th>
+            <th>Peso</th>
+            <th>Data Prevista</th>
+          </tr>
+        </thead>
+        <tbody>
+          {packages.map((item) => (
+            <tr
+              key={item.id}
+              className={errors.includes(item.id) ? "error" : ""}
+            >
+              <td>{item.wbe}</td>
+              <td>
+                <input
+                  className="form-control form-control-sm"
+                  min={0}
+                  step={1}
+                  max={1}
+                  value={item?.execucao ? "1" : "0"}
+                  type="number"
+                  name="execucao"
+                  onChange={(e) => update(e, item)}
+                />
+              </td>
+              <td>
+                <input
+                  className="form-control form-control-sm"
+                  min={0}
+                  step={1}
+                  max={100}
+                  value={item?.peso || 0}
+                  type="number"
+                  name="peso"
+                  onChange={(e) => update(e, item)}
+                />
+              </td>
+              <td>
+                <input
+                  className="form-control form-control-sm"
+                  type="date"
+                  name="data"
+                  value={item?.data || ""}
+                  onChange={(e) => update(e, item)}
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div className="mt-4 d-flex justify-content-end">
+        <button
+          className="btn btn-secondary"
+          disabled={!isChanged}
+          onClick={reset}
+        >
+          Desfazer alterações
+        </button>
+        <button
+          className="btn btn-primary ms-3"
+          disabled={!isChanged}
+          onClick={save}
+        >
+          {loading ? (
+            <div
+              role="status"
+              className="spinner-border"
+              style={{ width: "1rem", height: "1rem" }}
+            />
+          ) : (
+            "Salvar"
+          )}
+        </button>
+      </div>
+    </div>
+  );
+};
 
-export default LiderTabelaWBE
+export default LiderTabelaWBE;

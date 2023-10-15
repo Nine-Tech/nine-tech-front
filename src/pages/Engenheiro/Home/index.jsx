@@ -18,9 +18,9 @@ const Home = () => {
       formData.append("file", selectedFile);
 
       window.axios
-        .post("/upload/criarWBS", formData)
+        .post("/upload", formData)
         .then(({ data }) => {
-          window.axios.post("/cronograma/criar", {
+          window.axios.post("/cronograma", {
             projeto: { id: data[0]?.projeto?.id },
             porcentagens: Array(data.length).fill(Array(12).fill(0)),
           });
@@ -114,7 +114,7 @@ const Home = () => {
   };
 
   const getProjects = () => {
-    window.axios.get("projeto/listar").then(({ data }) => {
+    window.axios.get("projeto").then(({ data }) => {
       setProjects(data);
     });
   };
@@ -146,7 +146,7 @@ const Home = () => {
                 to={`projetos/${p.id}`}
                 className="text-decoration-none text-primary"
               >
-                <CardsProjeto nome={p.nome} />
+                <CardsProjeto nome={p.nome} porcentagem={p.porcentagem} />
               </Link>
             </div>
           ))}
