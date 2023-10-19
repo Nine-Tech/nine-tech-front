@@ -56,8 +56,7 @@ const PacoteLider = () => {
           <TarefaLider data={tasks} />
         </div>
         <div className="tab-pane" id="planejamento" role="tabpanel">
-          {/*           <TarefasView />
-           */}{" "}
+          {" "}
           <CronogramaLider data={cronograma} idProjeto={idProjeto} />
         </div>
       </div>

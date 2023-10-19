@@ -2,7 +2,6 @@ import BodyHeader from "@/components/BodyHeader";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Modal from "@/components/Modal";
-// import BodyHeaderHome from "@/components/BodyHeaderHome";
 import CardsProjeto from "@/components/CardsProjeto";
 
 const Home = () => {
