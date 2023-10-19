@@ -73,9 +73,9 @@ const App = () => {
 
   return (
     <>
-      <Navbar user={user} />
+      <Navbar user={user} userTitle={user.nome} />
       <div className="app">
-        <Header title={title} userTitle={user.nome} />
+        <Header title={title} />
 
         <div className="wrapper">
           <Outlet />
