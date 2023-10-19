@@ -56,20 +56,14 @@ const TarefaLider = (props) => {
       descricao: "",
       execucao: 0,
       valor: "",
-      peso: "",
-      data: "",
+      peso: "",      
       hh: "",
       material: "",
     };
     setNewTasks([...newTasks, novaTarefa]);
   };
 
-  function formatarDataParaArray(dataString) {
-    const [dia, mes, ano] = dataString.split("/").map(Number);
-    return [ano, mes, dia];
-  }
-
-  function formatarMoeda(valor) {
+   function formatarMoeda(valor) {
     const formatador = new Intl.NumberFormat("pt-BR", {
       style: "currency",
       currency: "BRL",
@@ -81,12 +75,11 @@ const TarefaLider = (props) => {
 
   const salvarTarefas = () => {
     newTasks.forEach((tarefa) => {
-      const dataFormatada = formatarDataParaArray(tarefa.data);
+      
       const materialComoNumero =
         tarefa.material !== "" ? parseFloat(tarefa.material) : null;
       const novaTarefaParaSalvar = {
-        descricao: tarefa.descricao,
-        data: dataFormatada,
+        descricao: tarefa.descricao,        
         hh: tarefa.hh,
         material: materialComoNumero,
         nome: tarefa.nome,
@@ -112,16 +105,12 @@ const TarefaLider = (props) => {
     setNewTasks([]);
 
     tasks.forEach((tarefa) => {
-      const dataConvertida = tarefa.dataFormatada
-        .split("/")
-        .reverse()
-        .join("-");
+      
       const materialComoNumero =
         tarefa.material !== "" ? parseFloat(tarefa.material) : null;
       axios
         .put(`tarefas/${tarefa.id}`, {
-          descricao: tarefa.descricao,
-          data: dataConvertida,
+          descricao: tarefa.descricao,          
           hh: tarefa.hh,
           material: materialComoNumero,
           valor: tarefa.valor,
@@ -214,10 +203,28 @@ const TarefaLider = (props) => {
           : "Atividade Inserida com Sucesso!"}
       </Toast>
 
-      <div className="d-flex justify-content-end">
-        <button className="btn btn-primary mb-2" onClick={adicionarTarefa}>
+      <div className="d-flex justify-content-end mb-3">
+        <div className="d-flex justify-content-end">
+          <button
+            className="btn btn-secondary"
+            disabled={!isChanged}
+            onClick={reset}
+          >
+            Desfazer alterações
+          </button>
+
+          <button
+            className="btn btn-primary ms-3"
+            disabled={!isChanged}
+            onClick={salvarTarefas}
+          >
+            Salvar Alterações
+          </button>
+          <button className="btn btn-success ms-3" onClick={adicionarTarefa}>
           Adicionar Tarefa
         </button>
+        </div>
+        
       </div>
 
       <div className="table-responsive">
@@ -228,8 +235,7 @@ const TarefaLider = (props) => {
               <th>Nome</th>
               <th>Descrição</th>
               <th>Execução</th>
-              <th>Peso</th>
-              <th>Data Prevista</th>
+              <th>Peso</th>              
               <th>Valor</th>
               <th>HH*</th>
               <th>Material</th>
@@ -297,17 +303,7 @@ const TarefaLider = (props) => {
                     <option value="89">89</option>
                     <option value="100">100</option>
                   </select>
-                </td>
-                <td>
-                  <input
-                    className="form-control"
-                    type="text"
-                    value={tasks[index].dataFormatada}
-                    onChange={(e) =>
-                      handleChange(index, "data", e.target.value)
-                    }
-                  />
-                </td>
+                </td>                
                 <td>
                   <input
                     className="form-control"
@@ -414,16 +410,7 @@ const TarefaLider = (props) => {
                     <option value="100">100</option>
                   </select>
                 </td>
-                <td>
-                  <input
-                    className="form-control"
-                    type="text"
-                    value={t.data}
-                    onChange={(e) =>
-                      handleNewTaskChange(index, "data", e.target.value)
-                    }
-                  />
-                </td>
+                
                 <td>
                   <input
                     className="form-control"
@@ -461,9 +448,6 @@ const TarefaLider = (props) => {
                   <button className="btn btn-success" onClick={salvarTarefas}>
                     Salvar
                   </button>
-                  {/* <button
-                                    className="btn btn-danger"
-                                    onClick={() => apagarTarefa(t)}>Excluir</button> */}
                 </td>
               </tr>
             ))}
@@ -471,23 +455,7 @@ const TarefaLider = (props) => {
         </table>
       </div>
 
-      <div className="mt-4 d-flex justify-content-end">
-        <button
-          className="btn btn-secondary"
-          disabled={!isChanged}
-          onClick={reset}
-        >
-          Desfazer alterações
-        </button>
 
-        <button
-          className="btn btn-primary ms-3"
-          disabled={!isChanged}
-          onClick={salvarTarefas}
-        >
-          Salvar Alterações
-        </button>
-      </div>
     </>
   );
 };

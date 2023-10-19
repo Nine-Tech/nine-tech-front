@@ -43,7 +43,6 @@ const TarefaLiderView = (props) => {
                 <th>Descrição</th>
                 <th>Execução</th>
                 <th>Peso</th>
-                <th>Data Prevista</th>
                 <th>Valor</th>
                 <th>HH*</th>
                 <th>Material</th>
@@ -58,7 +57,6 @@ const TarefaLiderView = (props) => {
                   <td>{t.descricao}</td>
                   <td>{t.execucao ? "1" : "0"}</td>
                   <td>{t.peso}</td>
-                  <td>{t.dataFormatada}</td>
                   <td>{t.valor}</td>
                   <td>{t.hh}</td>
                   <td>{t.material}</td>
