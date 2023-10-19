@@ -214,10 +214,28 @@ const TarefaLider = (props) => {
           : "Atividade Inserida com Sucesso!"}
       </Toast>
 
-      <div className="d-flex justify-content-end">
-        <button className="btn btn-primary mb-2" onClick={adicionarTarefa}>
+      <div className="d-flex justify-content-end mb-3">
+        <div className="d-flex justify-content-end">
+          <button
+            className="btn btn-secondary"
+            disabled={!isChanged}
+            onClick={reset}
+          >
+            Desfazer alterações
+          </button>
+
+          <button
+            className="btn btn-primary ms-3"
+            disabled={!isChanged}
+            onClick={salvarTarefas}
+          >
+            Salvar Alterações
+          </button>
+          <button className="btn btn-success ms-3" onClick={adicionarTarefa}>
           Adicionar Tarefa
         </button>
+        </div>
+        
       </div>
 
       <div className="table-responsive">
@@ -461,9 +479,6 @@ const TarefaLider = (props) => {
                   <button className="btn btn-success" onClick={salvarTarefas}>
                     Salvar
                   </button>
-                  {/* <button
-                                    className="btn btn-danger"
-                                    onClick={() => apagarTarefa(t)}>Excluir</button> */}
                 </td>
               </tr>
             ))}
@@ -471,23 +486,7 @@ const TarefaLider = (props) => {
         </table>
       </div>
 
-      <div className="mt-4 d-flex justify-content-end">
-        <button
-          className="btn btn-secondary"
-          disabled={!isChanged}
-          onClick={reset}
-        >
-          Desfazer alterações
-        </button>
 
-        <button
-          className="btn btn-primary ms-3"
-          disabled={!isChanged}
-          onClick={salvarTarefas}
-        >
-          Salvar Alterações
-        </button>
-      </div>
     </>
   );
 };
