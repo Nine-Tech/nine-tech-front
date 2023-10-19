@@ -86,19 +86,22 @@ const Home = () => {
           return (
             <>
               <span className="mb-2">
-                Faça upload do arquivo Excel (.xlsx):
+                <h4>Upload arquivo Excel</h4>
               </span>
               <button
                 type="button"
-                className="btn btn-secondary"
+                className="btn btn-secondary m-2"
                 onClick={addDocument}
               >
                 Selecione um arquivo (.xlsx)
               </button>
               {selectedFile && (
-                <h5>Arquivo selecionado: {selectedFile.name}</h5>
+                <><h5 className="mt-2">Arquivo selecionado:</h5><p>{selectedFile.name}</p></>
               )}
-              <button className="btn btn-primary mt-5" onClick={uploadFile}>
+              <button
+                type="button"
+                className="btn btn-primary m-2"
+                onClick={uploadFile}>
                 Continuar
               </button>
             </>
