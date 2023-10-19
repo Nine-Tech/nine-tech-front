@@ -6,16 +6,18 @@ const Header = (props) => {
   const navigate = useNavigate();
 
   const voltar = () => {
-      window.history.back();
+    window.history.back();
   };
 
   return (
     <div className="header d-flex align-items-center justify-content-between my-4 col-lg-12">
       <h2>{title}</h2>
       <div className="d-flex align-items-center">
-        <span className="font-size-20">Voltar</span>
-        <button className="btn btn-secondary ms-3" onClick={voltar}>
-          <i className="fa fa-right-from-bracket" />
+        <button className="btn ms-3 d-flex align-items-center" onClick={voltar}>
+        <h5>VOLTAR</h5>
+        <i class="fa-solid fa-reply-all ms-2 fa-2x"></i>
+        
+                    
         </button>
       </div>
     </div>

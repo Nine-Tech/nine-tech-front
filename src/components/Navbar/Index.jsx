@@ -21,10 +21,7 @@ const Navbar = (props) => {
   return (
     <>
       <nav className="navbar shadow  navbar-expand-lg bg-body-tertiary ">
-        <div className="container-fluid">
-          <a className="navbar-brand" href={route}>
-            <img src={logo} alt="9tech-logo" width="90"></img>
-          </a>
+        <div className="container-fluid">          
           <button
             className="navbar-toggler"
             type="button"
@@ -36,6 +33,9 @@ const Navbar = (props) => {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
+          <a className="navbar-brand" href={route}>
+            <img src={logo} alt="9tech-logo" width="90"></img>
+          </a>
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item">
@@ -47,13 +47,20 @@ const Navbar = (props) => {
                   Home
                 </Link>
               </li>
+              <li className="nav-item">
+              <button className="nav-link d-flex align-items-center" onClick={logout}>
+            <h5 className="fs-5 fw-bold">SAIR</h5>
+              <i className="fa fa-right-from-bracket ms-2 fa-2x" />
+            </button>
+              </li>
+              
+              
+              
             </ul>
           </div>
           <div className="d-flex align-items-center">
-            <span className="font-size-20">{userTitle}</span>
-            <button className="btn btn-secondary ms-3" onClick={logout}>
-              <i className="fa fa-right-from-bracket" />
-            </button>
+            <span className="font-size-20 ">{userTitle}</span>
+            
           </div>
         </div>
       </nav>
@@ -62,13 +69,3 @@ const Navbar = (props) => {
 };
 
 export default Navbar;
-
-/*  <nav className="navbar navbar-expand-lg bg-body-tertiary">
-                <div className="container-fluid">
-                    <img src={logo} alt="9tech-logo" width="90"></img>
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                </div>
-                <div classNameName="collapse navbar-collapse">{buttons()}</div>
-            </nav> */
