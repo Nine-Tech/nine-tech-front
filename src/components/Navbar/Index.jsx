@@ -1,13 +1,22 @@
 import logo from "@/assets/images/9tech-logo.png";
 import { Link } from "react-router-dom";
+import { removeToken } from "@/utils/api";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = (props) => {
-  const { user } = props;
+  const { user, userTitle } = props;
 
   const { id, roles } = user;
   const route = (roles || []).includes("ROLE_ENGENHEIRO_CHEFE")
     ? "/engenheirochefe"
     : `/liderprojeto/${id}`;
+
+    const navigate = useNavigate();
+
+  const logout = () => {
+    removeToken();
+    navigate("/login");
+  };
 
   return (
     <>
@@ -39,6 +48,12 @@ const Navbar = (props) => {
                 </Link>
               </li>
             </ul>
+          </div>
+          <div className="d-flex align-items-center">
+            <span className="font-size-20">{userTitle}</span>
+            <button className="btn btn-secondary ms-3" onClick={logout}>
+              <i className="fa fa-right-from-bracket" />
+            </button>
           </div>
         </div>
       </nav>
