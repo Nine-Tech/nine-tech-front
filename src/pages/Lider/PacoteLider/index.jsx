@@ -35,7 +35,7 @@ const PacoteLider = () => {
         console.error("Erro na requisição:", error);
       });
 
-  }, [id]);
+  }, [id, subpackages]);
 
   console.log("data do Pacote", cronograma)
 

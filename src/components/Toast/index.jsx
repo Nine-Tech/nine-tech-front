@@ -11,7 +11,7 @@ const Toast = (props) => {
       const timer = setTimeout(() => {
         toggle(false);
         setVisible(false);
-        window.location.reload();
+        //window.location.reload();
       }, 2000);
 
       return () => clearTimeout(timer);
