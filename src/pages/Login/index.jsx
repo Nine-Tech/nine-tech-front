@@ -51,7 +51,7 @@ const Login = () => {
   }
 
   const pressionarEnter = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       fazerLogin();
     }
   };
@@ -93,7 +93,6 @@ const Login = () => {
             placeholder="Senha"
             className="form-control mt-4"
             onChange={(e) => setSenha(e.target.value)}
-
             onKeyDown={pressionarEnter}
           />
           <button

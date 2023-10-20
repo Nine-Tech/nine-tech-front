@@ -7,7 +7,7 @@ import axios from "axios";
 const TarefaLiderView = (props) => {
   const { subpacoteId } = useParams();
   const { data } = props;
-  const [tasks, setTasks] = useState([]);  
+  const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
     axios
@@ -35,8 +35,7 @@ const TarefaLiderView = (props) => {
   };
 
   return (
-    <>     
-
+    <>
       <div className="table-responsive">
         {tasks.length ? (
           <table className="table table-bordered">

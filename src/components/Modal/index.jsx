@@ -20,8 +20,8 @@ const Modal = (props) => {
                   src={logo}
                   alt="9tech-logo"
                   width="90"
-                  className="mx-auto">
-                </img>
+                  className="mx-auto"
+                ></img>
               </div>
               <div className="col-4 d-flex justify-content-end">
                 <button className="btn-close" onClick={() => handler(false)} />

@@ -95,12 +95,16 @@ const Home = () => {
                 Selecione um arquivo (.xlsx)
               </button>
               {selectedFile && (
-                <><h5 className="mt-2">Arquivo selecionado:</h5><p>{selectedFile.name}</p></>
+                <>
+                  <h5 className="mt-2">Arquivo selecionado:</h5>
+                  <p>{selectedFile.name}</p>
+                </>
               )}
               <button
                 type="button"
                 className="btn btn-primary m-2"
-                onClick={uploadFile}>
+                onClick={uploadFile}
+              >
                 Continuar
               </button>
             </>

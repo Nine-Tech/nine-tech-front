@@ -34,10 +34,9 @@ const PacoteLider = () => {
       .catch((error) => {
         console.error("Erro na requisição:", error);
       });
-
   }, [id]);
 
-  console.log("data do Pacote", cronograma)
+  console.log("data do Pacote", cronograma);
 
   const navigation = [
     { link: "#atividades", title: "Atividades" },

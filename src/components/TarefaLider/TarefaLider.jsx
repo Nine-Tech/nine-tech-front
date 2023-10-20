@@ -77,7 +77,6 @@ const TarefaLider = (props) => {
 
   const salvarTarefas = () => {
     newTasks.forEach((tarefa) => {
-
       const materialComoNumero =
         tarefa.material !== "" ? parseFloat(tarefa.material) : null;
       const novaTarefaParaSalvar = {
@@ -107,7 +106,6 @@ const TarefaLider = (props) => {
     setNewTasks([]);
 
     tasks.forEach((tarefa) => {
-
       const materialComoNumero =
         tarefa.material !== "" ? parseFloat(tarefa.material) : null;
       window.axios
@@ -179,8 +177,8 @@ const TarefaLider = (props) => {
           .catch((error) => {
             console.error(`Erro ao apagar a tarefa ${tarefa.id}.`, error);
           });
-        setTasks(()=> {
-          return tasks.filter((t) => t.id!== tarefa.id);
+        setTasks(() => {
+          return tasks.filter((t) => t.id !== tarefa.id);
         });
       } else {
       }
@@ -202,18 +200,19 @@ const TarefaLider = (props) => {
           <button
             type="button"
             className="btn btn-secondary m-2"
-            onClick={() => handler(false)}>
+            onClick={() => handler(false)}
+          >
             NÃO
           </button>
         </>
-      )
-    }
+      );
+    };
     return (
       <div className="d-flex flex-column justify-content-center text-center mx-5 pb-4">
         {conteudo()}
       </div>
     );
-  }
+  };
 
   return (
     <>
@@ -487,8 +486,6 @@ const TarefaLider = (props) => {
           </tbody>
         </table>
       </div>
-
-
     </>
   );
 };
