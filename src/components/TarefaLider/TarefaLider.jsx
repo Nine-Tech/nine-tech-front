@@ -179,11 +179,10 @@ const TarefaLider = (props) => {
           .catch((error) => {
             console.error(`Erro ao apagar a tarefa ${tarefa.id}.`, error);
           });
+        setTasks(()=> {
+          return tasks.filter((t) => t.id!== tarefa.id);
+        });
       } else {
-        // Se a tarefa não tem um ID, então é uma nova tarefa
-        const updatedNewTasks = newTasks.filter((newTask) => newTask !== tarefa);
-        setNewTasks(updatedNewTasks);
-        handler(false);
       }
     };
 
