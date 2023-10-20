@@ -75,7 +75,7 @@ const App = () => {
     <>
       <Navbar user={user} userTitle={user.nome} />
       <div className="app">
-        <Header title={title} />
+        <Header title={title} user={user} />
 
         <div className="wrapper">
           <Outlet />
