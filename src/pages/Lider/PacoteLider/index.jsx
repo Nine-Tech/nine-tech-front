@@ -36,6 +36,7 @@ const PacoteLider = () => {
       });
   }, [id]);
 
+
   console.log("data do Pacote", cronograma);
 
   const navigation = [
