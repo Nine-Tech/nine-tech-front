@@ -53,7 +53,7 @@ const Pacote = () => {
                     to={`subpacotes/${p.id}`}
                     className="text-decoration-none text-primary"
                   >
-                    <CardsProjeto nome={p.nome} porcentagem={p.porcentagem}/>
+                    <CardsProjeto nome={p.nome} porcentagem={p.porcentagem} />
                   </Link>
                 </div>
               ))}

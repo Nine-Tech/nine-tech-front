@@ -34,10 +34,10 @@ const PacoteLider = () => {
       .catch((error) => {
         console.error("Erro na requisição:", error);
       });
+  }, [id]);
 
-  }, [id, subpackages]);
 
-  console.log("data do Pacote", cronograma)
+  console.log("data do Pacote", cronograma);
 
   const navigation = [
     { link: "#atividades", title: "Atividades" },
@@ -56,8 +56,7 @@ const PacoteLider = () => {
           <TarefaLider data={tasks} />
         </div>
         <div className="tab-pane" id="planejamento" role="tabpanel">
-          {/*           <TarefasView />
-           */}{" "}
+          {" "}
           <CronogramaLider data={cronograma} idProjeto={idProjeto} />
         </div>
       </div>

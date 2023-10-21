@@ -20,7 +20,7 @@ const CronogramaLider = (props) => {
   const [toast, setToast] = useState(false);
 
   useEffect(() => {
-    console.log(data)
+    console.log(data);
     if (!data) {
       let cronogramaVazio = {
         id: 0,
