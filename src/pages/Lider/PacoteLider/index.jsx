@@ -11,6 +11,7 @@ const PacoteLider = () => {
   const [tasks, setTasks] = useState([]);
   const [packages, setPackages] = useState([]);
   const [subpackages, setSubpackages] = useState([]);
+  const [porcentagem, setPorcentagem] = useState({});
   const [cronograma, setCronograma] = useState({});
   const [idProjeto, setIdProjeto] = useState(0);
 
@@ -36,9 +37,10 @@ const PacoteLider = () => {
   useEffect(() => {
     window.axios.get(`subpacotes/listaIdSubpacote/${id}`).then(({ data }) => {
       setSubpackages(data);
+      setPorcentagem({ porcentagem: data.porcentagem});
       setIdProjeto(data.pacotes.projeto.id);
     });
-  }, [id, subpackages]);
+  }, [id, porcentagem]);
 
   const navigation = [
     { link: "#atividades", title: "Atividades" },
@@ -50,7 +52,7 @@ const PacoteLider = () => {
       <BodyHeader
         title={subpackages.nome}
         navigation={navigation}
-        progress={subpackages.porcentagem}
+        progress={porcentagem.porcentagem}
       />
       <div className="my-5 tab-content">
         <div className="tab-pane active" id="atividades" role="tabpanel">

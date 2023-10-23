@@ -50,8 +50,6 @@ const LiderTabelaWBE = (props) => {
 
           // Verifique se há um elemento correspondente em progressoMensal
           if (matchingProgressItem) {
-            console.log("matchingProgressItem:");
-            console.log(matchingProgressItem);
             // Adicione as propriedades do elemento correspondente a i
             i.peso = matchingProgressItem[0].peso;
             i.execucao = matchingProgressItem[0].execucao;
@@ -78,9 +76,6 @@ const LiderTabelaWBE = (props) => {
   const update = (e, item) => {
     if (!isChanged) setIsChanged(true);
     const target = e.target;
-    console.log("target.name");
-    console.log(target.name);
-    console.log(target.value);
     let updatedItem;
     if (target.name == "execucao") {
       if (target.value == 0) {
@@ -91,8 +86,6 @@ const LiderTabelaWBE = (props) => {
     } else {
       updatedItem = { ...item, [target.name]: target.value };
     }
-    console.log("updatedItem");
-    console.log(updatedItem);
     if (target.type === "number" && target.value < 0)
       updatedItem[target.name] = 0;
     const newData = {
@@ -114,17 +107,12 @@ const LiderTabelaWBE = (props) => {
     Promise.allSettled([
       ...Object.keys(updatedData).map((k) => {
         let item = updatedData[k];
-        console.log("item:");
-        console.log(item.id);
         let data = {
           peso: parseFloat(item.peso) || 0,
           execucao: item.execucao,
           data: item.data,
           id_wbe: parseFloat(item.id) || 0,
         };
-        console.log("id_wbe:");
-        console.log(data);
-
         if (item.existe) {
           return new Promise((resolve, reject) => {
             window.axios

@@ -33,7 +33,7 @@ const TarefaLider = (props) => {
       .catch((error) => {
         console.error("Erro ao buscar tarefas:", error);
       });
-  }, [id, data]);
+  }, [id]);
 
   const buscarTarefas = () => {
     window.axios
@@ -161,6 +161,7 @@ const TarefaLider = (props) => {
   };
 
   const ModalExcluir = ({ tarefa, handler }) => {
+    console.log("tarefa: ", tarefa);
     const handleApagarTarefa = (tarefa) => {
       if (tarefa && tarefa.id) {
         window.axios
