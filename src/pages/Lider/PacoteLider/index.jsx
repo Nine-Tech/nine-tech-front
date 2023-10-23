@@ -18,10 +18,7 @@ const PacoteLider = () => {
     window.axios.get(`tarefas/subpacote/${id}`).then(({ data }) => {
       setTasks(data);
     });
-    window.axios.get(`subpacotes/listaIdSubpacote/${id}`).then(({ data }) => {
-      setSubpackages(data);
-      setIdProjeto(data.pacotes.projeto.id);
-    });
+  
     window.axios.get(`upload/${id}`).then(({ data }) => {
       setPackages(data);
     });
@@ -36,8 +33,12 @@ const PacoteLider = () => {
       });
   }, [id]);
 
-
-  console.log("data do Pacote", cronograma);
+  useEffect(() => {
+    window.axios.get(`subpacotes/listaIdSubpacote/${id}`).then(({ data }) => {
+      setSubpackages(data);
+      setIdProjeto(data.pacotes.projeto.id);
+    });
+  }, [id, subpackages]);
 
   const navigation = [
     { link: "#atividades", title: "Atividades" },
