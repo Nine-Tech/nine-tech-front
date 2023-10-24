@@ -37,6 +37,7 @@ const PacoteLider = () => {
 
   useEffect(() => {
     window.axios.get(`subpacotes/listaIdSubpacote/${id}`).then(({ data }) => {
+      setSubpackages(data);
       setProgress(data.porcentagem);
       setIdProjeto(data.pacotes.projeto.id);
     });
