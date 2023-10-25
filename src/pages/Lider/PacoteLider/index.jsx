@@ -11,6 +11,8 @@ const PacoteLider = () => {
   const [tasks, setTasks] = useState([]);
   const [packages, setPackages] = useState([]);
   const [subpackages, setSubpackages] = useState([]);
+  const [progress, setProgress] = useState(0);
+  const [reload, setReload] = useState(false);
   const [cronograma, setCronograma] = useState({});
   const [idProjeto, setIdProjeto] = useState(0);
 
@@ -18,10 +20,7 @@ const PacoteLider = () => {
     window.axios.get(`tarefas/subpacote/${id}`).then(({ data }) => {
       setTasks(data);
     });
-    window.axios.get(`subpacotes/listaIdSubpacote/${id}`).then(({ data }) => {
-      setSubpackages(data);
-      setIdProjeto(data.pacotes.projeto.id);
-    });
+
     window.axios.get(`upload/${id}`).then(({ data }) => {
       setPackages(data);
     });
@@ -36,24 +35,36 @@ const PacoteLider = () => {
       });
   }, [id]);
 
-
-  console.log("data do Pacote", cronograma);
+  useEffect(() => {
+    window.axios.get(`subpacotes/listaIdSubpacote/${id}`).then(({ data }) => {
+      setSubpackages(data);
+      setProgress(data.porcentagem);
+      setIdProjeto(data.pacotes.projeto.id);
+    });
+    if (reload) {
+      setReload(false);
+    }
+  }, [id, reload]);
 
   const navigation = [
     { link: "#atividades", title: "Atividades" },
     { link: "#planejamento", title: "Planejamento" },
   ];
 
+  const updateProgress = (reload) => {
+    setReload(reload);
+  };
+
   return (
     <>
       <BodyHeader
         title={subpackages.nome}
         navigation={navigation}
-        progress={subpackages.porcentagem}
+        progress={progress}
       />
       <div className="my-5 tab-content">
         <div className="tab-pane active" id="atividades" role="tabpanel">
-          <TarefaLider data={tasks} />
+          <TarefaLider data={tasks} updateProgress={updateProgress} />
         </div>
         <div className="tab-pane" id="planejamento" role="tabpanel">
           {" "}

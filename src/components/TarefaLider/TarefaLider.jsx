@@ -33,7 +33,13 @@ const TarefaLider = (props) => {
       .catch((error) => {
         console.error("Erro ao buscar tarefas:", error);
       });
-  }, [id, data]);
+  }, [id]);
+
+  useEffect(() => {
+    window.axios.get(`subpacotes/listaIdSubpacote/${id}`).then(({ data }) => {
+      setProgress(data.porcentagem);
+    });
+  }, [id]);
 
   const buscarTarefas = () => {
     window.axios
@@ -95,6 +101,7 @@ const TarefaLider = (props) => {
         .post("tarefas", novaTarefaParaSalvar)
         .then((response) => {
           console.log("Nova tarefa foi salva com sucesso.", response.data);
+          props.updateProgress(true);
           buscarTarefas();
           setSalvarToast(true);
         })
@@ -123,6 +130,7 @@ const TarefaLider = (props) => {
             `Tarefa ${tarefa.id} foi atualizada com sucesso.`,
             response.data,
           );
+          props.updateProgress(true);
           buscarTarefas();
           setToast(true);
         })
@@ -161,6 +169,7 @@ const TarefaLider = (props) => {
   };
 
   const ModalExcluir = ({ tarefa, handler }) => {
+    console.log("tarefa: ", tarefa);
     const handleApagarTarefa = (tarefa) => {
       if (tarefa && tarefa.id) {
         window.axios
@@ -171,6 +180,7 @@ const TarefaLider = (props) => {
               response.data,
             );
             buscarTarefas();
+            props.updateProgress(true);
             setDeleteToast(true);
             handler(false);
           })
