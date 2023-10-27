@@ -5,7 +5,7 @@ import Modal from "@/components/Modal";
 import CardsProjeto from "@/components/CardsProjeto";
 
 const Home = () => {
-  const [showModal, setShowModal] = useState(false); // Depois mudar para false, usando true para debugar
+  const [showModal, setShowModal] = useState(false);
   const [projects, setProjects] = useState([]);
   const [hhValue, setHhValue] = useState(0.0);
   const [dataTermino, setDataTermino] = useState("");
