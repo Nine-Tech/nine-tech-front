@@ -14,6 +14,7 @@ const TarefaLider = (props) => {
   const [salvarToast, setSalvarToast] = useState(false);
   const [errors, setErrors] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
+  const [idProjeto, setIdProjeto] = useState(0);
 
   //MODAL
   const [showModal, setShowModal] = useState(false);
@@ -33,12 +34,15 @@ const TarefaLider = (props) => {
       .catch((error) => {
         console.error("Erro ao buscar tarefas:", error);
       });
-  }, [id]);
 
-  useEffect(() => {
-    window.axios.get(`subpacotes/listaIdSubpacote/${id}`).then(({ data }) => {
-      setProgress(data.porcentagem);
-    });
+    window.axios
+      .get(`subpacotes/listaIdSubpacote/${id}`)
+      .then(({ data }) => {
+        setIdProjeto(data.pacotes.projeto.id);
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar ID do projeto:", error);
+      });
   }, [id]);
 
   const buscarTarefas = () => {
@@ -58,18 +62,28 @@ const TarefaLider = (props) => {
       });
   };
 
-  const adicionarTarefa = () => {
-    const novaTarefa = {
-      nome: "",
-      descricao: "",
-      execucao: 0,
-      valor: "",
-      peso: "",
-      hh: "",
-      material: "",
-    };
-    setNewTasks([...newTasks, novaTarefa]);
+  const adicionarTarefa = async () => {
+    try {
+      const response = await buscarHH();
+
+      const novaTarefa = {
+        nome: "",
+        descricao: "",
+        execucao: 0,
+        valor: "",
+        peso: "",
+        hh: response.data,
+        material: "",
+      };
+      setNewTasks([...newTasks, novaTarefa]);
+    } catch (error) {
+      console.error("Erro na busca de HH:", error);
+    }
   };
+  
+  const buscarHH = () => {
+    return window.axios.get(`projeto/homem_hora/${idProjeto}`);
+  };  
 
   function formatarMoeda(valor) {
     const formatador = new Intl.NumberFormat("pt-BR", {
@@ -96,12 +110,13 @@ const TarefaLider = (props) => {
           id: id,
         },
       };
-
+      console.log('Nova tarefa para salvar: ',novaTarefaParaSalvar)
       window.axios
         .post("tarefas", novaTarefaParaSalvar)
         .then((response) => {
           console.log("Nova tarefa foi salva com sucesso.", response.data);
           props.updateProgress(true);
+          console.log('Props', props);
           buscarTarefas();
           setSalvarToast(true);
         })
@@ -169,8 +184,10 @@ const TarefaLider = (props) => {
   };
 
   const ModalExcluir = ({ tarefa, handler }) => {
-    console.log("tarefa: ", tarefa);
+    console.log("tarefa deletar: ", tarefa);
     const handleApagarTarefa = (tarefa) => {
+      console.log('Tarefa tal: ' + tarefa)
+      console.log('Tarefa id tal: ' + tarefa.id)
       if (tarefa && tarefa.id) {
         window.axios
           .delete(`tarefas/${tarefa.id}`)
@@ -362,7 +379,7 @@ const TarefaLider = (props) => {
                     className="form-control"
                     type="number"
                     value={t.hh}
-                    onChange={(e) => handleChange(index, "hh", e.target.value)}
+                    readOnly={true}
                   />
                 </td>
                 <td>
@@ -469,6 +486,7 @@ const TarefaLider = (props) => {
                     className="form-control"
                     type="number"
                     value={t.hh}
+                    readOnly={true}
                     onChange={(e) =>
                       handleNewTaskChange(index, "hh", e.target.value)
                     }

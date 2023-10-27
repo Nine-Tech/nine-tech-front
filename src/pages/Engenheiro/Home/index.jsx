@@ -5,12 +5,37 @@ import Modal from "@/components/Modal";
 import CardsProjeto from "@/components/CardsProjeto";
 
 const Home = () => {
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false); // Depois mudar para false, usando true para debugar
   const [projects, setProjects] = useState([]);
+  const [hhValue, setHhValue] = useState(0.0);
+  const [dataTermino, setDataTermino] = useState("");
+  const [latestProjectId, setLatestProjectId] = useState(null);
+
+  const handleSubmitHH = () => {
+    const hhValueAsFloat = parseFloat(hhValue);
+
+    const requestData = {
+      valor_homem_hora: hhValueAsFloat,
+    };
+
+    window.axios
+      .put(`/projeto/homem_hora/${latestProjectId}`, requestData)
+      .then((response) => {
+        handleSubmitDataTermino(); // Chama a função para enviar a Data de Término
+      })
+      .catch((error) => {
+        setInputResult("errorHH");
+      });
+  };
+
+  const handleSubmitDataTermino = () => {
+    setInputResult("successHH");
+  };
+
+  const [inputResult, setInputResult] = useState(null);
 
   const ModalContent = () => {
     const [selectedFile, setSelectedFile] = useState(null);
-    const [inputResult, setInputResult] = useState(null);
 
     const uploadFile = () => {
       const formData = new FormData();
@@ -19,13 +44,18 @@ const Home = () => {
       window.axios
         .post("/upload", formData)
         .then(({ data }) => {
+          const projectId = data[0]?.projeto?.id;
+          setLatestProjectId(projectId);
+          console.log(projectId)
           window.axios.post("/cronograma", {
-            projeto: { id: data[0]?.projeto?.id },
+            projeto: { id: projectId },
             porcentagens: Array(data.length).fill(Array(12).fill(0)),
           });
           setInputResult("success");
+          console.log(inputResult)
         })
         .catch(() => setInputResult("error"));
+        console.log(inputResult)
     };
 
     const addDocument = () => {
@@ -55,11 +85,50 @@ const Home = () => {
         case "success":
           return (
             <>
-              <span className="mb-2">Importação Concluída com Sucesso :)</span>
+              <span className="m-3">
+                <b>Importação concluída com sucesso!</b>
+              </span>
+              <span className="m-1">
+                <b>Definições iniciais do projeto: </b>
+              </span>
+              <label>
+                Insira o valor HH (Homem Hora):
+                <br />
+                <input
+                  type="number"
+                  value={hhValue}
+                  onChange={(e) => setHhValue(e.target.value)}
+                />
+              </label>
+              <label className="my-1">
+                Insira a Data de Término:
+                <br />
+                <input
+                  type="date"
+                  value={dataTermino}
+                  onChange={(e) => setDataTermino(e.target.value)}
+                />
+              </label>
+
+              <button className="btn btn-primary mt-3" onClick={handleSubmitHH}>
+                Continuar
+              </button>
+            </>
+          );
+        case "successHH":
+          return (
+            <>
+              <span className="m-2">
+                <b>
+                  O valor de Homem Hora e a Data Final foram definidos com
+                  sucesso! :)
+                </b>
+              </span>
               <button
-                className="btn btn-primary mt-5"
+                className="btn btn-primary mt-3"
                 onClick={() => {
                   getProjects();
+                  setInputResult("default")
                   setShowModal(false);
                 }}
               >
@@ -72,6 +141,21 @@ const Home = () => {
             <>
               <span className="mb-2">
                 Ops! Algo deu errado :( Por favor, verifique seu arquivo Excel.
+              </span>
+              <button
+                className="btn btn-primary mt-5"
+                onClick={() => setInputResult(null)}
+              >
+                Voltar
+              </button>
+            </>
+          );
+        case "errorHH":
+          return (
+            <>
+              <span className="mb-2">
+                Ops! Não foi possível salvar o valor de HH, tente novamente mais
+                tarde!
               </span>
               <button
                 className="btn btn-primary mt-5"
