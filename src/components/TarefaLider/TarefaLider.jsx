@@ -190,8 +190,9 @@ const TarefaLider = (props) => {
         setTasks(() => {
           return tasks.filter((t) => t.id !== tarefa.id);
         });
-      } else {
       }
+      handler(false);
+      setDeleteToast(true);
     };
 
     const conteudo = () => {
