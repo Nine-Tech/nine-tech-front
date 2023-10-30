@@ -192,6 +192,7 @@ const TarefaLider = (props) => {
         });
       }
       handler(false);
+      setDeleteToast(true);
     };
 
     const conteudo = () => {
