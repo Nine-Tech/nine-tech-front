@@ -130,15 +130,14 @@ const TarefaLider = (props) => {
           //   `Tarefa ${tarefa.id} foi atualizada com sucesso.`,
           //   response.data,
           // );
-          props.updateProgress(true);
           buscarTarefas();
           setToast(true);
-        })
+        }).then(reset())
         .catch((error) => {
           console.error(`Erro ao atualizar a tarefa ${tarefa.id}.`, error);
         });
     });
-    reset();
+    // reset();
   };
 
   const reset = () => {
