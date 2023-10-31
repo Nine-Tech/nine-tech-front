@@ -100,7 +100,7 @@ const TarefaLider = (props) => {
       window.axios
         .post("tarefas", novaTarefaParaSalvar)
         .then((response) => {
-          console.log("Nova tarefa foi salva com sucesso.", response.data);
+          //console.log("Nova tarefa foi salva com sucesso.", response.data);
           props.updateProgress(true);
           buscarTarefas();
           setSalvarToast(true);
@@ -112,10 +112,10 @@ const TarefaLider = (props) => {
 
     setNewTasks([]);
 
-    tasks.forEach((tarefa) => {
+    tasks.map(async (tarefa) => {
       const materialComoNumero =
         tarefa.material !== "" ? parseFloat(tarefa.material) : null;
-      window.axios
+      await window.axios
         .put(`tarefas/${tarefa.id}`, {
           descricao: tarefa.descricao,
           hh: tarefa.hh,
@@ -126,10 +126,10 @@ const TarefaLider = (props) => {
           execucao: tarefa.execucao,
         })
         .then((response) => {
-          console.log(
-            `Tarefa ${tarefa.id} foi atualizada com sucesso.`,
-            response.data,
-          );
+          // console.log(
+          //   `Tarefa ${tarefa.id} foi atualizada com sucesso.`,
+          //   response.data,
+          // );
           props.updateProgress(true);
           buscarTarefas();
           setToast(true);
@@ -138,6 +138,7 @@ const TarefaLider = (props) => {
           console.error(`Erro ao atualizar a tarefa ${tarefa.id}.`, error);
         });
     });
+    reset();
   };
 
   const reset = () => {
@@ -146,6 +147,7 @@ const TarefaLider = (props) => {
     setErrors([]);
     setIsChanged(false);
     buscarTarefas();
+    props.updateProgress(true);
   };
 
   // Função para alterar os campos das tarefas existentes
@@ -169,16 +171,16 @@ const TarefaLider = (props) => {
   };
 
   const ModalExcluir = ({ tarefa, handler }) => {
-    console.log("tarefa: ", tarefa);
+    //console.log("tarefa: ", tarefa);
     const handleApagarTarefa = (tarefa) => {
       if (tarefa && tarefa.id) {
         window.axios
           .delete(`tarefas/${tarefa.id}`)
           .then((response) => {
-            console.log(
-              `Tarefa ${tarefa.id} foi apagada com sucesso.`,
-              response.data,
-            );
+            // console.log(
+            //   `Tarefa ${tarefa.id} foi apagada com sucesso.`,
+            //   response.data,
+            // );
             buscarTarefas();
             props.updateProgress(true);
             setDeleteToast(true);
