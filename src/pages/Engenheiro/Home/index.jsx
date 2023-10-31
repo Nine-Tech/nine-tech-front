@@ -4,12 +4,21 @@ import { Link } from "react-router-dom";
 import Modal from "@/components/Modal";
 import CardsProjeto from "@/components/CardsProjeto";
 
+// Imports referentes ao input Date de MES/ANO
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { registerLocale } from  "react-datepicker";
+import pt from 'date-fns/locale/pt-BR';
+
+registerLocale('pt-BR', pt);
+
 const Home = () => {
   const [showModal, setShowModal] = useState(false);
   const [projects, setProjects] = useState([]);
   const [hhValue, setHhValue] = useState(0.0);
-  const [dataTermino, setDataTermino] = useState("");
+  const [dataTermino, setDataTermino] = useState(new Date());
   const [latestProjectId, setLatestProjectId] = useState(null);
+  const [inputResult, setInputResult] = useState(null);
 
   const handleSubmitHH = () => {
     const hhValueAsFloat = parseFloat(hhValue);
@@ -29,10 +38,48 @@ const Home = () => {
   };
 
   const handleSubmitDataTermino = () => {
-    setInputResult("successHH");
-  };
 
-  const [inputResult, setInputResult] = useState(null);
+    window.axios
+    .get(`/projeto/${latestProjectId}`)
+    .then(({ data }) => {
+      const dataInicio = data.data_inicio
+
+      const anoTermino = dataTermino.getFullYear();
+      const mesTermino = String(dataTermino.getMonth() + 1).padStart(2, '0');
+      const diaTermino = String(dataTermino.getDate()).padStart(2, '0');
+      
+      const formatoParaVerificarTermino = `${anoTermino}-${mesTermino}-${diaTermino}`;
+
+      // Comparando as datas
+      if (dataInicio < formatoParaVerificarTermino) {
+        const mesesAbreviados = [
+          'Jan', 'Fev', 'Mar', 'Abr', 'Maio', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
+        ];
+  
+        const mesAbreviado = mesesAbreviados[dataTermino.getMonth()];
+        const ano = dataTermino.getFullYear();
+        
+        const dataParaEnvio = `${mesAbreviado}/${ano}`;
+
+        console.log('Data enviada: ' + dataParaEnvio)
+
+        window.axios
+        .post("/projetos/data_fim", {
+          data_fim: dataParaEnvio
+        })
+        .then(() => {      
+          setInputResult("successHH");
+        })
+        .catch(() => setInputResult("errorHH"));
+
+      } else {
+        alert("A data de término deve ser maior que o mês atual.")
+      }
+  
+    })
+    .catch((e) => console.log(e));    
+
+  };
 
   const ModalContent = () => {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -46,16 +93,16 @@ const Home = () => {
         .then(({ data }) => {
           const projectId = data[0]?.projeto?.id;
           setLatestProjectId(projectId);
-          console.log(projectId)
+          console.log(projectId);
           window.axios.post("/cronograma", {
             projeto: { id: projectId },
             porcentagens: Array(data.length).fill(Array(12).fill(0)),
           });
           setInputResult("success");
-          console.log(inputResult)
+          console.log(inputResult);
         })
         .catch(() => setInputResult("error"));
-        console.log(inputResult)
+      console.log(inputResult);
     };
 
     const addDocument = () => {
@@ -103,10 +150,12 @@ const Home = () => {
               <label className="my-1">
                 Insira a Data de Término:
                 <br />
-                <input
-                  type="date"
-                  value={dataTermino}
-                  onChange={(e) => setDataTermino(e.target.value)}
+                <DatePicker
+                  selected={dataTermino}
+                  onChange={date => setDataTermino(date)}
+                  showMonthYearPicker
+                  locale="pt-BR"
+                  dateFormat="MM/yyyy"
                 />
               </label>
 
@@ -128,7 +177,7 @@ const Home = () => {
                 className="btn btn-primary mt-3"
                 onClick={() => {
                   getProjects();
-                  setInputResult("default")
+                  setInputResult("default");
                   setShowModal(false);
                 }}
               >
