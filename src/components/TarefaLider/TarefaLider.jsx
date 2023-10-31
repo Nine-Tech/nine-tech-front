@@ -114,7 +114,7 @@ const TarefaLider = (props) => {
       window.axios
         .post("tarefas", novaTarefaParaSalvar)
         .then((response) => {
-          console.log("Nova tarefa foi salva com sucesso.", response.data);
+          //console.log("Nova tarefa foi salva com sucesso.", response.data);
           props.updateProgress(true);
           console.log('Props', props);
           buscarTarefas();
@@ -127,10 +127,10 @@ const TarefaLider = (props) => {
 
     setNewTasks([]);
 
-    tasks.forEach((tarefa) => {
+    tasks.map(async (tarefa) => {
       const materialComoNumero =
         tarefa.material !== "" ? parseFloat(tarefa.material) : null;
-      window.axios
+      await window.axios
         .put(`tarefas/${tarefa.id}`, {
           descricao: tarefa.descricao,
           hh: tarefa.hh,
@@ -141,18 +141,18 @@ const TarefaLider = (props) => {
           execucao: tarefa.execucao,
         })
         .then((response) => {
-          console.log(
-            `Tarefa ${tarefa.id} foi atualizada com sucesso.`,
-            response.data,
-          );
-          props.updateProgress(true);
+          // console.log(
+          //   `Tarefa ${tarefa.id} foi atualizada com sucesso.`,
+          //   response.data,
+          // );
           buscarTarefas();
           setToast(true);
-        })
+        }).then(reset())
         .catch((error) => {
           console.error(`Erro ao atualizar a tarefa ${tarefa.id}.`, error);
         });
     });
+    // reset();
   };
 
   const reset = () => {
@@ -161,6 +161,7 @@ const TarefaLider = (props) => {
     setErrors([]);
     setIsChanged(false);
     buscarTarefas();
+    props.updateProgress(true);
   };
 
   // Função para alterar os campos das tarefas existentes
@@ -184,7 +185,7 @@ const TarefaLider = (props) => {
   };
 
   const ModalExcluir = ({ tarefa, handler }) => {
-    console.log("tarefa deletar: ", tarefa);
+
     const handleApagarTarefa = (tarefa) => {
       console.log('Tarefa tal: ' + tarefa)
       console.log('Tarefa id tal: ' + tarefa.id)
@@ -192,10 +193,10 @@ const TarefaLider = (props) => {
         window.axios
           .delete(`tarefas/${tarefa.id}`)
           .then((response) => {
-            console.log(
-              `Tarefa ${tarefa.id} foi apagada com sucesso.`,
-              response.data,
-            );
+            // console.log(
+            //   `Tarefa ${tarefa.id} foi apagada com sucesso.`,
+            //   response.data,
+            // );
             buscarTarefas();
             props.updateProgress(true);
             setDeleteToast(true);
@@ -207,8 +208,9 @@ const TarefaLider = (props) => {
         setTasks(() => {
           return tasks.filter((t) => t.id !== tarefa.id);
         });
-      } else {
       }
+      handler(false);
+      setDeleteToast(true);
     };
 
     const conteudo = () => {

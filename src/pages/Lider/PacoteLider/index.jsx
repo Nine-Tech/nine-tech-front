@@ -33,17 +33,15 @@ const PacoteLider = () => {
       .catch((error) => {
         console.error("Erro na requisição:", error);
       });
-  }, [id]);
-
-  useEffect(() => {
     window.axios.get(`subpacotes/listaIdSubpacote/${id}`).then(({ data }) => {
       setSubpackages(data);
       setProgress(data.porcentagem);
+      console.log("PORCENTAGEM: ", data.porcentagem);
       setIdProjeto(data.pacotes.projeto.id);
+      if (reload) {
+        setReload(false);
+      }
     });
-    if (reload) {
-      setReload(false);
-    }
   }, [id, reload]);
 
   const navigation = [
@@ -53,6 +51,7 @@ const PacoteLider = () => {
 
   const updateProgress = (reload) => {
     setReload(reload);
+    console.log("fui chamado com sucesso");
   };
 
   return (
