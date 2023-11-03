@@ -19,21 +19,18 @@ const CronogramaLider = (props) => {
   useEffect(() => {
     window.axios.get(`subpacotes/${id}`).then(({ data }) => {
       setSubpacote(data);
-      setIdDoProjeto(subpacote[0].pacotes?.projeto?.id)
+      setIdDoProjeto(1);
     });
-
-  });
+  }, [id]);
 
   useEffect(() => {
-    if (idDoProjeto) { // Check if idDoProjeto has a valid value
+    if (idDoProjeto) {
+      // Check if idDoProjeto has a valid value
       window.axios.get(`projeto/${idDoProjeto}`).then(({ data }) => {
         setProjeto(data);
       });
     }
   }, [idDoProjeto]);
-  
-
-  console.log(projeto);
 
   useEffect(() => {
     if (!data) {
@@ -43,14 +40,6 @@ const CronogramaLider = (props) => {
         mes2: 0,
         mes3: 0,
         mes4: 0,
-        mes5: 0,
-        mes6: 0,
-        mes7: 0,
-        mes8: 0,
-        mes9: 0,
-        mes10: 0,
-        mes11: 0,
-        mes12: 0,
         id_projeto: idProjeto,
       };
       setCronograma(cronogramaVazio);
@@ -62,8 +51,8 @@ const CronogramaLider = (props) => {
   }, [data]);
 
   const reset = () => {
-    let updateData = { ...cronograma };
-    setUpdatedData(updateData);
+    let updateData = [...cronograma];
+    setUpdatedData(updateData); 
     if (isChanged) setIsChanged(false);
     if (error) setError(false);
   };
@@ -75,48 +64,30 @@ const CronogramaLider = (props) => {
     updatedDataCopy[item] =
       target.value < 0 ? 0 : target.value > 100 ? 100 : Number(target.value);
     setUpdatedData(updatedDataCopy);
+    console.log(updatedDataCopy)
   };
 
   const save = async () => {
     setLoading(true);
+
+    // Create the JSON data object to send to the backend
+    const jsonData = {
+      id_projeto: idProjeto,
+      porcentagens: Object.keys(updatedData).map((key) => updatedData[key]),
+    };
+
+    console.log(jsonData);
+
     try {
+      // If the cronograma is new, send a POST request to create it
       if (updatedData.id === 0) {
-        const cronogramaCriar = {
-          id_projeto: idProjeto,
-          mes1: updatedData.mes1,
-          mes2: updatedData.mes2,
-          mes3: updatedData.mes3,
-          mes4: updatedData.mes4,
-          mes5: updatedData.mes5,
-          mes6: updatedData.mes6,
-          mes7: updatedData.mes7,
-          mes8: updatedData.mes8,
-          mes9: updatedData.mes9,
-          mes10: updatedData.mes10,
-          mes11: updatedData.mes11,
-          mes12: updatedData.mes12,
-        };
-        await window.axios.post(`cronograma/${id}`, cronogramaCriar);
+        await window.axios.post(`cronograma/${id}`, jsonData);
       } else {
-        const cronogramaAlterar = {
-          id: updatedData.id,
-          id_projeto: idProjeto,
-          mes1: updatedData.mes1,
-          mes2: updatedData.mes2,
-          mes3: updatedData.mes3,
-          mes4: updatedData.mes4,
-          mes5: updatedData.mes5,
-          mes6: updatedData.mes6,
-          mes7: updatedData.mes7,
-          mes8: updatedData.mes8,
-          mes9: updatedData.mes9,
-          mes10: updatedData.mes10,
-          mes11: updatedData.mes11,
-          mes12: updatedData.mes12,
-        };
-        await window.axios.put(`/cronograma/${id}`, cronogramaAlterar);
+        // If the cronograma already exists, send a PUT request to update it
+        await window.axios.put(`/cronograma/${id}`, jsonData);
       }
 
+      // After the cronograma has been saved, fetch the updated data from the backend
       window.axios
         .get(`cronograma/${id}`)
         .then(({ data }) => {
@@ -126,13 +97,14 @@ const CronogramaLider = (props) => {
         .catch((error) => {
           console.error("Erro na requisição:", error);
         });
+
       setIsChanged(false);
       setToast(true);
     } catch (error) {
       setError(true);
       console.error("Erro ao salvar:", error);
     } finally {
-      setLoading(false);
+      /* setLoading(false); */
     }
   };
 
