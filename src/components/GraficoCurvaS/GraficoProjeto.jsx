@@ -5,20 +5,20 @@ import { useParams } from 'react-router-dom';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-export function GraficoSubpacotes() {
-  const { id, subpacoteId } = useParams();
+export function GraficoProjeto() {
+  const { id } = useParams();
 
   const [cronogramaSubpacote, setCronogramaSubpacote] = useState([]);
   const [cronogramaRealSubpacote, setCronogramaRealSubpacote] = useState([]);
   const [projeto, setProjeto] = useState([]);
 
   useEffect(() => {
-    window.axios.get(`cronograma/cronogramaestimado/${subpacoteId}`)
+    window.axios.get(`cronograma/cronogramaprojetoestimado/${id}`)
       .then(({ data }) => {
         setCronogramaSubpacote(data);
       });
 
-      window.axios.get(`cronograma/cronogramaestimado/ultimosdias/${subpacoteId}`)
+      window.axios.get(`cronograma/cronogramaprojetoestimado/ultimosdias/${id}`)
       .then(({ data }) => {
         setCronogramaRealSubpacote(data);
       });
@@ -27,7 +27,7 @@ export function GraficoSubpacotes() {
       .then(({ data }) => {
         setProjeto(data);
       });
-  }, [subpacoteId, id]);
+  }, [id]);
 
   // Função para calcular os meses entre a data de início e a data final do projeto
   function calcularMeses(dataInicio, dataFinal) {

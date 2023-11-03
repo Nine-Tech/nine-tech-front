@@ -1,26 +1,41 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Toast from "@/components/Toast";
 import { useParams } from "react-router-dom";
 
 const CronogramaLider = (props) => {
   const { id } = useParams();
-
   const { data, idProjeto } = props;
-
-  console.log("id", idProjeto);
-  console.log("data", data);
 
   const [isChanged, setIsChanged] = useState(false);
   const [cronograma, setCronograma] = useState([]);
   const [updatedData, setUpdatedData] = useState([]);
   const [error, setError] = useState(false);
-
   const [loading, setLoading] = useState(false);
-
   const [toast, setToast] = useState(false);
+  const [subpacote, setSubpacote] = useState();
+  const [projeto, setProjeto] = useState();
+  const [idDoProjeto, setIdDoProjeto] = useState();
 
   useEffect(() => {
-    console.log(data)
+    window.axios.get(`subpacotes/${id}`).then(({ data }) => {
+      setSubpacote(data);
+      setIdDoProjeto(subpacote[0].pacotes?.projeto?.id)
+    });
+
+  });
+
+  useEffect(() => {
+    if (idDoProjeto) { // Check if idDoProjeto has a valid value
+      window.axios.get(`projeto/${idDoProjeto}`).then(({ data }) => {
+        setProjeto(data);
+      });
+    }
+  }, [idDoProjeto]);
+  
+
+  console.log(projeto);
+
+  useEffect(() => {
     if (!data) {
       let cronogramaVazio = {
         id: 0,
@@ -38,7 +53,6 @@ const CronogramaLider = (props) => {
         mes12: 0,
         id_projeto: idProjeto,
       };
-      console.log("aqui: ", cronogramaVazio);
       setCronograma(cronogramaVazio);
       setUpdatedData(cronogramaVazio);
     } else {
@@ -48,7 +62,7 @@ const CronogramaLider = (props) => {
   }, [data]);
 
   const reset = () => {
-    let updateData = [...cronograma];
+    let updateData = { ...cronograma };
     setUpdatedData(updateData);
     if (isChanged) setIsChanged(false);
     if (error) setError(false);
@@ -57,11 +71,7 @@ const CronogramaLider = (props) => {
   const update = (e, item) => {
     if (!isChanged) setIsChanged(true);
     const target = e.target;
-    console.log("updatedData");
-    console.log(updatedData);
     const updatedDataCopy = { ...updatedData };
-    console.log("updatedDataCopy");
-    console.log(updatedDataCopy);
     updatedDataCopy[item] =
       target.value < 0 ? 0 : target.value > 100 ? 100 : Number(target.value);
     setUpdatedData(updatedDataCopy);
@@ -70,7 +80,7 @@ const CronogramaLider = (props) => {
   const save = async () => {
     setLoading(true);
     try {
-      if (updatedData.id == 0) {
+      if (updatedData.id === 0) {
         const cronogramaCriar = {
           id_projeto: idProjeto,
           mes1: updatedData.mes1,
@@ -86,9 +96,6 @@ const CronogramaLider = (props) => {
           mes11: updatedData.mes11,
           mes12: updatedData.mes12,
         };
-        console.log("cronogramaCriar");
-
-        console.log(cronogramaCriar);
         await window.axios.post(`cronograma/${id}`, cronogramaCriar);
       } else {
         const cronogramaAlterar = {
@@ -107,9 +114,6 @@ const CronogramaLider = (props) => {
           mes11: updatedData.mes11,
           mes12: updatedData.mes12,
         };
-        console.log("cronogramaAlterar");
-
-        console.log(cronogramaAlterar);
         await window.axios.put(`/cronograma/${id}`, cronogramaAlterar);
       }
 
@@ -118,7 +122,6 @@ const CronogramaLider = (props) => {
         .then(({ data }) => {
           setCronograma(data);
           setUpdatedData(data);
-          console.log("volta do get", data);
         })
         .catch((error) => {
           console.error("Erro na requisição:", error);
@@ -133,6 +136,21 @@ const CronogramaLider = (props) => {
     }
   };
 
+  const calcularMeses = (dataInicio, dataFinal) => {
+    const inicio = new Date(dataInicio);
+    const final = new Date(dataFinal);
+    const meses = [];
+    while (inicio <= final) {
+      meses.push(
+        new Date(inicio).toLocaleString("default", { month: "short" }),
+      );
+      inicio.setMonth(inicio.getMonth() + 1);
+    }
+    return meses;
+  };
+
+  const meses = calcularMeses(projeto?.data_inicio, projeto?.data_final);
+
   return (
     <>
       <Toast show={toast} toggle={setToast}>
@@ -145,166 +163,27 @@ const CronogramaLider = (props) => {
         <table className="table table-bordered">
           <thead>
             <tr>
-              <td>JAN</td>
-              <td>FEV</td>
-              <td>MAR</td>
-              <td>ABR</td>
-              <td>MAI</td>
-              <td>JUN</td>
-              <td>JUL</td>
-              <td>AGO</td>
-              <td>SET</td>
-              <td>OUT</td>
-              <td>NOV</td>
-              <td>DEZ</td>
+              {meses.map((mes, index) => (
+                <td key={index}>{mes}</td>
+              ))}
             </tr>
           </thead>
           <tbody>
             <tr key={updatedData.id || 0}>
-              <td>
-                <input
-                  className="form-control form-control-sm"
-                  min={0}
-                  step={1}
-                  max={100}
-                  type="number"
-                  name="porcentagem"
-                  value={updatedData.mes1 || 0}
-                  onChange={(e) => update(e, "mes1")}
-                />
-              </td>
-              <td>
-                <input
-                  className="form-control form-control-sm"
-                  min={0}
-                  step={1}
-                  max={100}
-                  type="number"
-                  name="porcentagem"
-                  value={updatedData.mes2 || 0}
-                  onChange={(e) => update(e, "mes2")}
-                />
-              </td>
-              <td>
-                <input
-                  className="form-control form-control-sm"
-                  min={0}
-                  step={1}
-                  max={100}
-                  type="number"
-                  name="porcentagem"
-                  value={updatedData.mes3 || 0}
-                  onChange={(e) => update(e, "mes3")}
-                />
-              </td>
-              <td>
-                <input
-                  className="form-control form-control-sm"
-                  min={0}
-                  step={1}
-                  max={100}
-                  type="number"
-                  name="porcentagem"
-                  value={updatedData.mes4 || 0}
-                  onChange={(e) => update(e, "mes4")}
-                />
-              </td>
-              <td>
-                <input
-                  className="form-control form-control-sm"
-                  min={0}
-                  step={1}
-                  max={100}
-                  type="number"
-                  name="porcentagem"
-                  value={updatedData.mes5 || 0}
-                  onChange={(e) => update(e, "mes5")}
-                />
-              </td>
-              <td>
-                <input
-                  className="form-control form-control-sm"
-                  min={0}
-                  step={1}
-                  max={100}
-                  type="number"
-                  name="porcentagem"
-                  value={updatedData.mes6 || 0}
-                  onChange={(e) => update(e, "mes6")}
-                />
-              </td>
-              <td>
-                <input
-                  className="form-control form-control-sm"
-                  min={0}
-                  step={1}
-                  max={100}
-                  type="number"
-                  name="porcentagem"
-                  value={updatedData.mes7 || 0}
-                  onChange={(e) => update(e, "mes7")}
-                />
-              </td>
-              <td>
-                <input
-                  className="form-control form-control-sm"
-                  min={0}
-                  step={1}
-                  max={100}
-                  type="number"
-                  name="porcentagem"
-                  value={updatedData.mes8 || 0}
-                  onChange={(e) => update(e, "mes8")}
-                />
-              </td>
-              <td>
-                <input
-                  className="form-control form-control-sm"
-                  min={0}
-                  step={1}
-                  max={100}
-                  type="number"
-                  name="porcentagem"
-                  value={updatedData.mes9 || 0}
-                  onChange={(e) => update(e, "mes9")}
-                />
-              </td>
-              <td>
-                <input
-                  className="form-control form-control-sm"
-                  min={0}
-                  step={1}
-                  max={100}
-                  type="number"
-                  name="porcentagem"
-                  value={updatedData.mes10 || 0}
-                  onChange={(e) => update(e, "mes10")}
-                />
-              </td>
-              <td>
-                <input
-                  className="form-control form-control-sm"
-                  min={0}
-                  step={1}
-                  max={100}
-                  type="number"
-                  name="porcentagem"
-                  value={updatedData.mes11 || 0}
-                  onChange={(e) => update(e, "mes11")}
-                />
-              </td>
-              <td>
-                <input
-                  className="form-control form-control-sm"
-                  min={0}
-                  step={1}
-                  max={100}
-                  type="number"
-                  name="porcentagem"
-                  value={updatedData.mes12 || 0}
-                  onChange={(e) => update(e, "mes12")}
-                />
-              </td>
+              {meses.map((mes, index) => (
+                <td key={index}>
+                  <input
+                    className="form-control form-control-sm"
+                    min={0}
+                    step={1}
+                    max={100}
+                    type="number"
+                    name={`porcentagem_${index}`}
+                    value={updatedData[`mes${index + 1}`] || 0}
+                    onChange={(e) => update(e, `mes${index + 1}`)}
+                  />
+                </td>
+              ))}
             </tr>
           </tbody>
         </table>

@@ -5,7 +5,7 @@ import TabelaWbs from "@/components/TabelaWbs";
 import TabelaCronograma from "@/components/TabelaCronograma";
 import CardsProjeto from "@/components/CardsProjeto";
 import TarefasLiderView from "@/components/TarefasView/TarefasView";
-import { App } from "../../../components/GraficoCurvaS/GraficoSubpacotes";
+import { GraficoSubpacotes } from "../../../components/GraficoCurvaS/GraficoSubpacotes";
 
 
 const Subpacote = () => {
@@ -44,7 +44,7 @@ const Subpacote = () => {
           <TarefasLiderView data={tasks} />
         </div>
         <div className="tab-pane" id="grafico" role="tabpanel">
-          <App />
+          <GraficoSubpacotes />
         </div>
       </div>
     </>
