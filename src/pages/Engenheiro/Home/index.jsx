@@ -11,18 +11,24 @@ const Home = () => {
   const ModalContent = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [inputResult, setInputResult] = useState(null);
+    const [hhValue, setHhValue] = useState(0);
+    const [dataTermino, setDataTermino] = useState("");
 
     const uploadFile = () => {
       const formData = new FormData();
       formData.append("file", selectedFile);
+      formData.append("dataTermino", dataTermino);
+      formData.append("hhValue", hhValue);
+
+      console.log(formData);
 
       window.axios
         .post("/upload", formData)
         .then(({ data }) => {
-          window.axios.post("/cronograma", {
+          /* window.axios.post("/cronograma", {
             projeto: { id: data[0]?.projeto?.id },
             porcentagens: Array(data.length).fill(Array(12).fill(0)),
-          });
+          }); */
           setInputResult("success");
         })
         .catch(() => setInputResult("error"));
@@ -100,11 +106,24 @@ const Home = () => {
                   <p>{selectedFile.name}</p>
                 </>
               )}
-              <button
-                type="button"
-                className="btn btn-primary m-2"
-                onClick={uploadFile}
-              >
+              <label>
+                Insira o valor HH (Homem Hora):
+                <br />
+                <input
+                  type="number"
+                  value={hhValue}
+                  onChange={(e) => setHhValue(e.target.value)}
+                />
+              </label>
+              <label className="my-1">
+                Insira a Data de Término:
+                <br />
+                <input
+                  type="date"
+                  onChange={(e) => setDataTermino(e.target.value)}
+                />
+              </label>
+              <button className="btn btn-primary mt-5" onClick={uploadFile}>
                 Continuar
               </button>
             </>

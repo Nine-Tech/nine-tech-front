@@ -16,21 +16,22 @@ const CronogramaLider = (props) => {
   const [projeto, setProjeto] = useState();
   const [idDoProjeto, setIdDoProjeto] = useState();
 
+  console.log("id projeto", idProjeto)
+
   useEffect(() => {
     window.axios.get(`subpacotes/${id}`).then(({ data }) => {
       setSubpacote(data);
-      setIdDoProjeto(1);
+      setIdDoProjeto(idProjeto);
     });
   }, [id]);
 
   useEffect(() => {
-    if (idDoProjeto) {
-      // Check if idDoProjeto has a valid value
-      window.axios.get(`projeto/${idDoProjeto}`).then(({ data }) => {
+    if (idProjeto) {
+      window.axios.get(`projeto/${idProjeto}`).then(({ data }) => {
         setProjeto(data);
       });
     }
-  }, [idDoProjeto]);
+  }, [idProjeto]);
 
   useEffect(() => {
     if (!data) {
