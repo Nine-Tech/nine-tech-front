@@ -60,7 +60,7 @@ const TarefaLiderView = (props) => {
                   <td>{t.descricao}</td>
                   <td>{t.execucao ? "1" : "0"}</td>
                   <td>{t.peso}</td>
-                  <td>{formatarValor(t.valor)}</td>
+                  <td>{t.valor}</td>
                   <td>{t.hh}</td>
                   <td>{formatarValor(t.material)}</td>
                 </tr>
