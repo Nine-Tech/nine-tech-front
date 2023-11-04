@@ -8,7 +8,6 @@ const TarefaLiderView = (props) => {
   const { subpacoteId } = useParams();
   const { data } = props;
   const [tasks, setTasks] = useState([]);
-  const [toast, setToast] = useState(false);
 
   useEffect(() => {
     axios
@@ -27,12 +26,16 @@ const TarefaLiderView = (props) => {
       });
   }, [subpacoteId, data]);
 
+  const formatarValor = (value) => {
+    return value.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+      maximumFractionDigits: 2,
+    });
+  };
+
   return (
     <>
-      <Toast show={toast} toggle={setToast}>
-        Alterações salvas com sucesso!
-      </Toast>
-
       <div className="table-responsive">
         {tasks.length ? (
           <table className="table table-bordered">
@@ -59,7 +62,7 @@ const TarefaLiderView = (props) => {
                   <td>{t.peso}</td>
                   <td>{t.valor}</td>
                   <td>{t.hh}</td>
-                  <td>{t.material}</td>
+                  <td>{formatarValor(t.material)}</td>
                 </tr>
               ))}
             </tbody>

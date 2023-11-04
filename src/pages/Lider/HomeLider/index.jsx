@@ -11,7 +11,7 @@ const HomeLider = () => {
     window.axios.get(`subpacotes/${id}`).then(({ data }) => {
       setProjects(data);
     });
-  }, [id]);
+  }, [id, projects]);
 
   return (
     <>
