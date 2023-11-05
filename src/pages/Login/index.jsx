@@ -1,4 +1,4 @@
-import logo from "@/assets/images/9tech-logo.png";
+import cardlogo from "@/assets/images/9tech-logo.png";
 import { useNavigate } from "react-router-dom";
 import Toast from "@/components/Toast";
 
@@ -60,13 +60,12 @@ const Login = () => {
     <div className="login">
       <Toast show={toast} toggle={setToast}>
         Usuário ou senha incorretos.
-      </Toast>
-
-      <img src={logo} alt="9tech-logo" />
+      </Toast>      
 
       <div className="login-card">
-        <h4>Log In</h4>
-        <div className="mt-5 w-100">
+        <img src={cardlogo} alt="9tech-logo" />
+        {/* <h4 className="fw-bold">Log In</h4> */}
+        <div className="mt-3 w-100">
           <select
             value={selectedLogin}
             className="form-control"
@@ -96,7 +95,7 @@ const Login = () => {
             onKeyDown={pressionarEnter}
           />
           <button
-            className="btn w-100 py-2 btn-primary mt-5 mb-3"
+            className="btn fw-bold w-100 py-2 btn-primary mt-3 mb-2"
             onClick={fazerLogin}
           >
             Entrar

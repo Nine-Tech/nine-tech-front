@@ -100,7 +100,6 @@ const TarefaLider = (props) => {
       window.axios
         .post("tarefas", novaTarefaParaSalvar)
         .then((response) => {
-          //console.log("Nova tarefa foi salva com sucesso.", response.data);
           props.updateProgress(true);
           buscarTarefas();
           setSalvarToast(true);
@@ -126,18 +125,15 @@ const TarefaLider = (props) => {
           execucao: tarefa.execucao,
         })
         .then((response) => {
-          // console.log(
-          //   `Tarefa ${tarefa.id} foi atualizada com sucesso.`,
-          //   response.data,
-          // );
           buscarTarefas();
+          props.updateProgress(true);
           setToast(true);
         }).then(reset())
         .catch((error) => {
           console.error(`Erro ao atualizar a tarefa ${tarefa.id}.`, error);
         });
     });
-    // reset();
+    //reset();
   };
 
   const reset = () => {
@@ -167,19 +163,16 @@ const TarefaLider = (props) => {
     const updatedNewTasks = [...newTasks];
     updatedNewTasks[index][field] = value;
     setNewTasks(updatedNewTasks);
+    handler(false);
+    props.updateProgress(true);
   };
 
   const ModalExcluir = ({ tarefa, handler }) => {
-    //console.log("tarefa: ", tarefa);
     const handleApagarTarefa = (tarefa) => {
       if (tarefa && tarefa.id) {
         window.axios
           .delete(`tarefas/${tarefa.id}`)
           .then((response) => {
-            // console.log(
-            //   `Tarefa ${tarefa.id} foi apagada com sucesso.`,
-            //   response.data,
-            // );
             buscarTarefas();
             props.updateProgress(true);
             setDeleteToast(true);
