@@ -5,6 +5,7 @@ import TabelaWbs from "@/components/TabelaWbs";
 import TabelaCronograma from "@/components/TabelaCronograma";
 import Dashboard from "../../../components/Dashboard/Dashboard";
 import LiderSelect from "../../../components/LiderSelect/LiderSelect";
+import { GraficoProjeto } from "../../../components/GraficoCurvaS/GraficoProjeto";
 
 const Projeto = () => {
   const { id, itemId } = useParams();
@@ -31,6 +32,7 @@ const Projeto = () => {
     { link: "#atribuicao", title: "Atribuição" },
     { link: "#dashboard", title: "Dashboard" },
     { link: "#cronograma", title: "Cronograma" },
+    { link: "#grafico", title: "Gráfico" },
   ];
 
   return (
@@ -45,6 +47,9 @@ const Projeto = () => {
         </div>
         <div className="tab-pane" id="cronograma" role="tabpanel">
           <TabelaCronograma data={cronograma} />
+        </div>
+        <div className="tab-pane" id="grafico" role="tabpanel">
+          <GraficoProjeto />
         </div>
       </div>
     </>

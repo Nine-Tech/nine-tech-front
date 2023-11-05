@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Toast from "@/components/Toast";
-
-import axios from "axios";
+import Modal from "@/components/Modal";
 
 const TarefaLider = (props) => {
   const { id } = useParams();
@@ -16,8 +15,11 @@ const TarefaLider = (props) => {
   const [errors, setErrors] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
 
+  //MODAL
+  const [showModal, setShowModal] = useState(false);
+
   useEffect(() => {
-    axios
+    window.axios
       .get(`tarefas/subpacote/${id}`)
       .then(({ data }) => {
         if (Array.isArray(data)) {
@@ -31,10 +33,16 @@ const TarefaLider = (props) => {
       .catch((error) => {
         console.error("Erro ao buscar tarefas:", error);
       });
-  }, [id, data]);
+  }, [id]);
+
+  useEffect(() => {
+    window.axios.get(`subpacotes/listaIdSubpacote/${id}`).then(({ data }) => {
+      setProgress(data.porcentagem);
+    });
+  }, [id]);
 
   const buscarTarefas = () => {
-    axios
+    window.axios
       .get(`tarefas/subpacote/${id}`)
       .then(({ data }) => {
         if (Array.isArray(data)) {
@@ -57,17 +65,11 @@ const TarefaLider = (props) => {
       execucao: 0,
       valor: "",
       peso: "",
-      data: "",
       hh: "",
       material: "",
     };
     setNewTasks([...newTasks, novaTarefa]);
   };
-
-  function formatarDataParaArray(dataString) {
-    const [dia, mes, ano] = dataString.split("/").map(Number);
-    return [ano, mes, dia];
-  }
 
   function formatarMoeda(valor) {
     const formatador = new Intl.NumberFormat("pt-BR", {
@@ -81,12 +83,10 @@ const TarefaLider = (props) => {
 
   const salvarTarefas = () => {
     newTasks.forEach((tarefa) => {
-      const dataFormatada = formatarDataParaArray(tarefa.data);
       const materialComoNumero =
         tarefa.material !== "" ? parseFloat(tarefa.material) : null;
       const novaTarefaParaSalvar = {
         descricao: tarefa.descricao,
-        data: dataFormatada,
         hh: tarefa.hh,
         material: materialComoNumero,
         nome: tarefa.nome,
@@ -97,10 +97,10 @@ const TarefaLider = (props) => {
         },
       };
 
-      axios
+      window.axios
         .post("tarefas", novaTarefaParaSalvar)
         .then((response) => {
-          console.log("Nova tarefa foi salva com sucesso.", response.data);
+          props.updateProgress(true);
           buscarTarefas();
           setSalvarToast(true);
         })
@@ -111,17 +111,12 @@ const TarefaLider = (props) => {
 
     setNewTasks([]);
 
-    tasks.forEach((tarefa) => {
-      const dataConvertida = tarefa.dataFormatada
-        .split("/")
-        .reverse()
-        .join("-");
+    tasks.map(async (tarefa) => {
       const materialComoNumero =
         tarefa.material !== "" ? parseFloat(tarefa.material) : null;
-      axios
+      await window.axios
         .put(`tarefas/${tarefa.id}`, {
           descricao: tarefa.descricao,
-          data: dataConvertida,
           hh: tarefa.hh,
           material: materialComoNumero,
           valor: tarefa.valor,
@@ -130,17 +125,15 @@ const TarefaLider = (props) => {
           execucao: tarefa.execucao,
         })
         .then((response) => {
-          console.log(
-            `Tarefa ${tarefa.id} foi atualizada com sucesso.`,
-            response.data,
-          );
           buscarTarefas();
+          props.updateProgress(true);
           setToast(true);
-        })
+        }).then(reset())
         .catch((error) => {
           console.error(`Erro ao atualizar a tarefa ${tarefa.id}.`, error);
         });
     });
+    //reset();
   };
 
   const reset = () => {
@@ -149,29 +142,7 @@ const TarefaLider = (props) => {
     setErrors([]);
     setIsChanged(false);
     buscarTarefas();
-  };
-
-  const apagarTarefa = (tarefa) => {
-    if (tarefa.id) {
-      // Se a tarefa tem um ID, ela já existe no banco de dados e pode ser excluída
-      axios
-        .delete(`tarefas/${tarefa.id}`)
-        .then((response) => {
-          console.log(
-            `Tarefa ${tarefa.id} foi apagada com sucesso.`,
-            response.data,
-          );
-          buscarTarefas();
-          setDeleteToast(true);
-        })
-        .catch((error) => {
-          console.error(`Erro ao apagar a tarefa ${tarefa.id}.`, error);
-        });
-    } else {
-      // Se a tarefa não tem um ID, então é uma nova tarefa
-      const updatedNewTasks = newTasks.filter((newTask) => newTask !== tarefa);
-      setNewTasks(updatedNewTasks);
-    }
+    props.updateProgress(true);
   };
 
   // Função para alterar os campos das tarefas existentes
@@ -192,6 +163,60 @@ const TarefaLider = (props) => {
     const updatedNewTasks = [...newTasks];
     updatedNewTasks[index][field] = value;
     setNewTasks(updatedNewTasks);
+    handler(false);
+    props.updateProgress(true);
+  };
+
+  const ModalExcluir = ({ tarefa, handler }) => {
+    const handleApagarTarefa = (tarefa) => {
+      if (tarefa && tarefa.id) {
+        window.axios
+          .delete(`tarefas/${tarefa.id}`)
+          .then((response) => {
+            buscarTarefas();
+            props.updateProgress(true);
+            setDeleteToast(true);
+            handler(false);
+          })
+          .catch((error) => {
+            console.error(`Erro ao apagar a tarefa ${tarefa.id}.`, error);
+          });
+        setTasks(() => {
+          return tasks.filter((t) => t.id !== tarefa.id);
+        });
+      }
+      handler(false);
+      setDeleteToast(true);
+    };
+
+    const conteudo = () => {
+      return (
+        <>
+          <span className="mb-2">
+            <h4>Deseja excluir a atividade?</h4>
+          </span>
+          <button
+            type="button"
+            className="btn btn-danger m-2"
+            onClick={() => handleApagarTarefa(tarefa)}
+          >
+            SIM
+          </button>
+          <button
+            type="button"
+            className="btn btn-secondary m-2"
+            onClick={() => handler(false)}
+          >
+            NÃO
+          </button>
+        </>
+      );
+    };
+    return (
+      <div className="d-flex flex-column justify-content-center text-center mx-5 pb-4">
+        {conteudo()}
+      </div>
+    );
   };
 
   return (
@@ -214,8 +239,27 @@ const TarefaLider = (props) => {
           : "Atividade Inserida com Sucesso!"}
       </Toast>
 
-      <div className="d-flex justify-content-end">
-        <button className="btn btn-primary mb-2" onClick={adicionarTarefa}>
+      <Modal showModal={showModal} handler={setShowModal}>
+        <ModalExcluir tarefa={showModal} handler={setShowModal} />
+      </Modal>
+
+      <div className="d-flex justify-content-end mb-3">
+        <button
+          className="btn btn-secondary"
+          disabled={!isChanged}
+          onClick={reset}
+        >
+          Desfazer alterações
+        </button>
+
+        <button
+          className="btn btn-primary ms-3"
+          disabled={!isChanged}
+          onClick={salvarTarefas}
+        >
+          Salvar Alterações
+        </button>
+        <button className="btn btn-success ms-3" onClick={adicionarTarefa}>
           Adicionar Tarefa
         </button>
       </div>
@@ -229,7 +273,6 @@ const TarefaLider = (props) => {
               <th>Descrição</th>
               <th>Execução</th>
               <th>Peso</th>
-              <th>Data Prevista</th>
               <th>Valor</th>
               <th>HH*</th>
               <th>Material</th>
@@ -302,16 +345,6 @@ const TarefaLider = (props) => {
                   <input
                     className="form-control"
                     type="text"
-                    value={tasks[index].dataFormatada}
-                    onChange={(e) =>
-                      handleChange(index, "data", e.target.value)
-                    }
-                  />
-                </td>
-                <td>
-                  <input
-                    className="form-control"
-                    type="text"
                     value={formatarMoeda(t.valor)}
                     readOnly={true}
                     onChange={(e) =>
@@ -342,7 +375,7 @@ const TarefaLider = (props) => {
                 <td>
                   <button
                     className="btn btn-danger"
-                    onClick={() => apagarTarefa(t)}
+                    onClick={() => setShowModal(t)}
                   >
                     Excluir
                   </button>
@@ -414,16 +447,7 @@ const TarefaLider = (props) => {
                     <option value="100">100</option>
                   </select>
                 </td>
-                <td>
-                  <input
-                    className="form-control"
-                    type="text"
-                    value={t.data}
-                    onChange={(e) =>
-                      handleNewTaskChange(index, "data", e.target.value)
-                    }
-                  />
-                </td>
+
                 <td>
                   <input
                     className="form-control"
@@ -461,32 +485,11 @@ const TarefaLider = (props) => {
                   <button className="btn btn-success" onClick={salvarTarefas}>
                     Salvar
                   </button>
-                  {/* <button
-                                    className="btn btn-danger"
-                                    onClick={() => apagarTarefa(t)}>Excluir</button> */}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-      </div>
-
-      <div className="mt-4 d-flex justify-content-end">
-        <button
-          className="btn btn-secondary"
-          disabled={!isChanged}
-          onClick={reset}
-        >
-          Desfazer alterações
-        </button>
-
-        <button
-          className="btn btn-primary ms-3"
-          disabled={!isChanged}
-          onClick={salvarTarefas}
-        >
-          Salvar Alterações
-        </button>
       </div>
     </>
   );

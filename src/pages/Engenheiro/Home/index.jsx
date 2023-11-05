@@ -2,7 +2,6 @@ import BodyHeader from "@/components/BodyHeader";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Modal from "@/components/Modal";
-// import BodyHeaderHome from "@/components/BodyHeaderHome";
 import CardsProjeto from "@/components/CardsProjeto";
 
 const Home = () => {
@@ -12,18 +11,24 @@ const Home = () => {
   const ModalContent = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [inputResult, setInputResult] = useState(null);
+    const [hhValue, setHhValue] = useState(0);
+    const [dataTermino, setDataTermino] = useState("");
 
     const uploadFile = () => {
       const formData = new FormData();
       formData.append("file", selectedFile);
+      formData.append("dataTermino", dataTermino);
+      formData.append("hhValue", hhValue);
+
+      console.log(formData);
 
       window.axios
         .post("/upload", formData)
         .then(({ data }) => {
-          window.axios.post("/cronograma", {
+          /* window.axios.post("/cronograma", {
             projeto: { id: data[0]?.projeto?.id },
             porcentagens: Array(data.length).fill(Array(12).fill(0)),
-          });
+          }); */
           setInputResult("success");
         })
         .catch(() => setInputResult("error"));
@@ -86,18 +91,38 @@ const Home = () => {
           return (
             <>
               <span className="mb-2">
-                Faça upload do arquivo Excel (.xlsx):
+                <h4>Upload arquivo Excel</h4>
               </span>
               <button
                 type="button"
-                className="btn btn-secondary"
+                className="btn btn-secondary m-2"
                 onClick={addDocument}
               >
                 Selecione um arquivo (.xlsx)
               </button>
               {selectedFile && (
-                <h5>Arquivo selecionado: {selectedFile.name}</h5>
+                <>
+                  <h5 className="mt-2">Arquivo selecionado:</h5>
+                  <p>{selectedFile.name}</p>
+                </>
               )}
+              <label>
+                Insira o valor HH (Homem Hora):
+                <br />
+                <input
+                  type="number"
+                  value={hhValue}
+                  onChange={(e) => setHhValue(e.target.value)}
+                />
+              </label>
+              <label className="my-1">
+                Insira a Data de Término:
+                <br />
+                <input
+                  type="date"
+                  onChange={(e) => setDataTermino(e.target.value)}
+                />
+              </label>
               <button className="btn btn-primary mt-5" onClick={uploadFile}>
                 Continuar
               </button>

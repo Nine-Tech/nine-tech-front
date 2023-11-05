@@ -70,7 +70,6 @@ const LiderSelect = (props) => {
         );
       })
       .map((item) => {
-        console.log("itens filtrado", item);
         const data = {
           liderDeProjeto: parseInt(selectedLeader),
         };
