@@ -118,14 +118,14 @@ function TabelaWbs(props) {
           : "Mudanças salvas."}
       </Toast>
 
-      <div class="card text-center">
-        <div class="card-header">
-          <ul class="nav nav-tabs card-header-tabs">
+      <div className="card text-center">
+        <div className="card-header">
+          <ul className="nav nav-tabs card-header-tabs">
             {sortedPackages.map(
               (item) =>
                 item.isParent && (
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="true" href="#">
+                  <li className="nav-item">
+                    <a className="nav-link active" aria-current="true" href="#">
                       {item.wbe}
                     </a>
                   </li>
@@ -133,11 +133,11 @@ function TabelaWbs(props) {
             )}
           </ul>
         </div>
-        <div class="card-body">
-          <h5 class="card-title">1.1 Air Vehicle</h5>
-          <p class="card-text">Valor: R$1.085.000,00 </p>
-          <p class="card-text">HH: 10.000 </p>
-          <p class="card-text">Material: R$85.000,00 </p>
+        <div className="card-body">
+          <h5 className="card-title">1.1 Air Vehicle</h5>
+          <p className="card-text">Valor: R$1.085.000,00 </p>
+          <p className="card-text">HH: 10.000 </p>
+          <p className="card-text">Material: R$85.000,00 </p>
           <select name="" id="">
             Lider de Projeto 1
           </select>
@@ -145,7 +145,7 @@ function TabelaWbs(props) {
             (item) =>
               !item.isParent && (
                 <a href="">
-                  <p class="card-text">
+                  <p className="card-text">
                     {item.wbe} - Valor: R$ {item.valor}
                   </p>
                 </a>

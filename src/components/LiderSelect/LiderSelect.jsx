@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Toast from "@/components/Toast";
+import ExcelDownloadButton from "../ExportExcel/ExportExcel";
 
 const LiderSelect = (props) => {
   const { id } = useParams();
@@ -144,6 +145,7 @@ const LiderSelect = (props) => {
       </div>
 
       <div className="mt-4 d-flex justify-content-end">
+        <ExcelDownloadButton rota={"teste"}></ExcelDownloadButton>
         <button
           className="btn btn-secondary"
           disabled={!isChanged}

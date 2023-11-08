@@ -5,7 +5,6 @@ import { removeToken } from "@/utils/api";
 import { useNavigate } from "react-router-dom";
 import "./style.scss";
 
-
 const Navbar = (props) => {
   const { user, userTitle } = props;
 
@@ -21,15 +20,14 @@ const Navbar = (props) => {
     navigate("/login");
   };
 
-  let navbarClass = "navbar shadow border-4 border-bottom border-dark bg-body-danger";
+  let navbarClass =
+    "navbar shadow border-4 border-bottom border-dark bg-body-danger";
 
   if (roles && roles.includes("ROLE_ENGENHEIRO_CHEFE")) {
-    navbarClass += " navbar-engenheiro"; 
+    navbarClass += " navbar-engenheiro";
   }
 
-  let logoSrc = (roles || []).includes("ROLE_ENGENHEIRO_CHEFE")
-  ? logo2
-  : logo;
+  let logoSrc = (roles || []).includes("ROLE_ENGENHEIRO_CHEFE") ? logo2 : logo;
 
   return (
     <>
