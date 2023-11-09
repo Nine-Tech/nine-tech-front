@@ -145,7 +145,7 @@ const LiderSelect = (props) => {
       </div>
 
       <div className="mt-4 d-flex justify-content-end">
-        <ExcelDownloadButton rota={"teste"}></ExcelDownloadButton>
+        <ExcelDownloadButton rota={`export/${id}`}></ExcelDownloadButton>
         <button
           className="btn btn-secondary"
           disabled={!isChanged}
