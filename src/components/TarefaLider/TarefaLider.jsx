@@ -14,6 +14,7 @@ const TarefaLider = (props) => {
   const [salvarToast, setSalvarToast] = useState(false);
   const [errors, setErrors] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
+  const [isDateEditing, setIsDateEditing] = useState(false);
 
   //MODAL
   const [showModal, setShowModal] = useState(false);
@@ -25,7 +26,6 @@ const TarefaLider = (props) => {
         if (Array.isArray(data)) {
           data = data.map((tarefa) => ({
             ...tarefa,
-            dataFormatada: new Date(tarefa.data).toLocaleDateString("pt-BR"),
           }));
           setTasks(data);
         }
@@ -48,7 +48,6 @@ const TarefaLider = (props) => {
         if (Array.isArray(data)) {
           data = data.map((tarefa) => ({
             ...tarefa,
-            dataFormatada: new Date(tarefa.data).toLocaleDateString("pt-BR"),
           }));
           setTasks(data);
         }
@@ -62,6 +61,7 @@ const TarefaLider = (props) => {
     const novaTarefa = {
       nome: "",
       descricao: "",
+      data:"",
       execucao: 0,
       valor: "",
       peso: "",
@@ -81,12 +81,19 @@ const TarefaLider = (props) => {
     return formatador.format(valor);
   }
 
+  //Função para formatar a data na exibição
+  function formatDataParaExibicao(data) {
+    const date = new Date(data);
+    return date.toLocaleDateString("pt-BR");
+  }
+  
   const salvarTarefas = () => {
     newTasks.forEach((tarefa) => {
       const materialComoNumero =
         tarefa.material !== "" ? parseFloat(tarefa.material) : null;
       const novaTarefaParaSalvar = {
         descricao: tarefa.descricao,
+        data: tarefa.data,
         hh: tarefa.hh,
         material: materialComoNumero,
         nome: tarefa.nome,
@@ -117,6 +124,7 @@ const TarefaLider = (props) => {
       await window.axios
         .put(`tarefas/${tarefa.id}`, {
           descricao: tarefa.descricao,
+          data: tarefa.data,
           hh: tarefa.hh,
           material: materialComoNumero,
           valor: tarefa.valor,
@@ -152,7 +160,7 @@ const TarefaLider = (props) => {
 
     const updatedTasks = [...tasks];
     if (field === "data") {
-      updatedTasks[index].dataFormatada = value;
+      updatedTasks[index].data = value; 
     } else {
       updatedTasks[index][field] = value;
     }
@@ -272,6 +280,7 @@ const TarefaLider = (props) => {
               <th>ID</th>
               <th>Nome</th>
               <th>Descrição</th>
+              <th>Data Final</th>
               <th>Execução</th>
               <th>Peso</th>
               <th>Valor</th>
@@ -304,6 +313,19 @@ const TarefaLider = (props) => {
                       handleChange(index, "descricao", e.target.value)
                     }
                   />
+                </td>
+                <td onClick={() => setIsDateEditing(index)}>
+                  {isDateEditing === index ? (
+                    <input
+                      className="form-control"
+                      type="date"
+                      value={t.data}
+                      onChange={(e) => handleChange(index, "data", e.target.value)}
+                      onBlur={() => setIsDateEditing(null)}
+                    />
+                  ) : (
+                    formatDataParaExibicao(t.data)
+                  )}
                 </td>
                 <td>
                   <select
@@ -404,6 +426,16 @@ const TarefaLider = (props) => {
                     value={t.descricao}
                     onChange={(e) =>
                       handleNewTaskChange(index, "descricao", e.target.value)
+                    }
+                  />
+                </td>
+                <td>
+                  <input
+                    className="form-control"
+                    type="date"
+                    value={t.data}
+                    onChange={(e) =>
+                      handleNewTaskChange(index, "data", e.target.value)
                     }
                   />
                 </td>
