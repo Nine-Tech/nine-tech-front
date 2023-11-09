@@ -128,7 +128,8 @@ const TarefaLider = (props) => {
           buscarTarefas();
           props.updateProgress(true);
           setToast(true);
-        }).then(reset())
+        })
+        .then(reset())
         .catch((error) => {
           console.error(`Erro ao atualizar a tarefa ${tarefa.id}.`, error);
         });

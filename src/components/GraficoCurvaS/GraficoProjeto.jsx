@@ -1,9 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
-import { Line } from 'react-chartjs-2';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Line } from "react-chartjs-2";
+import { useParams } from "react-router-dom";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+);
 
 export function GraficoProjeto() {
   const { id } = useParams();
@@ -13,20 +30,21 @@ export function GraficoProjeto() {
   const [projeto, setProjeto] = useState([]);
 
   useEffect(() => {
-    window.axios.get(`cronograma/cronogramaprojetoestimado/${id}`)
+    window.axios
+      .get(`cronograma/cronogramaprojetoestimado/${id}`)
       .then(({ data }) => {
         setCronogramaSubpacote(data);
       });
 
-      window.axios.get(`cronograma/cronogramaprojetoestimado/ultimosdias/${id}`)
+    window.axios
+      .get(`cronograma/cronogramaprojetoestimado/ultimosdias/${id}`)
       .then(({ data }) => {
         setCronogramaRealSubpacote(data);
       });
 
-    window.axios.get(`projeto/${id}`)
-      .then(({ data }) => {
-        setProjeto(data);
-      });
+    window.axios.get(`projeto/${id}`).then(({ data }) => {
+      setProjeto(data);
+    });
   }, [id]);
 
   // Função para calcular os meses entre a data de início e a data final do projeto
@@ -36,7 +54,12 @@ export function GraficoProjeto() {
 
     const meses = [];
     while (inicio <= final) {
-      meses.push(new Date(inicio).toLocaleString('default', { month: 'short', year: 'numeric' }));
+      meses.push(
+        new Date(inicio).toLocaleString("default", {
+          month: "short",
+          year: "numeric",
+        }),
+      );
       inicio.setMonth(inicio.getMonth() + 1);
     }
 
@@ -46,24 +69,26 @@ export function GraficoProjeto() {
   const meses = calcularMeses(projeto.data_inicio, projeto.data_final);
 
   // Configuração do gráfico
-  const porcentagens = cronogramaSubpacote.map(item => item.porcentagem);
-  const porcentagemReal = cronogramaRealSubpacote.map(item => item.porcentagem);
+  const porcentagens = cronogramaSubpacote.map((item) => item.porcentagem);
+  const porcentagemReal = cronogramaRealSubpacote.map(
+    (item) => item.porcentagem,
+  );
 
   const options = {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top',
+        position: "top",
       },
       title: {
         display: true,
-        text: 'Gráfico de Curva S',
+        text: "Gráfico de Curva S",
       },
     },
     scales: {
       x: {
-        type: 'category',
-        position: 'bottom',
+        type: "category",
+        position: "bottom",
       },
       y: {
         min: -10,
@@ -76,18 +101,18 @@ export function GraficoProjeto() {
     labels: meses,
     datasets: [
       {
-        label: 'Porcentagem Real',
+        label: "Porcentagem Real",
         data: porcentagemReal,
         fill: false,
-        borderColor: 'blue',
-        cubicInterpolationMode: 'monotone',
+        borderColor: "blue",
+        cubicInterpolationMode: "monotone",
       },
       {
-        label: 'Porcentagem Planejada',
+        label: "Porcentagem Planejada",
         data: porcentagens,
         fill: false,
-        borderColor: 'green',
-        cubicInterpolationMode: 'monotone',
+        borderColor: "green",
+        cubicInterpolationMode: "monotone",
       },
     ],
   };
