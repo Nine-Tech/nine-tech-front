@@ -102,8 +102,9 @@ const Home = () => {
                   <p>{selectedFile.name}</p>
                 </>
               )}
-
-              <div class="input-group my-2">
+              <hr class="border border-secondary border-2 opacity-75"/>         
+              
+              <div class="input-group mb-2">
                 <span class="input-group-text" id="basic-addon1">
                   Valor HH
                 </span>
@@ -129,25 +130,8 @@ const Home = () => {
                   onChange={(e) => setDataTermino(e.target.value)}
                 />
               </div>
-              {/* <label>
-                Valor HH (Homem Hora):
-                <br />
-                <input
-                  type="number"
-                  placeholder={hhValue}
-                  className="form-control"
-                  onChange={(e) => setHhValue(e.target.value)}
-                />
-              </label> */}
-              {/* <label className="my-1">
-                Data de Término:
-                <br />
-                <input
-                  type="date"
-                  onChange={(e) => setDataTermino(e.target.value)}
-                  className="form-control"
-                />
-              </label> */}
+              <hr class="border border-secondary border-2 opacity-75"/>         
+
               <button
                 className="btn btn-primary mt-3 fw-bold shadow"
                 onClick={uploadFile}
