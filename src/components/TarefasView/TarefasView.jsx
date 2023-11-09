@@ -19,6 +19,8 @@ const TarefaLiderView = (props) => {
             dataFormatada: new Date(tarefa.data).toLocaleDateString("pt-BR"),
           }));
           setTasks(data);
+          console.log("data")
+          console.log(data)
         }
       })
       .catch((error) => {
@@ -40,7 +42,7 @@ const TarefaLiderView = (props) => {
         {tasks.length ? (
           <table className="table table-bordered">
             <thead>
-              <tr className="table-active">
+              <tr className="table-active text-center">
                 <th>ID</th>
                 <th>Nome</th>
                 <th>Descrição</th>
@@ -52,7 +54,7 @@ const TarefaLiderView = (props) => {
               </tr>
             </thead>
 
-            <tbody>
+            <tbody className="text-center">
               {tasks.map((t, index) => (
                 <tr key={t.id}>
                   <td>{t.id}</td>
@@ -60,8 +62,8 @@ const TarefaLiderView = (props) => {
                   <td>{t.descricao}</td>
                   <td>{t.execucao ? "1" : "0"}</td>
                   <td>{t.peso}</td>
-                  <td>{t.valor}</td>
-                  <td>{t.hh}</td>
+                  <td>{formatarValor(t.valor)}</td>
+                  <td>{formatarValor(t.hh)}</td>
                   <td>{formatarValor(t.material)}</td>
                 </tr>
               ))}

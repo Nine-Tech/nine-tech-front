@@ -117,5 +117,5 @@ export function GraficoSubpacotes() {
     ],
   };
 
-  return <Line className="grafico w-100 mx-auto border shadow" options={options} data={data} />;
+  return <Line className="grafico w-75 mx-auto border shadow" options={options} data={data} />;
 }

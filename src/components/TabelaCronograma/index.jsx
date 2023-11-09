@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 
 const TabelaCronograma = (props) => {
   const { id: projetoId } = useParams();
-  const { data } = props;
+  const { data, idProjeto } = props;
 
   const [cronograma, setCronograma] = useState([]);
   const [toast, setToast] = useState(false);
@@ -17,6 +17,7 @@ const TabelaCronograma = (props) => {
         );
         const data = response.data;
         setCronograma(data);
+        console.log("Meses")
         console.log(data);
       } catch (error) {
         console.error("Erro na requisição:", error);
@@ -26,6 +27,14 @@ const TabelaCronograma = (props) => {
     fetchData();
   }, [projetoId]);
 
+  useEffect(() => {    
+      window.axios.get(`projeto/${idProjeto}`).then(({ data }) => {
+        setProjeto(data);
+        console.log("Meses Projeto")
+        console.log(data);
+      });
+    }, [idProjeto]);
+
   return (
     <>
       <Toast show={toast} toggle={setToast} />
@@ -34,18 +43,18 @@ const TabelaCronograma = (props) => {
         <div className="table-responsive">
           <table className="table table-bordered">
             <thead>
-              <tr className="table-active">
-                <th></th>
+              <tr className="table-active">                
                 {cronograma.map((item, index) => (
-                  <th key={index}>{`Mês ${item.mes}`}</th>
+                  <th className="text-center" key={index}>{`Mês ${item.mes}`}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Cronograma Mensal</td>
+              <tr>                
                 {cronograma.map((item, index) => (
-                  <td key={index}>{item.porcentagem}</td>
+                  <td className="text-center" key={index}>
+                    {item.porcentagem} %                  
+                  </td>
                 ))}
               </tr>
             </tbody>

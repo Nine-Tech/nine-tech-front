@@ -145,16 +145,19 @@ const CronogramaLider = (props) => {
             <tr key={updatedData.id || 0}>
               {meses.map((mes, index) => (
                 <td key={index}>
+                  <div class="input-group mb-3">
                   <input
-                    className="form-control form-control-sm"
+                    className="form-control form-control-sm text-end"
                     min={0}
                     step={1}
                     max={100}
                     type="number"
                     name={`porcentagem_${index}`}
-                    value={updatedData[`mes${index + 1}`] || 0}
+                    placeholder={updatedData[`mes${index + 1}`] || 0}
                     onChange={(e) => update(e, `mes${index + 1}`)}
                   />
+                    <label class="input-group-text" for="inputGroupSelect02">%</label>
+                  </div>        
                 </td>
               ))}
             </tr>

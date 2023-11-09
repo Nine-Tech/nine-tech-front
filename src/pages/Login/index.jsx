@@ -63,8 +63,7 @@ const Login = () => {
       </Toast>
 
       <div className="login-card">
-        <img src={cardlogo} alt="9tech-logo" />
-        {/* <h4 className="fw-bold">Log In</h4> */}
+        <img src={cardlogo} alt="9tech-logo" />       
         <div className="mt-3 w-100">
           <select
             value={selectedLogin}

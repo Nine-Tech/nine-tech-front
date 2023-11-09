@@ -28,7 +28,7 @@ const Subpacote = () => {
   console.log(subpacoteNome);
 
   const navigation = [
-    { link: "#divisao", title: "Divisão" },
+    { link: "#atividade", title: "Atividades" },
     { link: "#grafico", title: "Gráfico" },
   ];
 
@@ -39,7 +39,7 @@ const Subpacote = () => {
         navigation={navigation}
       />
       <div className="my-5 tab-content">
-        <div className="tab-pane active" id="divisao" role="tabpanel">
+        <div className="tab-pane active" id="atividade" role="tabpanel">
           <TarefasLiderView data={tasks} />
         </div>
         <div className="tab-pane" id="grafico" role="tabpanel">
