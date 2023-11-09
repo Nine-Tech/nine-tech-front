@@ -91,8 +91,8 @@ export function GraficoProjeto() {
         position: "bottom",
       },
       y: {
-        min: -10,
-        max: 110,
+        beginAtZero: true,
+        max: 100,
       },
     },
   };
@@ -117,5 +117,5 @@ export function GraficoProjeto() {
     ],
   };
 
-  return <Line className="grafico" options={options} data={data} />;
+  return <Line className="grafico w-100 mx-auto border shadow" options={options} data={data} />;
 }
