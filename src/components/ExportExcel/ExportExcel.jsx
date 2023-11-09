@@ -40,4 +40,4 @@ const ExcelDownloadButton = (props) => {
 
 };
 
-export default ExcelExportButton;
+export default ExcelDownloadButton;
