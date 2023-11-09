@@ -80,10 +80,6 @@ export function GraficoSubpacotes() {
       legend: {
         position: "top",
       },
-      title: {
-        display: true,
-        text: "Gráfico de Curva S",
-      },
     },
     scales: {
       x: {
@@ -91,9 +87,12 @@ export function GraficoSubpacotes() {
         position: "bottom",
       },
       y: {
-        beginAtZero: true,
+        min: 0,
         max: 100,
       },
+    },
+    animation: {
+      duration: 0,
     },
   };
 
@@ -117,5 +116,20 @@ export function GraficoSubpacotes() {
     ],
   };
 
-  return <Line className="grafico w-75 mx-auto border shadow" options={options} data={data} />;
+  return (
+    <>
+
+    
+       <div className="w-75 mx-auto border shadow">
+         <h3 className="text-center m-3">Gráfico de Curva S</h3> 
+         
+               {porcentagens.length && porcentagemReal.length && meses.length && (
+          <Line options={options} data={data} />
+               )}
+       </div>
+
+
+    </>
+  );
+
 }

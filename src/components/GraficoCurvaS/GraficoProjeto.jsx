@@ -117,5 +117,20 @@ export function GraficoProjeto() {
     ],
   };
 
-  return <Line className="grafico w-100 mx-auto border shadow" options={options} data={data} />;
+  return (
+    <>
+
+    
+       <div className="w-75 mx-auto border shadow">
+         <h3 className="text-center m-3">Gráfico de Curva S</h3> 
+         
+               {porcentagens.length && porcentagemReal.length && meses.length && (
+          <Line options={options} data={data} />
+               )}
+       </div>
+
+
+    </>
+  );
+
 }
