@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React from "react";
 import * as XLSX from "xlsx";
 
 const ExcelDownloadButton = (props) => {
@@ -37,6 +37,7 @@ const ExcelDownloadButton = (props) => {
   };
 
   return <button className="btn btn-secondary me-3" onClick={handleDownload}>Baixar Excel</button>;
+
 };
 
-export default ExcelDownloadButton;
+export default ExcelExportButton;
