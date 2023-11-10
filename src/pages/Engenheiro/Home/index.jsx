@@ -102,8 +102,8 @@ const Home = () => {
                   <p>{selectedFile.name}</p>
                 </>
               )}
-              <hr class="border border-secondary border-2 opacity-75"/>         
-              
+              <hr class="border border-secondary border-2 opacity-75" />
+
               <div class="input-group mb-2">
                 <span class="input-group-text" id="basic-addon1">
                   Valor HH
@@ -130,7 +130,7 @@ const Home = () => {
                   onChange={(e) => setDataTermino(e.target.value)}
                 />
               </div>
-              <hr class="border border-secondary border-2 opacity-75"/>         
+              <hr class="border border-secondary border-2 opacity-75" />
 
               <button
                 className="btn btn-primary mt-3 fw-bold shadow"

@@ -61,7 +61,7 @@ const TarefaLider = (props) => {
     const novaTarefa = {
       nome: "",
       descricao: "",
-      data:"",
+      data: "",
       execucao: 0,
       valor: "",
       peso: "",
@@ -86,7 +86,7 @@ const TarefaLider = (props) => {
     const date = new Date(data);
     return date.toLocaleDateString("pt-BR");
   }
-  
+
   const salvarTarefas = () => {
     newTasks.forEach((tarefa) => {
       const materialComoNumero =
@@ -160,7 +160,7 @@ const TarefaLider = (props) => {
 
     const updatedTasks = [...tasks];
     if (field === "data") {
-      updatedTasks[index].data = value; 
+      updatedTasks[index].data = value;
     } else {
       updatedTasks[index][field] = value;
     }
@@ -273,7 +273,7 @@ const TarefaLider = (props) => {
         </button>
       </div>
 
-      <div className="table-responsive">
+      <div className="table-responsive text-center justify-content-center">
         <table className="table table-bordered">
           <thead>
             <tr className="table-active">
@@ -298,7 +298,7 @@ const TarefaLider = (props) => {
                   <input
                     className="form-control"
                     type="text"
-                    value={t.nome}
+                    placeholder={t.nome}
                     onChange={(e) =>
                       handleChange(index, "nome", e.target.value)
                     }
@@ -308,7 +308,7 @@ const TarefaLider = (props) => {
                   <input
                     className="form-control"
                     type="text"
-                    value={t.descricao}
+                    placeholder={t.descricao}
                     onChange={(e) =>
                       handleChange(index, "descricao", e.target.value)
                     }
@@ -320,7 +320,9 @@ const TarefaLider = (props) => {
                       className="form-control"
                       type="date"
                       value={t.data}
-                      onChange={(e) => handleChange(index, "data", e.target.value)}
+                      onChange={(e) =>
+                        handleChange(index, "data", e.target.value)
+                      }
                       onBlur={() => setIsDateEditing(null)}
                     />
                   ) : (

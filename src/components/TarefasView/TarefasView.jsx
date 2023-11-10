@@ -19,8 +19,8 @@ const TarefaLiderView = (props) => {
             dataFormatada: new Date(tarefa.data).toLocaleDateString("pt-BR"),
           }));
           setTasks(data);
-          console.log("data")
-          console.log(data)
+          console.log("data");
+          console.log(data);
         }
       })
       .catch((error) => {

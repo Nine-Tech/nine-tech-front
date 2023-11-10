@@ -17,7 +17,7 @@ const TabelaCronograma = (props) => {
         );
         const data = response.data;
         setCronograma(data);
-        console.log("Meses")
+        console.log("Meses");
         console.log(data);
       } catch (error) {
         console.error("Erro na requisição:", error);
@@ -27,13 +27,13 @@ const TabelaCronograma = (props) => {
     fetchData();
   }, [projetoId]);
 
-  useEffect(() => {    
-      window.axios.get(`projeto/${idProjeto}`).then(({ data }) => {
-        setProjeto(data);
-        console.log("Meses Projeto")
-        console.log(data);
-      });
-    }, [idProjeto]);
+  useEffect(() => {
+    window.axios.get(`projeto/${idProjeto}`).then(({ data }) => {
+      setProjeto(data);
+      console.log("Meses Projeto");
+      console.log(data);
+    });
+  }, [idProjeto]);
 
   return (
     <>
@@ -43,17 +43,20 @@ const TabelaCronograma = (props) => {
         <div className="table-responsive">
           <table className="table table-bordered">
             <thead>
-              <tr className="table-active">                
+              <tr className="table-active">
                 {cronograma.map((item, index) => (
-                  <th className="text-center" key={index}>{`Mês ${item.mes}`}</th>
+                  <th
+                    className="text-center"
+                    key={index}
+                  >{`Mês ${item.mes}`}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              <tr>                
+              <tr>
                 {cronograma.map((item, index) => (
                   <td className="text-center" key={index}>
-                    {item.porcentagem} %                  
+                    {item.porcentagem} %
                   </td>
                 ))}
               </tr>
