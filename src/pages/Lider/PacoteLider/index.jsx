@@ -54,6 +54,17 @@ const PacoteLider = () => {
     console.log("fui chamado com sucesso");
   };
 
+  const updateCronograma = () => {
+    window.axios
+      .get(`cronograma/${id}`)
+      .then(({ data }) => {
+        setCronograma(data);
+      })
+      .catch((error) => {
+        console.error("Erro na requisição:", error);
+      });
+  };
+
   return (
     <>
       <BodyHeader
@@ -67,7 +78,7 @@ const PacoteLider = () => {
         </div>
         <div className="tab-pane" id="planejamento" role="tabpanel">
           {" "}
-          <CronogramaLider data={cronograma} idProjeto={idProjeto} />
+          <CronogramaLider data={cronograma} idProjeto={idProjeto} updateCronograma={updateCronograma} />
         </div>
       </div>
     </>
