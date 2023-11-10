@@ -76,7 +76,11 @@ const PacoteLider = () => {
         </div>
         <div className="tab-pane" id="planejamento" role="tabpanel">
           {" "}
-          <CronogramaLider data={cronograma} idProjeto={idProjeto} updateCronograma={updateCronograma} />
+          <CronogramaLider
+            data={cronograma}
+            idProjeto={idProjeto}
+            updateCronograma={updateCronograma}
+          />
         </div>
       </div>
     </>

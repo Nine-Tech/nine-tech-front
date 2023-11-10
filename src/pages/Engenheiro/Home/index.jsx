@@ -102,35 +102,35 @@ const Home = () => {
                   <p>{selectedFile.name}</p>
                 </>
               )}
-              <hr class="border border-secondary border-2 opacity-75" />
+              <hr className="border border-secondary border-2 opacity-75" />
 
-              <div class="input-group mb-2">
-                <span class="input-group-text" id="basic-addon1">
+              <div className="input-group mb-2">
+                <span className="input-group-text" id="basic-addon1">
                   Valor HH
                 </span>
                 <input
                   type="number"
-                  class="form-control text-center"
+                  className="form-control text-center"
                   placeholder={hhValue}
                   aria-label="valor hh"
                   aria-describedby="basic-addon1"
                   onChange={(e) => setHhValue(e.target.value)}
                 />
               </div>
-              <div class="input-group my-2">
-                <span class="input-group-text" id="basic-addon1">
+              <div className="input-group my-2">
+                <span className="input-group-text" id="basic-addon1">
                   Data Término
                 </span>
                 <input
                   type="date"
-                  class="form-control text-center"
+                  className="form-control text-center"
                   placeholder={hhValue}
                   aria-label="valor hh"
                   aria-describedby="basic-addon1"
                   onChange={(e) => setDataTermino(e.target.value)}
                 />
               </div>
-              <hr class="border border-secondary border-2 opacity-75" />
+              <hr className="border border-secondary border-2 opacity-75" />
 
               <button
                 className="btn btn-primary mt-3 fw-bold shadow"

@@ -40,11 +40,16 @@ export function GraficoProjeto() {
       .get(`cronograma/cronogramaprojetoestimado/ultimosdias/${id}`)
       .then(({ data }) => {
         setCronogramaRealSubpacote(data);
+        console.log("CronogramaRealSubpacote");
+        console.log(data);
       });
 
-    window.axios.get(`projeto/${id}`).then(({ data }) => {
-      setProjeto(data);
-    });
+    console.log("ID no GraficoProjeto:", id);
+    if (id) {
+      window.axios.get(`projeto/${id}`).then(({ data }) => {
+        setProjeto(data);
+      });
+    }
   }, [id]);
 
   // Função para calcular os meses entre a data de início e a data final do projeto
