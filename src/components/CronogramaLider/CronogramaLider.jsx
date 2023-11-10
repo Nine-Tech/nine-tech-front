@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 
 const CronogramaLider = (props) => {
   const { id } = useParams();
-  const { data, idProjeto } = props;
+  const { data, idProjeto, updateCronograma } = props;
 
   const [isChanged, setIsChanged] = useState(false);
   const [cronograma, setCronograma] = useState([]);
@@ -87,25 +87,13 @@ const CronogramaLider = (props) => {
         await window.axios.put(`cronograma/${id}`, jsonData);
       }
 
-      // After the cronograma has been saved, fetch the updated data from the backend
-      window.axios
-        .get(`cronograma/${id}`)
-        .then(({ data }) => {
-          console.log("Teste", data);
-          setCronograma(data);
-          setUpdatedData(data);
-        })
-        .catch((error) => {
-          console.error("Erro na requisição:", error);
-        });
-
       setIsChanged(false);
       setToast(true);
+      updateCronograma();
+      setLoading(false);
     } catch (error) {
       setError(true);
       console.error("Erro ao salvar:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
