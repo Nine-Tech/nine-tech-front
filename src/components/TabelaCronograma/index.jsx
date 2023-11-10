@@ -12,7 +12,9 @@ const TabelaCronograma = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await window.axios.get(`cronograma/cronogramaprojetoestimado/${projetoId}`);
+        const response = await window.axios.get(
+          `cronograma/cronogramaprojetoestimado/${projetoId}`,
+        );
         const data = response.data;
         setCronograma(data);
         console.log(data);
@@ -51,7 +53,8 @@ const TabelaCronograma = (props) => {
         </div>
       ) : (
         <div className="text-center p-5">
-          No momento não existem cronogramas atribuídos neste Projeto, por favor volte mais tarde!
+          No momento não existem cronogramas atribuídos neste Projeto, por favor
+          volte mais tarde!
         </div>
       )}
     </>

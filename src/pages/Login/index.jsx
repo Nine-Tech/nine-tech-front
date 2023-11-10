@@ -60,7 +60,7 @@ const Login = () => {
     <div className="login">
       <Toast show={toast} toggle={setToast}>
         Usuário ou senha incorretos.
-      </Toast>      
+      </Toast>
 
       <div className="login-card">
         <img src={cardlogo} alt="9tech-logo" />

@@ -7,7 +7,6 @@ import CardsProjeto from "@/components/CardsProjeto";
 import TarefasLiderView from "@/components/TarefasView/TarefasView";
 import { GraficoSubpacotes } from "../../../components/GraficoCurvaS/GraficoSubpacotes";
 
-
 const Subpacote = () => {
   const { subpacoteId } = useParams();
 
