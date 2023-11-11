@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import BodyHeader from "@/components/BodyHeader";
-import TabelaWbs from "@/components/TabelaWbs";
-import TabelaCronograma from "@/components/TabelaCronograma";
-import CardsProjeto from "@/components/CardsProjeto";
 import TarefasLiderView from "@/components/TarefasView/TarefasView";
 import { GraficoSubpacotes } from "../../../components/GraficoCurvaS/GraficoSubpacotes";
 

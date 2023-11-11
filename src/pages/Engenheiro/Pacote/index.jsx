@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import BodyHeader from "@/components/BodyHeader";
-import TabelaWbs from "@/components/TabelaWbs";
-import TabelaCronograma from "@/components/TabelaCronograma";
 import CardsProjeto from "@/components/CardsProjeto";
 
 const Pacote = () => {

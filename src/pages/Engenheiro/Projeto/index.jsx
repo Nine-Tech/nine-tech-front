@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import BodyHeader from "@/components/BodyHeader";
-import TabelaWbs from "@/components/TabelaWbs";
 import TabelaCronograma from "@/components/TabelaCronograma";
 import Dashboard from "../../../components/Dashboard/Dashboard";
 import LiderSelect from "../../../components/LiderSelect/LiderSelect";
