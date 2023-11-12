@@ -2,7 +2,7 @@ import "./style.scss";
 import ProgressBar from "@/components/BarraProgresso";
 
 const BodyHeader = (props) => {
-  const { title, children, navigation, progress } = props;
+  const { id, title, children, navigation, progress } = props;
 
   const progressBar =
     progress !== undefined ? (

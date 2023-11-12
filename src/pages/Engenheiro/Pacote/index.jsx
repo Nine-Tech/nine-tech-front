@@ -40,7 +40,11 @@ const Pacote = () => {
 
   return (
     <>
-      <BodyHeader title={pacote.nome || "Pacote"} navigation={navigation} />
+      <BodyHeader
+        id={pacote.id}
+        title={pacote.nome || "Pacote"}
+        navigation={navigation}
+      />
       <div className="my-5 tab-content">
         <div className="tab-pane active" id="divisao" role="tabpanel">
           {subpacotes.length ? (

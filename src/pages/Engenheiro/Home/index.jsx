@@ -12,6 +12,8 @@ const Home = () => {
   const getProjects = () => {
     window.axios.get("projeto").then(({ data }) => {
       setProjects(data);
+      console.log("Dados");
+      console.log(data);
     });
   };
 
@@ -35,7 +37,7 @@ const Home = () => {
         />
       </Modal>
 
-      <BodyHeader title={"Projetos"} className="mb-5">
+      <BodyHeader id={""} title={"Projetos"} className="mb-5">
         <div className="d-flex">
           <button
             className="btn btn-primary"
@@ -54,7 +56,11 @@ const Home = () => {
                 to={`projetos/${p.id}`}
                 className="text-decoration-none text-primary"
               >
-                <CardsProjeto nome={p.nome} porcentagem={p.porcentagem} />
+                <CardsProjeto
+                  id={p.id}
+                  nome={p.nome}
+                  porcentagem={p.porcentagem}
+                />
               </Link>
             </div>
           ))}

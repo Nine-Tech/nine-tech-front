@@ -37,7 +37,11 @@ const Projeto = () => {
 
   return (
     <>
-      <BodyHeader title={project.nome || "Projeto"} navigation={navigation} />
+      <BodyHeader
+        id={project.id}
+        title={project.nome || "Projeto"}
+        navigation={navigation}
+      />
       <div className="my-5 tab-content">
         <div className="tab-pane active" id="atribuicao" role="tabpanel">
           <LiderSelect data={packages} />
