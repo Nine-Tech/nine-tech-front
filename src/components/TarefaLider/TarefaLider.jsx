@@ -298,17 +298,17 @@ const TarefaLider = (props) => {
                   <input
                     className="form-control"
                     type="text"
-                    placeholder={t.nome}
+                    value={t.nome}
                     onChange={(e) =>
                       handleChange(index, "nome", e.target.value)
                     }
                   />
                 </td>
-                <td>
+                <td className="col-4">
                   <input
                     className="form-control"
                     type="text"
-                    placeholder={t.descricao}
+                    value={t.descricao}
                     onChange={(e) =>
                       handleChange(index, "descricao", e.target.value)
                     }
@@ -331,7 +331,7 @@ const TarefaLider = (props) => {
                 </td>
                 <td>
                   <select
-                    className="form-control"
+                    className="form-select"
                     value={t.execucao ? "1" : "0"}
                     onChange={(e) =>
                       handleChange(index, "execucao", e.target.value === "1")
@@ -343,7 +343,7 @@ const TarefaLider = (props) => {
                 </td>
                 <td>
                   <select
-                    className="form-control"
+                    className="form-select"
                     type="text"
                     value={t.peso}
                     onChange={(e) =>

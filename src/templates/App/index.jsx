@@ -97,34 +97,33 @@ const App = () => {
           onImportSuccess={onImportSuccess}
         />
         <li className="btn-group dropend">
-                <a
-                  className="nav-link dropdown-toggle fw-bold"
-                  href="#"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Usuários
-                </a>
-                <ul className="dropdown-menu dropdown-menu-dark">
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Cadastrar
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Listar
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Excluir
-                    </a>
-                  </li>
-                </ul>
-              </li>
-        
+          <a
+            className="nav-link dropdown-toggle fw-bold"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Usuários
+          </a>
+          <ul className="dropdown-menu dropdown-menu-dark">
+            <li>
+              <a className="dropdown-item" href="#">
+                Cadastrar
+              </a>
+            </li>
+            <li>
+              <a className="dropdown-item" href="#">
+                Listar
+              </a>
+            </li>
+            <li>
+              <a className="dropdown-item" href="#">
+                Excluir
+              </a>
+            </li>
+          </ul>
+        </li>
       </Navbar>
 
       <div className="app">

@@ -121,6 +121,7 @@ const CronogramaLider = (props) => {
       </Toast>
 
       <div className="table-responsive">
+      <h3 className="my-2">Cronograma Pranejado</h3>
         <table className="table table-bordered">
           <thead>
             <tr>

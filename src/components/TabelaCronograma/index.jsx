@@ -65,8 +65,7 @@ const TabelaCronograma = (props) => {
         </div>
       ) : (
         <div className="text-center p-5">
-          No momento não existem cronogramas atribuídos neste Projeto, por favor
-          volte mais tarde!
+          No momento não existem cronogramas atribuídos neste Projeto!
         </div>
       )}
     </>

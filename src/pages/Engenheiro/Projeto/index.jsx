@@ -12,6 +12,7 @@ const Projeto = () => {
   const [project, setProject] = useState({});
   const [packages, setPackages] = useState([]);
   const [cronograma, setCronograma] = useState({});
+  const [idProjeto, setIdProjeto] = useState(0);
 
   useEffect(() => {
     window.axios.get(`projeto/${id}`).then(({ data }) => {
@@ -45,7 +46,7 @@ const Projeto = () => {
           <Dashboard data={packages} />
         </div>
         <div className="tab-pane" id="cronograma" role="tabpanel">
-          <TabelaCronograma data={cronograma} />
+          <TabelaCronograma data={cronograma} idProjeto={idProjeto} />
         </div>
         <div className="tab-pane" id="grafico" role="tabpanel">
           <GraficoProjeto />
