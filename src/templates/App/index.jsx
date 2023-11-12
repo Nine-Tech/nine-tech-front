@@ -5,6 +5,7 @@ import { removeToken } from "@/utils/api";
 import Navbar from "../../components/Navbar/Index";
 import Header from "@/components/Header";
 import ImportExcel from "../../components/ImportExcel";
+import "./style.scss";
 
 const App = () => {
   const location = useLocation();
