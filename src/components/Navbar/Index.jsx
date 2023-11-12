@@ -1,6 +1,5 @@
 import logo from "@/assets/images/9tech-logo.png";
 import logo2 from "@/assets/images/9tech_black_transparent.png";
-import { Link } from "react-router-dom";
 import { removeToken } from "@/utils/api";
 import { useNavigate } from "react-router-dom";
 import "./style.scss";
@@ -61,41 +60,12 @@ const Navbar = (props) => {
                   Home
                 </a>
               </li>
-              {children}
-
-              <li className="btn-group dropend">
-                <a
-                  className="nav-link dropdown-toggle fw-bold"
-                  href="#"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Usuários
-                </a>
-                <ul className="dropdown-menu dropdown-menu-dark">
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Cadastrar
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Listar
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Excluir
-                    </a>
-                  </li>
-                </ul>
-              </li>
+              {(roles || []).includes("ROLE_ENGENHEIRO_CHEFE") && children}
             </ul>
           </div>
           <button
             type="button"
-            class="btn btn-outline-dark align-items-center fw-bold"
+            className="btn btn-outline-dark align-items-center fw-bold"
             onClick={logout}
           >
             SAIR
