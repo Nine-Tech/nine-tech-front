@@ -38,6 +38,11 @@ const Pacote = () => {
 
   const navigation = [{ link: "#divisao", title: "Divisão" }];
 
+  function formatDataParaExibicao(data) {
+    const date = new Date(data);
+    return date.toLocaleDateString("pt-BR");
+  }
+
   return (
     <>
       <BodyHeader
@@ -50,12 +55,16 @@ const Pacote = () => {
           {subpacotes.length ? (
             <div className="row mt-5">
               {subpacotes.map((p) => (
-                <div className="col-lg-4" key={p.id}>
+                <div className="col-lg-6" key={p.id}>
                   <Link
                     to={`subpacotes/${p.id}`}
                     className="text-decoration-none text-primary"
                   >
-                    <CardsProjeto nome={p.nome} porcentagem={p.porcentagem} />
+                    <CardsProjeto
+                      id={p.id}
+                      nome={p.nome}
+                      porcentagem={p.porcentagem}
+                    />
                   </Link>
                 </div>
               ))}

@@ -17,30 +17,26 @@ const Dashboard = () => {
     });
   }, [id]);
 
-  /* const formatarMoeda = (value) => {
-    return value.toLocaleString("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    });
-  };
-
-  const formatarMilhar = (value) => {
-    return value
-      .toLocaleString("pt-BR", { maximumFractionDigits: 0 })
-      .replace(",", ".");
-  }; */
+  function formatDataParaExibicao(data) {
+    const date = new Date(data);
+    return date.toLocaleDateString("pt-BR");
+  }
 
   return (
     <>
       {pacotesProCard.length ? (
         <div className="row mt-5">
           {pacotesProCard.map((p) => (
-            <div className="col-lg-4" key={p.id}>
+            <div className="col-lg-6" key={p.id}>
               <Link
                 to={`pacotes/${p.id}`}
                 className="text-decoration-none text-primary"
               >
-                <CardsProjeto nome={p.nome} porcentagem={p.porcentagem} />
+                <CardsProjeto
+                  id={p.id}
+                  nome={p.nome}
+                  porcentagem={p.porcentagem}
+                />
               </Link>
             </div>
           ))}

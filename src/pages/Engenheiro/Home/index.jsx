@@ -26,6 +26,11 @@ const Home = () => {
     getProjects();
   }, []);
 
+  function formatDataParaExibicao(data) {
+    const date = new Date(data);
+    return date.toLocaleDateString("pt-BR");
+  }
+
   return (
     <>
       <Modal showModal={showModal} handler={setShowModal}>
@@ -51,7 +56,7 @@ const Home = () => {
       {projects.length ? (
         <div className="row mt-5">
           {projects.map((p) => (
-            <div className="col-lg-4" key={p.id}>
+            <div className="col-lg-6" key={p.id}>
               <Link
                 to={`projetos/${p.id}`}
                 className="text-decoration-none text-primary"
@@ -60,8 +65,8 @@ const Home = () => {
                   id={p.id}
                   nome={p.nome}
                   porcentagem={p.porcentagem}
-                  data_inicio={p.data_inicio}
-                  data_final={p.data_final}
+                  data_inicio={formatDataParaExibicao(p.data_inicio)}
+                  data_final={formatDataParaExibicao(p.data_final)}
                 />
               </Link>
             </div>

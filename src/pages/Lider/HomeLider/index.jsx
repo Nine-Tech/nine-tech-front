@@ -10,8 +10,14 @@ const HomeLider = () => {
   useEffect(() => {
     window.axios.get(`subpacotes/${id}`).then(({ data }) => {
       setProjects(data);
+      console.log(data);
     });
   }, [id, projects]);
+
+  function formatDataParaExibicao(data) {
+    const date = new Date(data);
+    return date.toLocaleDateString("pt-BR");
+  }
 
   return (
     <>
@@ -19,12 +25,16 @@ const HomeLider = () => {
       {projects.length ? (
         <div className="row mt-5">
           {projects.map((p) => (
-            <div className="col-lg-4" key={p.id}>
+            <div className="col-lg-6" key={p.id}>
               <Link
                 to={`subpacotes/${p.id}`}
                 className="text-decoration-none text-primary"
               >
-                <CardsProjeto nome={p.nome} porcentagem={p.porcentagem} />
+                <CardsProjeto
+                  id={p.id}
+                  nome={p.nome}
+                  porcentagem={p.porcentagem}
+                />
               </Link>
             </div>
           ))}
