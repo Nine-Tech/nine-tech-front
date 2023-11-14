@@ -17,11 +17,6 @@ const Dashboard = () => {
     });
   }, [id]);
 
-  function formatDataParaExibicao(data) {
-    const date = new Date(data);
-    return date.toLocaleDateString("pt-BR");
-  }
-
   return (
     <>
       {pacotesProCard.length ? (

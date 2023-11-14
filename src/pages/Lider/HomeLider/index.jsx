@@ -14,11 +14,6 @@ const HomeLider = () => {
     });
   }, [id, projects]);
 
-  function formatDataParaExibicao(data) {
-    const date = new Date(data);
-    return date.toLocaleDateString("pt-BR");
-  }
-
   return (
     <>
       <BodyHeader title={"Projetos"} className="mb-5" />

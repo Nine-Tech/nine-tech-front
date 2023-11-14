@@ -12,6 +12,11 @@ const BodyHeader = (props) => {
     porcentagem,
   } = props;
 
+  function formatDataParaExibicao(data) {
+    const date = new Date(data);
+    return date.toLocaleDateString("pt-BR");
+  }
+
   return (
     <div className="body-header">
       <div className={`p-4 ${navigation && "pb-0"}`}>
@@ -23,12 +28,12 @@ const BodyHeader = (props) => {
             {id && <p className="card-title font-weight-bold">ID: {id}</p>}
             {data_inicio && (
               <p className="card-title font-weight-bold">
-                Início: {data_inicio}
+                Início: {formatDataParaExibicao(data_inicio)}
               </p>
             )}
             {data_final && (
               <p className="card-title font-weight-bold">
-                Término: {data_final}
+                Término: {formatDataParaExibicao(data_final)}
               </p>
             )}
             {porcentagem !== null && porcentagem !== undefined && (

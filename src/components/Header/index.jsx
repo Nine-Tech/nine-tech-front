@@ -26,11 +26,12 @@ const Header = (props) => {
       <div className="d-flex align-items-center">
         {!(esconderBotaoEngenheiro || esconderBotaoLiderProjeto) && (
           <button
-            className="btn ms-3 d-flex align-items-center"
+            type="button"
+            className="btn btn-outline-dark ms-2 d-flex align-items-center fw-bold"
             onClick={voltar}
           >
-            <h5>VOLTAR</h5>
-            <i className="fa-solid fa-reply-all ms-2 fa-2x"></i>
+            VOLTAR
+            <i className="fa-solid fa-reply-all ms-2 fa-1 x"></i>
           </button>
         )}
       </div>

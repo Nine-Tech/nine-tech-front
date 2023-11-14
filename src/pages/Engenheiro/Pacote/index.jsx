@@ -38,11 +38,6 @@ const Pacote = () => {
 
   const navigation = [{ link: "#divisao", title: "Divisão" }];
 
-  function formatDataParaExibicao(data) {
-    const date = new Date(data);
-    return date.toLocaleDateString("pt-BR");
-  }
-
   return (
     <>
       <BodyHeader
