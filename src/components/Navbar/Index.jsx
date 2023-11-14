@@ -53,7 +53,7 @@ const Navbar = (props) => {
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
                 <a
-                  className="nav-link  fw-bold"
+                  className="nav-link fw-bold "
                   aria-current="page"
                   href={route}
                 >

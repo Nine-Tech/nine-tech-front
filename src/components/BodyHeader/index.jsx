@@ -2,23 +2,43 @@ import "./style.scss";
 import ProgressBar from "@/components/BarraProgresso";
 
 const BodyHeader = (props) => {
-  const { id, title, children, navigation, progress } = props;
-
-  const progressBar =
-    progress !== undefined ? (
-      <ProgressBar progress={progress} />
-    ) : (
-      <div> {children}</div>
-    );
+  const {
+    id,
+    title,
+    children,
+    navigation,
+    data_inicio,
+    data_final,
+    porcentagem,
+  } = props;
 
   return (
     <div className="body-header">
       <div className={`p-4 ${navigation && "pb-0"}`}>
         <div className="d-flex justify-content-between">
           <h3>{title || "BodyHeader"}</h3>
-          {progressBar}
+          <div className="ms-auto p-2">{children}</div>
+
+          <div className="d-flex align-items-end flex-column mb-3">
+            {id && <p className="card-title font-weight-bold">ID: {id}</p>}
+            {data_inicio && (
+              <p className="card-title font-weight-bold">
+                Início: {data_inicio}
+              </p>
+            )}
+            {data_final && (
+              <p className="card-title font-weight-bold">
+                Término: {data_final}
+              </p>
+            )}
+            {porcentagem !== null && porcentagem !== undefined && (
+              <div className="ms-auto">
+                <ProgressBar progress={porcentagem} />
+              </div>
+            )}
+          </div>
         </div>
-        <div className="my-3 divider" />
+        <div className="mb-3 divider" />
       </div>
 
       <div className="d-flex justify-content-between">

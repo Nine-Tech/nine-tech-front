@@ -42,10 +42,10 @@ const Home = () => {
         />
       </Modal>
 
-      <BodyHeader id={""} title={"Projetos"} className="mb-5">
+      <BodyHeader title={"Projetos"} className="mb-5">
         <div className="d-flex">
           <button
-            className="btn btn-primary"
+            className="btn btn-primary shadow mb-2"
             onClick={() => setShowModal(true)}
           >
             Importar Tabela Excel

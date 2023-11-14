@@ -17,6 +17,7 @@ const Projeto = () => {
   useEffect(() => {
     window.axios.get(`projeto/${id}`).then(({ data }) => {
       setProject(data);
+      console.log("PROJETO DATA", data);
     });
 
     window.axios.get(`upload/${id}`).then(({ data }) => {
@@ -41,6 +42,9 @@ const Projeto = () => {
         id={project.id}
         title={project.nome || "Projeto"}
         navigation={navigation}
+        porcentagem={project.porcentagem}
+        data_inicio={project.data_inicio}
+        data_final={project.data_final}
       />
       <div className="my-5 tab-content">
         <div className="tab-pane active" id="atribuicao" role="tabpanel">
