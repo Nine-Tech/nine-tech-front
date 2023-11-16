@@ -65,8 +65,8 @@ const Home = () => {
                   id={p.id}
                   nome={p.nome}
                   porcentagem={p.porcentagem}
-                  data_inicio={formatDataParaExibicao(p.data_inicio)}
-                  data_final={formatDataParaExibicao(p.data_final)}
+                  data_inicio={p.data_inicio}
+                  data_final={p.data_final}
                 />
               </Link>
             </div>
