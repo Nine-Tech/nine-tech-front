@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import ProgressBar from "@/components/BarraProgresso";
 
 function formatDataParaExibicao(data) {
-  const date = new Date(data);
+  let date = new Date(data);
+  date.setDate(date.getDate() + 1)
   return date.toLocaleDateString("pt-BR");
 }
 
