@@ -102,9 +102,8 @@ const CronogramaLider = (props) => {
     const final = new Date(dataFinal);
     const meses = [];
     while (inicio <= final) {
-      meses.push(
-        new Date(inicio).toLocaleString("default", { month: "short" }),
-      );
+      const nomeAbreviado = new Date(inicio).toLocaleString("default", { month: "short" });
+      meses.push(nomeAbreviado.charAt(0).toUpperCase() + nomeAbreviado.slice(1));
       inicio.setMonth(inicio.getMonth() + 1);
     }
     return meses;
@@ -126,7 +125,7 @@ const CronogramaLider = (props) => {
           <thead>
             <tr>
               {meses.map((mes, index) => (
-                <td key={index}>{mes}</td>
+                <th className="text-center" key={index}>{mes}</th>
               ))}
             </tr>
           </thead>

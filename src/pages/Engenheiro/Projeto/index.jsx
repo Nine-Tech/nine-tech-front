@@ -54,7 +54,7 @@ const Projeto = () => {
           <Dashboard data={packages} />
         </div>
         <div className="tab-pane" id="cronograma" role="tabpanel">
-          <TabelaCronograma data={cronograma} idProjeto={idProjeto} />
+          <TabelaCronograma data={cronograma} idProjeto={idProjeto} dataInicio={project.data_inicio} />
         </div>
         <div className="tab-pane" id="grafico" role="tabpanel">
           <GraficoProjeto />

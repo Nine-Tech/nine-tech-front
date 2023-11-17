@@ -4,9 +4,10 @@ import { useParams } from "react-router-dom";
 
 const TabelaCronograma = (props) => {
   const { id: projetoId } = useParams();
-  const { data, idProjeto } = props;
+  const { data, idProjeto, dataInicio } = props;
 
   const [cronograma, setCronograma] = useState([]);
+  const [meses, setMeses] = useState([]);
   const [toast, setToast] = useState(false);
 
   useEffect(() => {
@@ -17,15 +18,22 @@ const TabelaCronograma = (props) => {
         );
         const data = response.data;
         setCronograma(data);
-        console.log("Meses");
-        console.log(data);
+  
+        // Calcular os nomes dos meses com base na data de início do projeto
+        const dataInicioProjeto = new Date(dataInicio);
+        const nomesDosMeses = data.map((item) => {
+          const mesDaData = new Date(dataInicioProjeto.getFullYear(), dataInicioProjeto.getMonth() + item.mes - 1, 1);
+          const nomeAbreviado = mesDaData.toLocaleString('pt-BR', { month: 'short' });
+          return nomeAbreviado.charAt(0).toUpperCase() + nomeAbreviado.slice(1);
+        });
+        setMeses(nomesDosMeses);
       } catch (error) {
         console.error("Erro na requisição:", error);
       }
     };
-
+  
     fetchData();
-  }, [projetoId]);
+  }, [projetoId, dataInicio]);
 
   useEffect(() => {
     window.axios.get(`projeto/${idProjeto}`).then(({ data }) => {
@@ -41,23 +49,36 @@ const TabelaCronograma = (props) => {
 
       {cronograma.length ? (
         <div className="table-responsive">
+          <h3 className="mb-3">Cronograma</h3>
           <table className="table table-bordered">
             <thead>
-              <tr className="table-active">
-                {cronograma.map((item, index) => (
-                  <th
-                    className="text-center"
-                    key={index}
-                  >{`Mês ${item.mes}`}</th>
+              <tr>
+                {meses.map((nomeDoMes, index) => (
+                  <th className="text-center" key={index}>{nomeDoMes}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               <tr>
                 {cronograma.map((item, index) => (
-                  <td className="text-center" key={index}>
-                    {item.porcentagem} %
-                  </td>
+                  <td key={index}>
+                  <div className="input-group mb-3">
+                    <input
+                      className="form-control form-control-sm text-end"
+                      min={0}
+                      step={1}
+                      max={100}
+                      name={`porcentagem_${index}`}
+                      value={item.porcentagem}
+                    />
+                    <label
+                      className="input-group-text"
+                      for="inputGroupSelect02"
+                    >
+                    %
+                    </label>
+                  </div>
+                </td>                  
                 ))}
               </tr>
             </tbody>
