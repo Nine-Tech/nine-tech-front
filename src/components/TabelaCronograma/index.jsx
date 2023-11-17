@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 
 const TabelaCronograma = (props) => {
   const { id: projetoId } = useParams();
-  const { data, idProjeto, dataInicio } = props;
+  const { data, idProjeto, dataInicio, dataFinal } = props;
 
   const [cronograma, setCronograma] = useState([]);
   const [meses, setMeses] = useState([]);
@@ -18,30 +18,35 @@ const TabelaCronograma = (props) => {
         );
         const data = response.data;
         setCronograma(data);
-  
-        // Calcular os nomes dos meses com base na data de início do projeto
+
+        // Calcular os nomes dos meses com base na data de início do projeto e na data final do cronograma
         const dataInicioProjeto = new Date(dataInicio);
-        const nomesDosMeses = data.map((item) => {
-          const mesDaData = new Date(dataInicioProjeto.getFullYear(), dataInicioProjeto.getMonth() + item.mes - 1, 1);
-          const nomeAbreviado = mesDaData.toLocaleString('pt-BR', { month: 'short' });
-          return nomeAbreviado.charAt(0).toUpperCase() + nomeAbreviado.slice(1);
-        });
+        const dataFinalProjeto = new Date(dataFinal);  // Adicionando a data final do projeto
+        const nomesDosMeses = calcularMeses(dataInicioProjeto, dataFinalProjeto);
+
         setMeses(nomesDosMeses);
       } catch (error) {
         console.error("Erro na requisição:", error);
       }
     };
-  
-    fetchData();
-  }, [projetoId, dataInicio]);
 
-  useEffect(() => {
-    window.axios.get(`projeto/${idProjeto}`).then(({ data }) => {
-      setProjeto(data);
-      console.log("Meses Projeto");
-      console.log(data);
-    });
-  }, [idProjeto]);
+    fetchData();
+  }, [projetoId, dataInicio, dataFinal]);  // Adicionando dataFinal à lista de dependências
+
+  // Função para calcular os meses entre a data de início e final
+  const calcularMeses = (dataInicio, dataFinal) => {
+    const inicio = new Date(dataInicio);
+    const final = new Date(dataFinal);
+    const meses = [];
+
+    while (inicio <= final) {
+      const nomeAbreviado = inicio.toLocaleString("default", { month: "short" });
+      meses.push(nomeAbreviado.charAt(0).toUpperCase() + nomeAbreviado.slice(1));
+      inicio.setMonth(inicio.getMonth() + 1);
+    }
+
+    return meses;
+  };
 
   return (
     <>
@@ -60,26 +65,30 @@ const TabelaCronograma = (props) => {
             </thead>
             <tbody>
               <tr>
-                {cronograma.map((item, index) => (
-                  <td key={index}>
-                  <div className="input-group mb-3">
-                    <input
-                      className="form-control form-control-sm text-end"
-                      min={0}
-                      step={1}
-                      max={100}
-                      name={`porcentagem_${index}`}
-                      value={item.porcentagem}
-                    />
-                    <label
-                      className="input-group-text"
-                      for="inputGroupSelect02"
-                    >
-                    %
-                    </label>
-                  </div>
-                </td>                  
-                ))}
+                {meses.map((nomeDoMes, index) => {
+                  const itemDoMes = cronograma.find(item => item.mes === index + 1);
+
+                  return (
+                    <td key={index}>
+                      <div className="input-group mb-3">
+                        <input
+                          className="form-control form-control-sm text-end"
+                          min={0}
+                          step={1}
+                          max={100}
+                          name={`porcentagem_${index}`}
+                          value={itemDoMes ? itemDoMes.porcentagem : 0}
+                        />
+                        <label
+                          className="input-group-text"
+                          htmlFor="inputGroupSelect02"
+                        >
+                          %
+                        </label>
+                      </div>
+                    </td>
+                  );
+                })}
               </tr>
             </tbody>
           </table>
