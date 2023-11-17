@@ -77,6 +77,7 @@ const PacoteLider = () => {
         <div className="tab-pane" id="planejamento" role="tabpanel">
           {" "}
           <CronogramaLider
+            key={reload}
             data={cronograma}
             idProjeto={idProjeto}
             updateCronograma={updateCronograma}
