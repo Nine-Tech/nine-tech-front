@@ -3,159 +3,49 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Modal from "@/components/Modal";
 import CardsProjeto from "@/components/CardsProjeto";
+import ImportExcel from "../../../components/ImportExcel";
 
 const Home = () => {
   const [showModal, setShowModal] = useState(false);
   const [projects, setProjects] = useState([]);
 
-  const ModalContent = () => {
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [inputResult, setInputResult] = useState(null);
-    const [hhValue, setHhValue] = useState(0);
-    const [dataTermino, setDataTermino] = useState("");
-
-    const uploadFile = () => {
-      const formData = new FormData();
-      formData.append("file", selectedFile);
-      formData.append("dataTermino", dataTermino);
-      formData.append("hhValue", hhValue);
-
-      console.log(formData);
-
-      window.axios
-        .post("/upload", formData)
-        .then(({ data }) => {
-          /* window.axios.post("/cronograma", {
-            projeto: { id: data[0]?.projeto?.id },
-            porcentagens: Array(data.length).fill(Array(12).fill(0)),
-          }); */
-          setInputResult("success");
-        })
-        .catch(() => setInputResult("error"));
-    };
-
-    const addDocument = () => {
-      var input = document.createElement("input");
-      input.type = "file";
-
-      input.addEventListener("change", function () {
-        const file = input.files[0];
-        if (file) {
-          const fileType = file.type;
-          if (
-            fileType ===
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-          ) {
-            setSelectedFile(file);
-          } else {
-            alert("Por favor, selecione um arquivo Excel (.xlsx).");
-          }
-        }
-      });
-
-      input.click();
-    };
-
-    const content = () => {
-      switch (inputResult) {
-        case "success":
-          return (
-            <>
-              <span className="mb-2">Importação Concluída com Sucesso :)</span>
-              <button
-                className="btn btn-primary mt-5"
-                onClick={() => {
-                  getProjects();
-                  setShowModal(false);
-                }}
-              >
-                Continuar
-              </button>
-            </>
-          );
-        case "error":
-          return (
-            <>
-              <span className="mb-2">
-                Ops! Algo deu errado :( Por favor, verifique seu arquivo Excel.
-              </span>
-              <button
-                className="btn btn-primary mt-5"
-                onClick={() => setInputResult(null)}
-              >
-                Voltar
-              </button>
-            </>
-          );
-        default:
-          return (
-            <>
-              <span className="mb-2">
-                <h4>Upload arquivo Excel</h4>
-              </span>
-              <button
-                type="button"
-                className="btn btn-secondary m-2"
-                onClick={addDocument}
-              >
-                Selecione um arquivo (.xlsx)
-              </button>
-              {selectedFile && (
-                <>
-                  <h5 className="mt-2">Arquivo selecionado:</h5>
-                  <p>{selectedFile.name}</p>
-                </>
-              )}
-              <label>
-                Insira o valor HH (Homem Hora):
-                <br />
-                <input
-                  type="number"
-                  value={hhValue}
-                  onChange={(e) => setHhValue(e.target.value)}
-                />
-              </label>
-              <label className="my-1">
-                Insira a Data de Término:
-                <br />
-                <input
-                  type="date"
-                  onChange={(e) => setDataTermino(e.target.value)}
-                />
-              </label>
-              <button className="btn btn-primary mt-5" onClick={uploadFile}>
-                Continuar
-              </button>
-            </>
-          );
-      }
-    };
-
-    return (
-      <div className="d-flex flex-column justify-content-center text-center mx-5 pb-4">
-        {content()}
-      </div>
-    );
-  };
-
   const getProjects = () => {
     window.axios.get("projeto").then(({ data }) => {
       setProjects(data);
+      console.log("Dados");
+      console.log(data);
     });
   };
 
-  useEffect(getProjects, []);
+  const onImportSuccess = () => {
+    getProjects();
+    setShowModal(false);
+  };
+
+  useEffect(() => {
+    getProjects();
+  }, []);
+
+  function formatDataParaExibicao(data) {
+    const date = new Date(data);
+    return date.toLocaleDateString("pt-BR");
+  }
 
   return (
     <>
       <Modal showModal={showModal} handler={setShowModal}>
-        <ModalContent />
+        <ImportExcel
+          showModal={showModal}
+          setShowModal={setShowModal}
+          getProjects={getProjects}
+          onImportSuccess={onImportSuccess}
+        />
       </Modal>
 
       <BodyHeader title={"Projetos"} className="mb-5">
         <div className="d-flex">
           <button
-            className="btn btn-primary"
+            className="btn btn-primary shadow mb-2"
             onClick={() => setShowModal(true)}
           >
             Importar Tabela Excel
@@ -166,12 +56,18 @@ const Home = () => {
       {projects.length ? (
         <div className="row mt-5">
           {projects.map((p) => (
-            <div className="col-lg-4" key={p.id}>
+            <div className="col-lg-6" key={p.id}>
               <Link
                 to={`projetos/${p.id}`}
                 className="text-decoration-none text-primary"
               >
-                <CardsProjeto nome={p.nome} porcentagem={p.porcentagem} />
+                <CardsProjeto
+                  id={p.id}
+                  nome={p.nome}
+                  porcentagem={p.porcentagem}
+                  data_inicio={p.data_inicio}
+                  data_final={p.data_final}
+                />
               </Link>
             </div>
           ))}

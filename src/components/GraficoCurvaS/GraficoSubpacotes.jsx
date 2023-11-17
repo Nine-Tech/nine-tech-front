@@ -80,10 +80,6 @@ export function GraficoSubpacotes() {
       legend: {
         position: "top",
       },
-      title: {
-        display: true,
-        text: "Gráfico de Curva S",
-      },
     },
     scales: {
       x: {
@@ -91,9 +87,12 @@ export function GraficoSubpacotes() {
         position: "bottom",
       },
       y: {
-        min: -10,
-        max: 110,
+        min: 0,
+        max: 100,
       },
+    },
+    animation: {
+      duration: 0,
     },
   };
 
@@ -117,5 +116,21 @@ export function GraficoSubpacotes() {
     ],
   };
 
-  return <Line className="grafico" options={options} data={data} />;
+  return (
+    <>
+      <div className="w-75 mx-auto border shadow">
+        <h3 className="text-center m-3">Gráfico de Curva S</h3>
+
+        {porcentagens.length > 0 &&
+        porcentagemReal.length > 0 &&
+        meses.length > 0 ? (
+          <Line options={options} data={data} />
+        ) : (
+          <p className="text-center mt-3">
+            Não há dados disponíveis. Por favor, verifique o cronograma.
+          </p>
+        )}
+      </div>
+    </>
+  );
 }

@@ -142,7 +142,7 @@ const LiderSelect = (props) => {
           </thead>
           <tbody>
             {packages.map((item) => (
-              <tr key={item.nome}>
+              <tr key={`${item.id}-${item.nome}`}>
                 <td>{item.nome}</td>
                 <td>
                   {item.liderDeProjeto !== undefined ? (

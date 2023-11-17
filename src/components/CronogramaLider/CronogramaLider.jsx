@@ -121,6 +121,7 @@ const CronogramaLider = (props) => {
       </Toast>
 
       <div className="table-responsive">
+        <h3 className="mb-3">Cronograma Planejado</h3>
         <table className="table table-bordered">
           <thead>
             <tr>
@@ -133,16 +134,24 @@ const CronogramaLider = (props) => {
             <tr key={updatedData.id || 0}>
               {meses.map((mes, index) => (
                 <td key={index}>
-                  <input
-                    className="form-control form-control-sm"
-                    min={0}
-                    step={1}
-                    max={100}
-                    type="number"
-                    name={`porcentagem_${index}`}
-                    value={updatedData[`mes${index + 1}`] || 0}
-                    onChange={(e) => update(e, `mes${index + 1}`)}
-                  />
+                  <div className="input-group mb-3">
+                    <input
+                      className="form-control form-control-sm text-end"
+                      min={0}
+                      step={1}
+                      max={100}
+                      type="number"
+                      name={`porcentagem_${index}`}
+                      placeholder={updatedData[`mes${index + 1}`] || 0}
+                      onChange={(e) => update(e, `mes${index + 1}`)}
+                    />
+                    <label
+                      className="input-group-text"
+                      for="inputGroupSelect02"
+                    >
+                      %
+                    </label>
+                  </div>
                 </td>
               ))}
             </tr>

@@ -14,8 +14,8 @@ const Login = () => {
 
   const [toast, setToast] = useState(false);
 
-  const [listaEngenheiros, setListaEngenheiros] = useState({});
-  const [listaLideres, setListaLideres] = useState({});
+  const [listaEngenheiros, setListaEngenheiros] = useState([]);
+  const [listaLideres, setListaLideres] = useState([]);
 
   useEffect(() => {
     window.axios.get(`lider`).then(({ data }) => {
@@ -41,10 +41,12 @@ const Login = () => {
       const userInfoResponse = await window.axios.get("auth/informacaoUsuario");
       const data = userInfoResponse.data;
 
-      let route = data.roles.includes("ROLE_ENGENHEIRO_CHEFE")
-        ? "/engenheirochefe"
-        : `/liderprojeto/${data.id}`;
-      navigate(route);
+      setTimeout(() => {
+        let route = data.roles.includes("ROLE_ENGENHEIRO_CHEFE")
+          ? "/engenheirochefe"
+          : `/liderprojeto/${data.id}`;
+        navigate(route);
+      }, 100);
     } catch (error) {
       setToast(true);
     }
@@ -64,7 +66,6 @@ const Login = () => {
 
       <div className="login-card">
         <img src={cardlogo} alt="9tech-logo" />
-        {/* <h4 className="fw-bold">Log In</h4> */}
         <div className="mt-3 w-100">
           <select
             value={selectedLogin}
@@ -72,19 +73,18 @@ const Login = () => {
             onChange={(e) => setSelectedLogin(e.target.value)}
           >
             <option value="">Escolha um login</option>
-            {Object.keys(listaLideres).map((liderId) => (
-              <option key={liderId} value={listaLideres[liderId].login}>
-                {listaLideres[liderId].nome}
-              </option>
-            ))}
-            {Object.keys(listaEngenheiros).map((engenheiroId) => (
-              <option
-                key={engenheiroId}
-                value={listaEngenheiros[engenheiroId].login}
-              >
-                {listaEngenheiros[engenheiroId].nome}
-              </option>
-            ))}
+            {Array.isArray(listaLideres) &&
+              listaLideres.map((lider) => (
+                <option key={lider.id} value={lider.login}>
+                  {lider.nome}
+                </option>
+              ))}
+            {Array.isArray(listaEngenheiros) &&
+              listaEngenheiros.map((engenheiro) => (
+                <option key={engenheiro.id} value={engenheiro.login}>
+                  {engenheiro.nome}
+                </option>
+              ))}
           </select>
           <input
             type="password"

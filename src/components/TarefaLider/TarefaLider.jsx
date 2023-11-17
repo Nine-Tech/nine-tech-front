@@ -61,7 +61,7 @@ const TarefaLider = (props) => {
     const novaTarefa = {
       nome: "",
       descricao: "",
-      data:"",
+      data: "",
       execucao: 0,
       valor: "",
       peso: "",
@@ -86,7 +86,7 @@ const TarefaLider = (props) => {
     const date = new Date(data);
     return date.toLocaleDateString("pt-BR");
   }
-  
+
   const salvarTarefas = () => {
     newTasks.forEach((tarefa) => {
       const materialComoNumero =
@@ -160,7 +160,7 @@ const TarefaLider = (props) => {
 
     const updatedTasks = [...tasks];
     if (field === "data") {
-      updatedTasks[index].data = value; 
+      updatedTasks[index].data = value;
     } else {
       updatedTasks[index][field] = value;
     }
@@ -273,7 +273,7 @@ const TarefaLider = (props) => {
         </button>
       </div>
 
-      <div className="table-responsive">
+      <div className="table-responsive text-center justify-content-center">
         <table className="table table-bordered">
           <thead>
             <tr className="table-active">
@@ -304,7 +304,7 @@ const TarefaLider = (props) => {
                     }
                   />
                 </td>
-                <td>
+                <td className="col-4">
                   <input
                     className="form-control"
                     type="text"
@@ -320,7 +320,9 @@ const TarefaLider = (props) => {
                       className="form-control"
                       type="date"
                       value={t.data}
-                      onChange={(e) => handleChange(index, "data", e.target.value)}
+                      onChange={(e) =>
+                        handleChange(index, "data", e.target.value)
+                      }
                       onBlur={() => setIsDateEditing(null)}
                     />
                   ) : (
@@ -329,7 +331,7 @@ const TarefaLider = (props) => {
                 </td>
                 <td>
                   <select
-                    className="form-control"
+                    className="form-select"
                     value={t.execucao ? "1" : "0"}
                     onChange={(e) =>
                       handleChange(index, "execucao", e.target.value === "1")
@@ -341,7 +343,7 @@ const TarefaLider = (props) => {
                 </td>
                 <td>
                   <select
-                    className="form-control"
+                    className="form-select"
                     type="text"
                     value={t.peso}
                     onChange={(e) =>

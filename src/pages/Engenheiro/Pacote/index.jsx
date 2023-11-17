@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import BodyHeader from "@/components/BodyHeader";
-import TabelaWbs from "@/components/TabelaWbs";
-import TabelaCronograma from "@/components/TabelaCronograma";
 import CardsProjeto from "@/components/CardsProjeto";
 
 const Pacote = () => {
@@ -42,18 +40,26 @@ const Pacote = () => {
 
   return (
     <>
-      <BodyHeader title={pacote.nome || "Pacote"} navigation={navigation} />
+      <BodyHeader
+        id={pacote.id}
+        title={pacote.nome || "Pacote"}
+        navigation={navigation}
+      />
       <div className="my-5 tab-content">
         <div className="tab-pane active" id="divisao" role="tabpanel">
           {subpacotes.length ? (
             <div className="row mt-5">
               {subpacotes.map((p) => (
-                <div className="col-lg-4" key={p.id}>
+                <div className="col-lg-6" key={p.id}>
                   <Link
                     to={`subpacotes/${p.id}`}
                     className="text-decoration-none text-primary"
                   >
-                    <CardsProjeto nome={p.nome} porcentagem={p.porcentagem} />
+                    <CardsProjeto
+                      id={p.id}
+                      nome={p.nome}
+                      porcentagem={p.porcentagem}
+                    />
                   </Link>
                 </div>
               ))}

@@ -40,11 +40,16 @@ export function GraficoProjeto() {
       .get(`cronograma/cronogramaprojetoestimado/ultimosdias/${id}`)
       .then(({ data }) => {
         setCronogramaRealSubpacote(data);
+        console.log("CronogramaRealSubpacote");
+        console.log(data);
       });
 
-    window.axios.get(`projeto/${id}`).then(({ data }) => {
-      setProjeto(data);
-    });
+    console.log("ID no GraficoProjeto:", id);
+    if (id) {
+      window.axios.get(`projeto/${id}`).then(({ data }) => {
+        setProjeto(data);
+      });
+    }
   }, [id]);
 
   // Função para calcular os meses entre a data de início e a data final do projeto
@@ -91,8 +96,8 @@ export function GraficoProjeto() {
         position: "bottom",
       },
       y: {
-        min: -10,
-        max: 110,
+        beginAtZero: true,
+        max: 100,
       },
     },
   };
@@ -117,5 +122,21 @@ export function GraficoProjeto() {
     ],
   };
 
-  return <Line className="grafico" options={options} data={data} />;
+  return (
+    <>
+      <div className="w-75 mx-auto border shadow">
+        <h3 className="text-center m-3">Gráfico de Curva S</h3>
+
+        {porcentagens.length > 0 &&
+        porcentagemReal.length > 0 &&
+        meses.length > 0 ? (
+          <Line options={options} data={data} />
+        ) : (
+          <p className="text-center mt-3">
+            Não há dados disponíveis. Por favor, verifique o cronograma.
+          </p>
+        )}
+      </div>
+    </>
+  );
 }
