@@ -67,8 +67,9 @@ const PacoteLider = () => {
     <>
       <BodyHeader
         title={subpackages.nome}
+        id={subpackages.id}
         navigation={navigation}
-        progress={progress}
+        porcentagem={subpackages.porcentagem}
       />
       <div className="my-5 tab-content">
         <div className="tab-pane active" id="atividades" role="tabpanel">

@@ -33,6 +33,8 @@ const Subpacote = () => {
     <>
       <BodyHeader
         title={subpacoteNome.nome || "Subpacote"}
+        porcentagem={subpacoteNome.porcentagem}
+        id={subpacoteNome.id}
         navigation={navigation}
       />
       <div className="my-5 tab-content">

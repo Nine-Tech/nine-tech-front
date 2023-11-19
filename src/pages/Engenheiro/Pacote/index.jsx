@@ -43,6 +43,7 @@ const Pacote = () => {
       <BodyHeader
         id={pacote.id}
         title={pacote.nome || "Pacote"}
+        porcentagem={pacote.porcentagem}
         navigation={navigation}
       />
       <div className="my-5 tab-content">
