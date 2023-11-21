@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import Toast from "@/components/Toast";
 import axios from "axios";
 
-const EditarUsuario = ({ usuarioId }) => {
+const EditarUsuario = ({ usuarioId, updateUserList }) => {
   const [lider, setLider] = useState({
     id: "",
     nome: "",
     senha: "",
     login: "",
+    role: "LIDER_DE_PROJETO",
   });
   const [toast, setToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -22,7 +23,9 @@ const EditarUsuario = ({ usuarioId }) => {
 
     const fetchData = async () => {
       try {
-        const response = await axios.get(`auth/lideres/${parseInt(usuarioId, 10)}`);
+        const response = await axios.get(
+          `auth/lideres/${parseInt(usuarioId, 10)}`,
+        );
         setLider(response.data);
       } catch (error) {
         console.error("Erro na requisição:", error);
@@ -42,14 +45,28 @@ const EditarUsuario = ({ usuarioId }) => {
   };
 
   const handleUpdate = async () => {
+    const { senha, login, nome } = lider;
+    const updateLider = { senha, login, nome };
+
     try {
-      await axios.put(`auth/atualizar/${usuarioId}`, lider);
+      await axios.put(`auth/atualizar/${usuarioId}`, updateLider);
+      updateUserList();
+
+      document.getElementById("Listagem").click();
       setToastMessage("Líder atualizado com sucesso!");
       setToast(true);
     } catch (error) {
       console.error("Erro ao atualizar o líder:", error);
       // Lide com o erro da forma que desejar (ex.: exiba uma mensagem de erro no toast)
-      setToastMessage("Erro ao atualizar o líder.");
+
+      // Verifica se o erro é de validação (código 400)
+      if (error.response && error.response.status === 400) {
+        setToastMessage("Nome já cadastrado!");
+      } else {
+        // Se for um erro diferente de validação, você pode lidar de outra forma
+        setToastMessage("Erro ao processar a requisição.");
+      }
+      
       setToast(true);
     }
   };
@@ -100,8 +117,7 @@ const EditarUsuario = ({ usuarioId }) => {
               />
             </div>
 
-            {/* Login (E-mail) */}
-            <div className="mb-3">
+            {/*             <div className="mb-3">
               <label htmlFor="login" className="form-label">
                 Login (E-mail):
               </label>
@@ -114,7 +130,10 @@ const EditarUsuario = ({ usuarioId }) => {
                 className="form-control"
                 required
               />
-            </div>
+            </div> */}
+
+            {/* Campo hidden de "role" */}
+            <input type="hidden" name="role" value="user" />
 
             {/* Botão de Atualizar */}
             <button
@@ -126,7 +145,9 @@ const EditarUsuario = ({ usuarioId }) => {
             </button>
           </form>
         </div>
-      ) : <p className="text-center">Volte para a página de listagem.</p>}
+      ) : (
+        <p className="text-center">Volte para a página de listagem.</p>
+      )}
     </div>
   );
 };

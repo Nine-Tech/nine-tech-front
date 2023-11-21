@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import Toast from "@/components/Toast";
-import axios from "axios";
 
-function CadastroUsuario() {
+function CadastroUsuario({ updateUserList }) {
   const [usuario, setUsuario] = useState({
     nome: "",
     senha: "",
-    login: "",
     role: "LIDER_DE_PROJETO",
   });
 
@@ -27,23 +25,25 @@ function CadastroUsuario() {
     try {
       await window.axios.post("auth/registro", usuario);
 
-      // Se a request for bem-sucedida, exibe o toast de sucesso
-      setToastMessage("Usuário cadastrado com sucesso!");
+      setToastMessage(`Usuário cadastrado com sucesso!`);
       setToast(true);
 
       // Limpa os campos do formulário
       setUsuario({
         nome: "",
         senha: "",
-        login: "",
         role: "LIDER_DE_PROJETO",
       });
+
+      updateUserList();
+
+      document.getElementById("Listagem").click();
     } catch (error) {
       console.error("Erro na requisição:", error);
 
       // Verifica se o erro é de validação (código 400)
       if (error.response && error.response.status === 400) {
-        setToastMessage("E-mail já cadastrado!");
+        setToastMessage("Nome já cadastrado!");
       } else {
         // Se for um erro diferente de validação, você pode lidar de outra forma
         setToastMessage("Erro ao processar a requisição.");
@@ -90,7 +90,8 @@ function CadastroUsuario() {
               required
             />
           </div>
-          <div className="mb-2">
+
+{/*           <div className="mb-2">
             <label htmlFor="login" className="form-label">
               Login (E-mail):
             </label>
@@ -103,7 +104,8 @@ function CadastroUsuario() {
               className="form-control"
               required
             />
-          </div>
+          </div> */}
+
           {/* Campo hidden de "role" */}
           <input type="hidden" name="role" value="user" />
 

@@ -3,7 +3,7 @@ import Toast from "@/components/Toast";
 import Modal from "@/components/Modal";
 import "./style.scss";
 
-const ListagemUsuarios = ({ onEditUser }) => {
+const ListagemUsuarios = ({ usuarios: propUsuarios, onEditUser }) => {
   const [usuarios, setUsuarios] = useState([]);
   const [toast, setToast] = useState(false);
   const [modalData, setModalData] = useState({
@@ -14,21 +14,15 @@ const ListagemUsuarios = ({ onEditUser }) => {
   const [deleteStatus, setDeleteStatus] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await window.axios.get("auth/lideres");
-        setUsuarios(response.data);
-      } catch (error) {
-        console.error("Erro na requisição:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+    // Atualizar o estado local quando a prop 'usuarios' for alterada
+    setUsuarios(propUsuarios);
+  }, [propUsuarios]);
 
   const handleEdit = (id) => {
     console.log(`Editar usuário com ID ${id}`);
     onEditUser && onEditUser(id);
+
+    
   };
 
   const handleDelete = (id, nome) => {
