@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, useLocation, useMatches } from "react-router";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { removeToken } from "@/utils/api";
 import Navbar from "../../components/Navbar/Index";
 import Header from "@/components/Header";
 import ImportExcel from "../../components/ImportExcel";
+import Usuarios from "../../pages/Engenheiro/Usuarios"
 import "./style.scss";
 
 const App = () => {
@@ -97,32 +98,14 @@ const App = () => {
           onImportSuccess={onImportSuccess}
         />
         <li className="btn-group dropend">
-          <a
-            className="nav-link dropdown-toggle fw-bold"
-            href="#"
+          <Link
+            className="nav-link fw-bold"
+            to="/engenheirochefe/usuarios"
             role="button"
-            data-bs-toggle="dropdown"
             aria-expanded="false"
           >
             Usuários
-          </a>
-          <ul className="dropdown-menu dropdown-menu-dark">
-            <li>
-              <a className="dropdown-item" href="#">
-                Cadastrar
-              </a>
-            </li>
-            <li>
-              <a className="dropdown-item" href="#">
-                Listar
-              </a>
-            </li>
-            <li>
-              <a className="dropdown-item" href="#">
-                Excluir
-              </a>
-            </li>
-          </ul>
+          </Link>
         </li>
       </Navbar>
 
