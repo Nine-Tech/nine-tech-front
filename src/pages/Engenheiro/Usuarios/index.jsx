@@ -50,7 +50,11 @@ const Usuarios = () => {
       <div className="my-3 tab-content">
         {/* Listagem de Usuários */}
         <div className="tab-pane active" id="listar" role="tabpanel">
-          <ListagemUsuario usuarios={usuarios} onEditUser={handleEditarUsuario} updateUserList={updateUserList} />
+          <ListagemUsuario
+            usuarios={usuarios}
+            onEditUser={handleEditarUsuario}
+            updateUserList={updateUserList}
+          />
         </div>
 
         {/* Cadastro de Usuário */}
@@ -60,7 +64,10 @@ const Usuarios = () => {
 
         {/* Edição de Usuário */}
         <div className="tab-pane" id="editar" role="tabpanel">
-          <EditarUsuario usuarioId={usuarioEditandoId} updateUserList={updateUserList} />
+          <EditarUsuario
+            usuarioId={usuarioEditandoId}
+            updateUserList={updateUserList}
+          />
         </div>
       </div>
     </>

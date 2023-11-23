@@ -21,8 +21,6 @@ const ListagemUsuarios = ({ usuarios: propUsuarios, onEditUser }) => {
   const handleEdit = (id) => {
     console.log(`Editar usuário com ID ${id}`);
     onEditUser && onEditUser(id);
-
-    
   };
 
   const handleDelete = (id, nome) => {

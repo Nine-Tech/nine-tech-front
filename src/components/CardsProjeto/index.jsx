@@ -4,7 +4,7 @@ import ProgressBar from "@/components/BarraProgresso";
 
 function formatDataParaExibicao(data) {
   let date = new Date(data);
-  date.setDate(date.getDate() + 1)
+  date.setDate(date.getDate() + 1);
   return date.toLocaleDateString("pt-BR");
 }
 

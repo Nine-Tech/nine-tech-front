@@ -66,7 +66,7 @@ const EditarUsuario = ({ usuarioId, updateUserList }) => {
         // Se for um erro diferente de validação, você pode lidar de outra forma
         setToastMessage("Erro ao processar a requisição.");
       }
-      
+
       setToast(true);
     }
   };

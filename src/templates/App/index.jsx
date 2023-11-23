@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, useLocation, useMatches } from "react-router";
-import { useNavigate, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { removeToken } from "@/utils/api";
 import Navbar from "../../components/Navbar/Index";
 import Header from "@/components/Header";
@@ -97,12 +97,11 @@ const App = () => {
           getProjects={getProjects}
           onImportSuccess={onImportSuccess}
         />
-        <li className="btn-group dropend">
+        <li className="nav-item">
           <Link
             className="nav-link fw-bold"
-            to="/engenheirochefe/usuarios"
-            role="button"
-            aria-expanded="false"
+            aria-current="page"
+            to={`usuarios`}
           >
             Usuários
           </Link>

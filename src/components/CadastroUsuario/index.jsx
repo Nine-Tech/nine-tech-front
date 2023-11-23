@@ -55,7 +55,11 @@ function CadastroUsuario({ updateUserList }) {
 
   return (
     <div className="container mt-2">
-      <Toast show={toast} toggle={() => setToast(false)} type={toastMessage.includes("sucesso") ? "success" : "danger"}>
+      <Toast
+        show={toast}
+        toggle={() => setToast(false)}
+        type={toastMessage.includes("sucesso") ? "success" : "danger"}
+      >
         {toastMessage}
       </Toast>
 
@@ -91,7 +95,7 @@ function CadastroUsuario({ updateUserList }) {
             />
           </div>
 
-{/*           <div className="mb-2">
+          {/*           <div className="mb-2">
             <label htmlFor="login" className="form-label">
               Login (E-mail):
             </label>

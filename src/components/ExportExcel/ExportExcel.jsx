@@ -36,8 +36,11 @@ const ExcelDownloadButton = (props) => {
     XLSX.writeFile(wb, "data.xlsx");
   };
 
-  return <button className="btn btn-secondary me-3" onClick={handleDownload}>Baixar Excel</button>;
-
+  return (
+    <button className="btn btn-secondary me-3" onClick={handleDownload}>
+      Baixar Excel
+    </button>
+  );
 };
 
 export default ExcelDownloadButton;
