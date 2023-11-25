@@ -15,6 +15,7 @@ const TarefaLider = (props) => {
   const [errors, setErrors] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [isDateEditing, setIsDateEditing] = useState(false);
+  const [isBaselineEditing, setIsBaselineEditing] = useState(false);
 
   //MODAL
   const [showModal, setShowModal] = useState(false);
@@ -62,6 +63,7 @@ const TarefaLider = (props) => {
       nome: "",
       descricao: "",
       data: "",
+      baseline: "",
       execucao: 0,
       valor: "",
       peso: "",
@@ -94,6 +96,7 @@ const TarefaLider = (props) => {
       const novaTarefaParaSalvar = {
         descricao: tarefa.descricao,
         data: tarefa.data,
+        baseline: tarefa.baseline,
         hh: tarefa.hh,
         material: materialComoNumero,
         nome: tarefa.nome,
@@ -125,6 +128,7 @@ const TarefaLider = (props) => {
         .put(`tarefas/${tarefa.id}`, {
           descricao: tarefa.descricao,
           data: tarefa.data,
+          baseline: tarefa.baseline,
           hh: tarefa.hh,
           material: materialComoNumero,
           valor: tarefa.valor,
@@ -159,8 +163,8 @@ const TarefaLider = (props) => {
     setIsChanged(true);
 
     const updatedTasks = [...tasks];
-    if (field === "data") {
-      updatedTasks[index].data = value;
+    if (field === "data" || field === "baseline") {
+      updatedTasks[index][field] = value;
     } else {
       updatedTasks[index][field] = value;
     }
@@ -280,7 +284,8 @@ const TarefaLider = (props) => {
               <th>ID</th>
               <th>Nome</th>
               <th>Descrição</th>
-              <th>Data Final</th>
+              <th>Baseline</th>
+              <th>Tendência</th>
               <th>Execução</th>
               <th>Peso</th>
               <th>Valor</th>
@@ -313,6 +318,21 @@ const TarefaLider = (props) => {
                       handleChange(index, "descricao", e.target.value)
                     }
                   />
+                </td>
+                <td>
+                  {isBaselineEditing === index ? (
+                    <input
+                      className="form-control"
+                      type="date"
+                      value={t.baseline}
+                      onChange={(e) =>
+                        handleChange(index, "baseline", e.target.value)
+                      }
+                      onBlur={() => setIsBaselineEditing(null)}
+                    />
+                  ) : (
+                    formatDataParaExibicao(t.baseline)
+                  )}
                 </td>
                 <td onClick={() => setIsDateEditing(index)}>
                   {isDateEditing === index ? (
@@ -428,6 +448,16 @@ const TarefaLider = (props) => {
                     value={t.descricao}
                     onChange={(e) =>
                       handleNewTaskChange(index, "descricao", e.target.value)
+                    }
+                  />
+                </td>
+                <td>
+                  <input
+                    className="form-control"
+                    type="date"
+                    value={t.baseline}
+                    onChange={(e) =>
+                      handleNewTaskChange(index, "baseline", e.target.value)
                     }
                   />
                 </td>

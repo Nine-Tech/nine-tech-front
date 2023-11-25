@@ -7,6 +7,7 @@ const EditarUsuario = ({ usuarioId, updateUserList }) => {
     id: "",
     nome: "",
     senha: "",
+    cpf: "",
     login: "",
     role: "LIDER_DE_PROJETO",
   });
@@ -45,8 +46,8 @@ const EditarUsuario = ({ usuarioId, updateUserList }) => {
   };
 
   const handleUpdate = async () => {
-    const { senha, login, nome } = lider;
-    const updateLider = { senha, login, nome };
+    const { senha, login, cpf, nome } = lider;
+    const updateLider = { senha, login, nome, cpf };
 
     try {
       await axios.put(`auth/atualizar/${usuarioId}`, updateLider);
@@ -113,6 +114,23 @@ const EditarUsuario = ({ usuarioId, updateUserList }) => {
                 value={lider.senha}
                 onChange={handleChange}
                 className="form-control"
+                required
+              />
+            </div>
+
+            <div className="mb-2">
+              <label htmlFor="cpf" className="form-label">
+                Cpf:
+              </label>
+              <input
+                type="text"
+                id="cpf"
+                name="cpf"
+                value={lider.cpf}
+                onChange={handleChange}
+                className="form-control"
+                inputMode="numeric"
+                maxLength="11"
                 required
               />
             </div>

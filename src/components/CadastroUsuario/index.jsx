@@ -5,6 +5,7 @@ function CadastroUsuario({ updateUserList }) {
   const [usuario, setUsuario] = useState({
     nome: "",
     senha: "",
+    cpf: "",
     role: "LIDER_DE_PROJETO",
   });
 
@@ -32,6 +33,7 @@ function CadastroUsuario({ updateUserList }) {
       setUsuario({
         nome: "",
         senha: "",
+        cpf: "",
         role: "LIDER_DE_PROJETO",
       });
 
@@ -44,6 +46,8 @@ function CadastroUsuario({ updateUserList }) {
       // Verifica se o erro é de validação (código 400)
       if (error.response && error.response.status === 400) {
         setToastMessage("Nome já cadastrado!");
+      } else if (error.response && error.response.status === 500) {
+        setToastMessage("CPF já cadastrado!");
       } else {
         // Se for um erro diferente de validação, você pode lidar de outra forma
         setToastMessage("Erro ao processar a requisição.");
@@ -91,6 +95,22 @@ function CadastroUsuario({ updateUserList }) {
               value={usuario.senha}
               onChange={handleChange}
               className="form-control"
+              required
+            />
+          </div>
+          <div className="mb-2">
+            <label htmlFor="cpf" className="form-label">
+              Cpf:
+            </label>
+            <input
+              type="text"
+              id="cpf"
+              name="cpf"
+              value={usuario.cpf}
+              onChange={handleChange}
+              className="form-control"
+              inputMode="numeric"
+              maxLength="11"
               required
             />
           </div>
