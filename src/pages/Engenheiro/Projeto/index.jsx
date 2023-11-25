@@ -84,12 +84,16 @@ const Projeto = () => {
         data_inicio={project.data_inicio}
         data_final={project.data_final}
       >
-      <div className="mt-5">
-        <button className="btn btn-primary shadow" onClick={handleOpenModal}>
-          Alterar Data
-        </button>
-      </div>
+        <div className="mt-3">
+          <button
+            className="btn btn-primary shadow position-absolute start-0 translate-middle-y ms-5 mt-5"
+            onClick={handleOpenModal}
+          >
+            Alterar Data
+          </button>
+        </div>
       </BodyHeader>
+
       <div className="my-5 tab-content">
         <div className="tab-pane active" id="atribuicao" role="tabpanel">
           <LiderSelect data={packages} />
@@ -109,6 +113,7 @@ const Projeto = () => {
           <GraficoProjeto />
         </div>
       </div>
+
       <Modal size="lg" showModal={showModal} handler={handleCloseModal}>
         <div className="modal-content">
           <div className="modal-header">
