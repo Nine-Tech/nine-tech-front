@@ -1,6 +1,7 @@
 import App from "../templates/App";
 
 import Home from "../pages/Engenheiro/Home";
+import Usuarios from "../pages/Engenheiro/Usuarios";
 import Projeto from "../pages/Engenheiro/Projeto";
 import Pacote from "../pages/Engenheiro/Pacote";
 import Subpacote from "../pages/Engenheiro/Subpacote";
@@ -19,6 +20,11 @@ export default [
       {
         path: "",
         element: <Home />,
+      },
+      {
+        path: "usuarios",
+        element: <Usuarios />,
+        handle: { title: "Usuários" },
       },
       {
         path: "projetos/:id",

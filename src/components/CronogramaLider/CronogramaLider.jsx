@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 
 const CronogramaLider = (props) => {
   const { id } = useParams();
-  const { data, idProjeto } = props;
+  const { data, idProjeto, updateCronograma } = props;
 
   const [isChanged, setIsChanged] = useState(false);
   const [cronograma, setCronograma] = useState([]);
@@ -87,25 +87,13 @@ const CronogramaLider = (props) => {
         await window.axios.put(`cronograma/${id}`, jsonData);
       }
 
-      // After the cronograma has been saved, fetch the updated data from the backend
-      window.axios
-        .get(`cronograma/${id}`)
-        .then(({ data }) => {
-          console.log("Teste", data);
-          setCronograma(data);
-          setUpdatedData(data);
-        })
-        .catch((error) => {
-          console.error("Erro na requisição:", error);
-        });
-
       setIsChanged(false);
       setToast(true);
+      updateCronograma();
+      setLoading(false);
     } catch (error) {
       setError(true);
       console.error("Erro ao salvar:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -114,8 +102,11 @@ const CronogramaLider = (props) => {
     const final = new Date(dataFinal);
     const meses = [];
     while (inicio <= final) {
+      const nomeAbreviado = new Date(inicio).toLocaleString("default", {
+        month: "short",
+      });
       meses.push(
-        new Date(inicio).toLocaleString("default", { month: "short" }),
+        nomeAbreviado.charAt(0).toUpperCase() + nomeAbreviado.slice(1),
       );
       inicio.setMonth(inicio.getMonth() + 1);
     }
@@ -133,11 +124,14 @@ const CronogramaLider = (props) => {
       </Toast>
 
       <div className="table-responsive">
+        <h3 className="mb-3">Cronograma Planejado</h3>
         <table className="table table-bordered">
           <thead>
             <tr>
               {meses.map((mes, index) => (
-                <td key={index}>{mes}</td>
+                <th className="text-center" key={index}>
+                  {mes}
+                </th>
               ))}
             </tr>
           </thead>
@@ -145,16 +139,24 @@ const CronogramaLider = (props) => {
             <tr key={updatedData.id || 0}>
               {meses.map((mes, index) => (
                 <td key={index}>
-                  <input
-                    className="form-control form-control-sm"
-                    min={0}
-                    step={1}
-                    max={100}
-                    type="number"
-                    name={`porcentagem_${index}`}
-                    value={updatedData[`mes${index + 1}`] || 0}
-                    onChange={(e) => update(e, `mes${index + 1}`)}
-                  />
+                  <div className="input-group mb-3">
+                    <input
+                      className="form-control form-control-sm text-end"
+                      min={0}
+                      step={1}
+                      max={100}
+                      type="number"
+                      name={`porcentagem_${index}`}
+                      placeholder={updatedData[`mes${index + 1}`] || 0}
+                      onChange={(e) => update(e, `mes${index + 1}`)}
+                    />
+                    <label
+                      className="input-group-text"
+                      for="inputGroupSelect02"
+                    >
+                      %
+                    </label>
+                  </div>
                 </td>
               ))}
             </tr>

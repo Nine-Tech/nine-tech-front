@@ -4,3 +4,9 @@
     border-bottom: 4px solid black;
     box-shadow: 0px 2px 6px #000000e7;
   }
+
+  .offcanvas .navmenu-nav.dropdown-menu {
+    position:relative;
+    overflow-y: auto;
+
+  }

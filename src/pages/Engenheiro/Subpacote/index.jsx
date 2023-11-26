@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import BodyHeader from "@/components/BodyHeader";
-import TabelaWbs from "@/components/TabelaWbs";
-import TabelaCronograma from "@/components/TabelaCronograma";
-import CardsProjeto from "@/components/CardsProjeto";
 import TarefasLiderView from "@/components/TarefasView/TarefasView";
 import { GraficoSubpacotes } from "../../../components/GraficoCurvaS/GraficoSubpacotes";
-
 
 const Subpacote = () => {
   const { subpacoteId } = useParams();
@@ -29,7 +25,7 @@ const Subpacote = () => {
   console.log(subpacoteNome);
 
   const navigation = [
-    { link: "#divisao", title: "Divisão" },
+    { link: "#atividade", title: "Atividades" },
     { link: "#grafico", title: "Gráfico" },
   ];
 
@@ -37,10 +33,12 @@ const Subpacote = () => {
     <>
       <BodyHeader
         title={subpacoteNome.nome || "Subpacote"}
+        porcentagem={subpacoteNome.porcentagem}
+        id={subpacoteNome.id}
         navigation={navigation}
       />
       <div className="my-5 tab-content">
-        <div className="tab-pane active" id="divisao" role="tabpanel">
+        <div className="tab-pane active" id="atividade" role="tabpanel">
           <TarefasLiderView data={tasks} />
         </div>
         <div className="tab-pane" id="grafico" role="tabpanel">

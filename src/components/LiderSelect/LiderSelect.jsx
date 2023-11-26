@@ -1,8 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Toast from "@/components/Toast";
+import ExcelDownloadButton from "../ExportExcel/ExportExcel";
 
 const LiderSelect = (props) => {
+  const testData = [
+    { Nome: "João", Idade: 30, Cidade: "São Paulo", Profissão: "Engenheiro" },
+    { Nome: "Maria", Idade: 25, Cidade: "Rio de Janeiro", Profissão: "Médica" },
+    {
+      Nome: "Carlos",
+      Idade: 28,
+      Cidade: "Belo Horizonte",
+      Profissão: "Professor",
+    },
+    { Nome: "Ana", Idade: 35, Cidade: "Curitiba", Profissão: "Advogada" },
+    { Nome: "Pedro", Idade: 32, Cidade: "Salvador", Profissão: "Arquiteto" },
+    { Nome: "Luísa", Idade: 27, Cidade: "Recife", Profissão: "Designer" },
+    {
+      Nome: "Rafael",
+      Idade: 29,
+      Cidade: "Porto Alegre",
+      Profissão: "Analista",
+    },
+    {
+      Nome: "Camila",
+      Idade: 31,
+      Cidade: "Brasília",
+      Profissão: "Programadora",
+    },
+    { Nome: "Gustavo", Idade: 33, Cidade: "Fortaleza", Profissão: "Gerente" },
+    { Nome: "Amanda", Idade: 26, Cidade: "Manaus", Profissão: "Enfermeira" },
+  ];
+
   const { id } = useParams();
   const { data } = props;
   const [packages, setPackages] = useState([]);
@@ -113,7 +142,7 @@ const LiderSelect = (props) => {
           </thead>
           <tbody>
             {packages.map((item) => (
-              <tr key={item.nome}>
+              <tr key={`${item.id}-${item.nome}`}>
                 <td>{item.nome}</td>
                 <td>
                   {item.liderDeProjeto !== undefined ? (
@@ -144,6 +173,8 @@ const LiderSelect = (props) => {
       </div>
 
       <div className="mt-4 d-flex justify-content-end">
+        <ExcelDownloadButton rota={`export/${id}`}></ExcelDownloadButton>
+
         <button
           className="btn btn-secondary"
           disabled={!isChanged}

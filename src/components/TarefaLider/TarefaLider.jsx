@@ -14,6 +14,8 @@ const TarefaLider = (props) => {
   const [salvarToast, setSalvarToast] = useState(false);
   const [errors, setErrors] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
+  const [isDateEditing, setIsDateEditing] = useState(false);
+  const [isBaselineEditing, setIsBaselineEditing] = useState(false);
 
   //MODAL
   const [showModal, setShowModal] = useState(false);
@@ -25,7 +27,6 @@ const TarefaLider = (props) => {
         if (Array.isArray(data)) {
           data = data.map((tarefa) => ({
             ...tarefa,
-            dataFormatada: new Date(tarefa.data).toLocaleDateString("pt-BR"),
           }));
           setTasks(data);
         }
@@ -48,7 +49,6 @@ const TarefaLider = (props) => {
         if (Array.isArray(data)) {
           data = data.map((tarefa) => ({
             ...tarefa,
-            dataFormatada: new Date(tarefa.data).toLocaleDateString("pt-BR"),
           }));
           setTasks(data);
         }
@@ -62,6 +62,8 @@ const TarefaLider = (props) => {
     const novaTarefa = {
       nome: "",
       descricao: "",
+      data: "",
+      baseline: "",
       execucao: 0,
       valor: "",
       peso: "",
@@ -81,12 +83,20 @@ const TarefaLider = (props) => {
     return formatador.format(valor);
   }
 
+  //Função para formatar a data na exibição
+  function formatDataParaExibicao(data) {
+    const date = new Date(data);
+    return date.toLocaleDateString("pt-BR");
+  }
+
   const salvarTarefas = () => {
     newTasks.forEach((tarefa) => {
       const materialComoNumero =
         tarefa.material !== "" ? parseFloat(tarefa.material) : null;
       const novaTarefaParaSalvar = {
         descricao: tarefa.descricao,
+        data: tarefa.data,
+        baseline: tarefa.baseline,
         hh: tarefa.hh,
         material: materialComoNumero,
         nome: tarefa.nome,
@@ -117,6 +127,8 @@ const TarefaLider = (props) => {
       await window.axios
         .put(`tarefas/${tarefa.id}`, {
           descricao: tarefa.descricao,
+          data: tarefa.data,
+          baseline: tarefa.baseline,
           hh: tarefa.hh,
           material: materialComoNumero,
           valor: tarefa.valor,
@@ -128,7 +140,8 @@ const TarefaLider = (props) => {
           buscarTarefas();
           props.updateProgress(true);
           setToast(true);
-        }).then(reset())
+        })
+        .then(reset())
         .catch((error) => {
           console.error(`Erro ao atualizar a tarefa ${tarefa.id}.`, error);
         });
@@ -150,8 +163,8 @@ const TarefaLider = (props) => {
     setIsChanged(true);
 
     const updatedTasks = [...tasks];
-    if (field === "data") {
-      updatedTasks[index].dataFormatada = value;
+    if (field === "data" || field === "baseline") {
+      updatedTasks[index][field] = value;
     } else {
       updatedTasks[index][field] = value;
     }
@@ -264,13 +277,15 @@ const TarefaLider = (props) => {
         </button>
       </div>
 
-      <div className="table-responsive">
+      <div className="table-responsive text-center justify-content-center">
         <table className="table table-bordered">
           <thead>
             <tr className="table-active">
               <th>ID</th>
               <th>Nome</th>
               <th>Descrição</th>
+              <th>Baseline</th>
+              <th>Tendência</th>
               <th>Execução</th>
               <th>Peso</th>
               <th>Valor</th>
@@ -294,7 +309,7 @@ const TarefaLider = (props) => {
                     }
                   />
                 </td>
-                <td>
+                <td className="col-4">
                   <input
                     className="form-control"
                     type="text"
@@ -305,8 +320,38 @@ const TarefaLider = (props) => {
                   />
                 </td>
                 <td>
+                  {isBaselineEditing === index ? (
+                    <input
+                      className="form-control"
+                      type="date"
+                      value={t.baseline}
+                      onChange={(e) =>
+                        handleChange(index, "baseline", e.target.value)
+                      }
+                      onBlur={() => setIsBaselineEditing(null)}
+                    />
+                  ) : (
+                    formatDataParaExibicao(t.baseline)
+                  )}
+                </td>
+                <td onClick={() => setIsDateEditing(index)}>
+                  {isDateEditing === index ? (
+                    <input
+                      className="form-control"
+                      type="date"
+                      value={t.data}
+                      onChange={(e) =>
+                        handleChange(index, "data", e.target.value)
+                      }
+                      onBlur={() => setIsDateEditing(null)}
+                    />
+                  ) : (
+                    formatDataParaExibicao(t.data)
+                  )}
+                </td>
+                <td>
                   <select
-                    className="form-control"
+                    className="form-select"
                     value={t.execucao ? "1" : "0"}
                     onChange={(e) =>
                       handleChange(index, "execucao", e.target.value === "1")
@@ -318,7 +363,7 @@ const TarefaLider = (props) => {
                 </td>
                 <td>
                   <select
-                    className="form-control"
+                    className="form-select"
                     type="text"
                     value={t.peso}
                     onChange={(e) =>
@@ -403,6 +448,26 @@ const TarefaLider = (props) => {
                     value={t.descricao}
                     onChange={(e) =>
                       handleNewTaskChange(index, "descricao", e.target.value)
+                    }
+                  />
+                </td>
+                <td>
+                  <input
+                    className="form-control"
+                    type="date"
+                    value={t.baseline}
+                    onChange={(e) =>
+                      handleNewTaskChange(index, "baseline", e.target.value)
+                    }
+                  />
+                </td>
+                <td>
+                  <input
+                    className="form-control"
+                    type="date"
+                    value={t.data}
+                    onChange={(e) =>
+                      handleNewTaskChange(index, "data", e.target.value)
                     }
                   />
                 </td>
