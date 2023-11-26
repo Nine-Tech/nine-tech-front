@@ -200,7 +200,6 @@ const LiderSelect = (props) => {
       </div>
     </>
   );
-
 };
 
 export default LiderSelect;

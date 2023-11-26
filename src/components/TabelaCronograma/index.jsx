@@ -21,8 +21,11 @@ const TabelaCronograma = (props) => {
 
         // Calcular os nomes dos meses com base na data de início do projeto e na data final do cronograma
         const dataInicioProjeto = new Date(dataInicio);
-        const dataFinalProjeto = new Date(dataFinal);  // Adicionando a data final do projeto
-        const nomesDosMeses = calcularMeses(dataInicioProjeto, dataFinalProjeto);
+        const dataFinalProjeto = new Date(dataFinal); // Adicionando a data final do projeto
+        const nomesDosMeses = calcularMeses(
+          dataInicioProjeto,
+          dataFinalProjeto,
+        );
 
         setMeses(nomesDosMeses);
       } catch (error) {
@@ -31,7 +34,7 @@ const TabelaCronograma = (props) => {
     };
 
     fetchData();
-  }, [projetoId, dataInicio, dataFinal]);  // Adicionando dataFinal à lista de dependências
+  }, [projetoId, dataInicio, dataFinal]); // Adicionando dataFinal à lista de dependências
 
   // Função para calcular os meses entre a data de início e final
   const calcularMeses = (dataInicio, dataFinal) => {
@@ -40,8 +43,12 @@ const TabelaCronograma = (props) => {
     const meses = [];
 
     while (inicio <= final) {
-      const nomeAbreviado = inicio.toLocaleString("default", { month: "short" });
-      meses.push(nomeAbreviado.charAt(0).toUpperCase() + nomeAbreviado.slice(1));
+      const nomeAbreviado = inicio.toLocaleString("default", {
+        month: "short",
+      });
+      meses.push(
+        nomeAbreviado.charAt(0).toUpperCase() + nomeAbreviado.slice(1),
+      );
       inicio.setMonth(inicio.getMonth() + 1);
     }
 
@@ -59,14 +66,18 @@ const TabelaCronograma = (props) => {
             <thead>
               <tr>
                 {meses.map((nomeDoMes, index) => (
-                  <th className="text-center" key={index}>{nomeDoMes}</th>
+                  <th className="text-center" key={index}>
+                    {nomeDoMes}
+                  </th>
                 ))}
               </tr>
             </thead>
             <tbody>
               <tr>
                 {meses.map((nomeDoMes, index) => {
-                  const itemDoMes = cronograma.find(item => item.mes === index + 1);
+                  const itemDoMes = cronograma.find(
+                    (item) => item.mes === index + 1,
+                  );
 
                   return (
                     <td key={index}>
