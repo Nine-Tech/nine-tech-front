@@ -2,7 +2,6 @@ import BodyHeader from "@/components/BodyHeader";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Modal from "@/components/Modal";
-// import BodyHeaderHome from "@/components/BodyHeaderHome";
 import CardsProjeto from "@/components/CardsProjeto";
 
 const Home = () => {
@@ -92,17 +91,20 @@ const Home = () => {
           return (
             <>
               <span className="mb-2">
-                Faça upload do arquivo Excel (.xlsx):
+                <h4>Upload arquivo Excel</h4>
               </span>
               <button
                 type="button"
-                className="btn btn-secondary"
+                className="btn btn-secondary m-2"
                 onClick={addDocument}
               >
                 Selecione um arquivo (.xlsx)
               </button>
               {selectedFile && (
-                <h5>Arquivo selecionado: {selectedFile.name}</h5>
+                <>
+                  <h5 className="mt-2">Arquivo selecionado:</h5>
+                  <p>{selectedFile.name}</p>
+                </>
               )}
               <label>
                 Insira o valor HH (Homem Hora):

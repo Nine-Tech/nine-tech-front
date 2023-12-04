@@ -50,6 +50,12 @@ const Login = () => {
     }
   }
 
+  const pressionarEnter = (event) => {
+    if (event.key === "Enter") {
+      fazerLogin();
+    }
+  };
+
   return (
     <div className="login">
       <Toast show={toast} toggle={setToast}>
@@ -87,6 +93,7 @@ const Login = () => {
             placeholder="Senha"
             className="form-control mt-4"
             onChange={(e) => setSenha(e.target.value)}
+            onKeyDown={pressionarEnter}
           />
           <button
             className="btn w-100 py-2 btn-primary mt-5 mb-3"

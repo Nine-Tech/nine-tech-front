@@ -96,7 +96,7 @@ function TabelaCronograma(props) {
           : "Alterações salvas com sucesso."}
       </Toast>
 
-      {updatedData.length ? (   
+      {updatedData.length ? (
         <div className="table-responsive">
           <table className="table table-bordered">
             <thead>
@@ -143,11 +143,10 @@ function TabelaCronograma(props) {
         </div>
       ) : (
         <div className="text-center p-5">
-              No momento não existem cronogramas atribuidos neste Projeto, por favor
-              volte mais tarde!
-            </div>
-      )
-      }
+          No momento não existem cronogramas atribuidos neste Projeto, por favor
+          volte mais tarde!
+        </div>
+      )}
 
       <div className="mt-4 d-flex justify-content-end">
         <button
