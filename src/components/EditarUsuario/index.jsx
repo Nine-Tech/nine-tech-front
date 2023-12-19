@@ -120,7 +120,7 @@ const EditarUsuario = ({ usuarioId, updateUserList }) => {
 
             <div className="mb-2">
               <label htmlFor="cpf" className="form-label">
-                Cpf:
+                CPF:
               </label>
               <input
                 type="text"

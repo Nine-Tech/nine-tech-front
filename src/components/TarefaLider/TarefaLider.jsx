@@ -288,9 +288,9 @@ const TarefaLider = (props) => {
               <th>Tendência</th>
               <th>Execução</th>
               <th>Peso</th>
-              <th>Valor</th>
               <th>HH*</th>
               <th>Material</th>
+              <th>Valor</th>
               <th>Ação</th>
             </tr>
           </thead>
@@ -309,7 +309,7 @@ const TarefaLider = (props) => {
                     }
                   />
                 </td>
-                <td className="col-4">
+                <td>
                   <input
                     className="form-control"
                     type="text"
@@ -385,18 +385,7 @@ const TarefaLider = (props) => {
                     <option value="89">89</option>
                     <option value="100">100</option>
                   </select>
-                </td>
-                <td>
-                  <input
-                    className="form-control"
-                    type="text"
-                    value={formatarMoeda(t.valor)}
-                    readOnly={true}
-                    onChange={(e) =>
-                      handleChange(index, "valor", e.target.value)
-                    }
-                  />
-                </td>
+                </td>                
                 <td>
                   <input
                     className="form-control"
@@ -415,6 +404,17 @@ const TarefaLider = (props) => {
                     }
                     onFocus={() => setIsEditing(true)}
                     onBlur={() => setIsEditing(false)}
+                  />
+                </td>
+                <td>
+                  <input
+                    className="form-control"
+                    type="text"
+                    value={formatarMoeda(t.valor)}
+                    readOnly={true}
+                    onChange={(e) =>
+                      handleChange(index, "valor", e.target.value)
+                    }
                   />
                 </td>
                 <td>
@@ -511,19 +511,7 @@ const TarefaLider = (props) => {
                     <option value="89">89</option>
                     <option value="100">100</option>
                   </select>
-                </td>
-
-                <td>
-                  <input
-                    className="form-control"
-                    type="text"
-                    value={formatarMoeda(t.valor)}
-                    readOnly={true}
-                    onChange={(e) =>
-                      handleNewTaskChange(index, "valor", e.target.value)
-                    }
-                  />
-                </td>
+                </td>                
                 <td>
                   <input
                     className="form-control"
@@ -544,6 +532,17 @@ const TarefaLider = (props) => {
                     }
                     onFocus={() => setIsEditing(true)}
                     onBlur={() => setIsEditing(false)}
+                  />
+                </td>
+                <td>
+                  <input
+                    className="form-control"
+                    type="text"
+                    value={formatarMoeda(t.valor)}
+                    readOnly={true}
+                    onChange={(e) =>
+                      handleNewTaskChange(index, "valor", e.target.value)
+                    }
                   />
                 </td>
                 <td>
